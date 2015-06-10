@@ -35,6 +35,22 @@ function(Marionette) {
 		},
 		onShow : function(options) {
 			this.$el.i18n();
+
+			var popup = this.$el.find('#trackPopup');
+			this.$el.find('#track').on('click', function(){
+				popup.fadeIn('fast');
+			})
+			popup.find('#close').on('click', function(){
+				popup.fadeOut('fast');
+			});
+			$(document).mouseup(function (e)
+			{
+				if (!popup.is(e.target) // if the target of the click isn't the container...
+					&& popup.has(e.target).length === 0) // ... nor a descendant of the container
+				{
+					popup.fadeOut('fast');
+				}
+			});
 		}
 	});
 });

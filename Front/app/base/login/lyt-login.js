@@ -11,7 +11,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 	'use strict';
 	return Marionette.LayoutView.extend({
 		template: 'app/base/login/tpl/tpl-login.html',
-		className: 'login-page ns-full-height',
+		className: 'login-page ns-full-height '+config.site.name,
 
 		collection: new Backbone.Collection(),
 
@@ -27,6 +27,11 @@ function(Marionette, Backbone, sha1, config, $ui) {
 		},
 
 		initialize: function() {
+			this.model = new Backbone.Model({
+				title : config.site.title,
+				legend : config.site.legend,
+				localization : config.site.localization
+			});
 		},
 
 		clear: function(evt) {
@@ -56,7 +61,6 @@ function(Marionette, Backbone, sha1, config, $ui) {
 					});
 				}
 			});
-
 		},
 
 		checkUsername: function() {
