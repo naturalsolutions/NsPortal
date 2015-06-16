@@ -124,6 +124,7 @@ def insertOneNewStation (request) :
     newSta = Station(FK_StationType = data['FK_StationType'])
     newSta.StationType = DBSession.query(StationType).filter(StationType.ID==data['FK_StationType']).first()
     newSta.init_on_load()
+    print(data)
     newSta.UpdateFromJson(data)
     DBSession.add(newSta)
     DBSession.flush()
