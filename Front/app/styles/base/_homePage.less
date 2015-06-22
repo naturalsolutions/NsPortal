@@ -1,0 +1,106 @@
+
+canvas{
+	margin:0 !important;
+	opacity: 0.9;
+	transition: .5s opacity ease;
+	position: relative;
+	left: -20px;
+	&:hover{
+		opacity: 1;
+	}
+}
+h2{
+	font-size: 30px;
+}
+
+
+#trackPopup{
+	position: absolute;
+	height: 70%;
+	width: auto;
+	background: rgba(211,83,0,0.8);
+	top: 15%;
+	z-index: 100;
+	padding: 50px;
+	border-radius: 3px;
+	color: white;
+	overflow: auto;
+	span.reneco-close{
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		font-size: 1.5em;
+		color: white;
+		cursor: pointer!important;
+	}
+	ul.trackinstances{
+		li.instance{
+			cursor: pointer;
+			text-align: center;
+			list-style: none;
+			display: block;
+			float: left;
+			text-decoration: none;
+			margin: 50px;
+		}
+		padding: 0px;
+	}
+	display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (min-width: @screen-sm) and (max-width: 1199px){
+	.home-page{
+
+		.container{
+			width: 750px!important;
+		}		
+		div.wrapper{
+			width: 515px;
+			margin: 0 auto;
+		}
+		.tile{
+			&.first{
+				margin-left: 15px;
+			} 
+			&.last{
+				margin-left: 15px;
+			}
+		}
+	}
+}
+
+
+@media screen and (max-width: @screen-sm){
+	.home-page{
+		.wrapper{
+			width: 100%;
+		}
+
+	}
+	#trackPopup{
+		position: relative;
+		top: 0;
+		margin-top: 50px;
+	}
+}
+
+
