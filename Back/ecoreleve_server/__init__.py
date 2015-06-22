@@ -70,6 +70,8 @@ def main(global_config, **settings):
     config.set_authorization_policy(authz_policy)
     config.set_root_factory(SecurityRoot)
 
+
+
     # criteria = [
     # {'Column' : 'Poids',
     # 'Operator' : 'Contains',
