@@ -1,0 +1,5 @@
+define({
+	root: window.location.pathname.replace(/\/(?:index.html)?$/, ''),
+	coreUrl: 'http://',
+	dateFormats: ['DD/MM/YYYY', 'DD/MM/YYYY HH:mm:ss'],
+});
