@@ -1,5 +1,5 @@
-define(['marionette', 'lyt-rootview', 'router', 'controller'],
-function(Marionette, Lyt_rootview, Router, Controller) {
+define(['marionette', 'backbone', 'moment', 'lyt-rootview', 'router', 'controller'],
+function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller) {
 
 
 	var app = {}, JST = window.JST = window.JST || {};
@@ -17,6 +17,10 @@ function(Marionette, Lyt_rootview, Router, Controller) {
 		app.controller = new Controller({app : app});
 		app.router = new Router({controller: app.controller, app: app});
 		
+		app.user = new Backbone.Model({
+			user: 'Admin User',
+		});
+
 		Backbone.history.start();
 	});
 

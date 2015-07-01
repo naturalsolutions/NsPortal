@@ -9,7 +9,7 @@
 define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui'],
 function(Marionette, Backbone, sha1, config, $ui) {
 	'use strict';
-	return Marionette.LayoutView.extend({
+	return Marionette.LayoutView.extend(   {  
 		template: 'app/base/login/tpl/tpl-login.html',
 		className: 'login-page ns-full-height '+config.site.name,
 
@@ -26,7 +26,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 			pwd: '#pwd-group'
 		},
 
-		initialize: function() {
+		initialize: function(options) {
 			this.model = new Backbone.Model({
 				title : config.site.title,
 				legend : config.site.legend,
@@ -49,7 +49,6 @@ function(Marionette, Backbone, sha1, config, $ui) {
 					data.each(function(m){
 						ctx.users.push(m.get('fullname'));
 					});
-					console.log(ctx.users)
 
 					$( "#username" ).autocomplete({
 						source: function( request, response ) {
@@ -70,7 +69,8 @@ function(Marionette, Backbone, sha1, config, $ui) {
 			}
 		},
 
-		login: function(elt) {
+		login: function(elt){
+			var _this = this;
 			elt.preventDefault();
 			elt.stopPropagation();
 			var user = this.collection.findWhere({fullname: $('#username').val()});
@@ -87,6 +87,8 @@ function(Marionette, Backbone, sha1, config, $ui) {
 					}
 				}).done( function() {
 					$('.login-form').addClass('rotate3d');
+					_this.options.app.user.set('name', $('#username').val());
+
 					setTimeout(function() {
 						Backbone.history.navigate('', {trigger: true});
 					},500);

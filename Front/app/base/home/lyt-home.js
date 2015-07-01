@@ -1,19 +1,25 @@
-define(['marionette','i18n'],
-function(Marionette) {
+define(['marionette', 'moment', 'i18n'],
+function(Marionette, moment) {
 	'use strict';
 
 	return Marionette.LayoutView.extend({
 		template: 'app/base/home/tpl/tpl-home.html',
-		className: 'home-page ns-full-height animated',
+		className: 'home-page ns-full-height',
 		events: {
 		},
 
+
+		initialize: function(options){
+			this.model = this.options.app.user;
+
+		},
+
 		animateIn: function() {
-			this.$el.removeClass('zoomOutDown');
+			this.$el.find('#tiles').removeClass('zoomOutDown');
 
-			this.$el.addClass('zoomInDown');
+			this.$el.find('#tiles').addClass('zoomInDown');
 
-			this.$el.animate(
+			this.$el.find('#tiles').animate(
 				{ opacity: 1 },
 				500,
 				_.bind(this.trigger, this, 'animateIn')
@@ -22,11 +28,7 @@ function(Marionette) {
 
 		// Same as above, except this time we trigger 'animateOut'
 		animateOut: function() {
-			//this.$el.css({'position' : 'absolute'});
-			this.$el.removeClass('zoomInUp');
-
-			//this.$el.addClass('zoomOutDown');
-
+			this.$el.find('#tiles').removeClass('zoomInUp');
 			this.$el.animate(
 				{ opacity : 0 },
 				500,
@@ -34,7 +36,7 @@ function(Marionette) {
 			);
 		},
 		onShow : function(options) {
-			this.$el.i18n();
+			this.$el.find('#tiles').i18n();
 
 			var popup = this.$el.find('#trackPopup');
 			this.$el.find('#track').on('click', function(){
@@ -51,6 +53,36 @@ function(Marionette) {
 					popup.fadeOut('fast');
 				}
 			});
+
+
+			var ink, d, x, y;
+			$('.ripplelink').click(function(e){
+				if($(this).find('.ink').length === 0){
+					$(this).prepend('<span class="ink"></span>');
+				}
+				ink = $(this).find('.ink');
+				ink.removeClass('animate');
+
+				if(!ink.height() && !ink.width()){
+					d = Math.max($(this).outerWidth(), $(this).outerHeight());
+					ink.css({height: d, width: d});
+				}
+
+				x = e.pageX - $(this).offset().left - ink.width()/2;
+				y = e.pageY - $(this).offset().top - ink.height()/2;
+				
+				ink.css({top: y+'px', left: x+'px'}).addClass('animate');
+			});
+			this.startTime();
+		},
+
+		startTime: function() {
+			var _this = this;
+			this.$el.find('time').html(new moment().format('MMMM Do YYYY, h:mm:ss a'));
+			var t = setTimeout(function () {
+				_this.startTime();
+			}, 1000);
 		}
+		
 	});
 });
