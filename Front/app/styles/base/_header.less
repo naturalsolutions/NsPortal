@@ -6,7 +6,8 @@ header{
 	width: 100%;
 	max-height: 50px;
 	overflow: hidden;
-	font-weight: 400; 
+	font-weight: 400;
+
 	a#logout{
 		
 	}
@@ -15,14 +16,21 @@ header{
 		border: none;
 	}
 	.nav > li > a, a{
+		transition: background .3s;
 		color: white;
 		&:focus, &:hover{
-			background: @header-hover;
 			color: white;
+		}
+		&:hover{
+			background: @header-hover;
 		}
 	}
 	.navbar-brand{
-		
+		i{
+			padding: 5px;
+			background: #4a90e2;
+			border-radius: 50%;
+		}
 	}
 	a#logout{
 		cursor: pointer;

@@ -1,59 +1,109 @@
-
-canvas{
-	margin:0 !important;
-	opacity: 0.9;
-	transition: .5s opacity ease;
-	position: relative;
-	left: -20px;
-	&:hover{
-		opacity: 1;
+.home-page{
+	.container{
+		position: relative;
 	}
-}
-h2{
-	font-size: 30px;
-}
-
-
-#trackPopup{
-	position: absolute;
-	height: 70%;
-	width: auto;
-	background: rgba(211,83,0,0.8);
-	top: 15%;
-	z-index: 100;
-	padding: 50px;
-	border-radius: 3px;
-	color: white;
-	overflow: auto;
-	span.reneco-close{
-		position: absolute;
-		top: 20px;
-		right: 20px;
-		font-size: 1.5em;
-		color: white;
-		cursor: pointer!important;
-	}
-	ul.trackinstances{
-		li.instance{
-			cursor: pointer;
-			text-align: center;
-			list-style: none;
-			display: block;
-			float: left;
-			text-decoration: none;
-			margin: 50px;
+	.infos{
+		div{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
 		}
-		padding: 0px;
+		time{
+			font-size: 20px;
+			font-weight: 300;
+		}
+
+		h1{
+			font-weight: 300;
+			font-size: 37px;
+			text-align: left;
+			line-height: 49px;
+		}
 	}
-	display: none;
+
+	.tiles{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.trackPopup{
+		position: absolute;
+		height: 70%;
+		width: auto;
+		background: @track;
+		top: 15%;
+		z-index: 100;
+		padding: 50px;
+		border-radius: 3px;
+		color: white;
+		overflow: auto;
+		span.reneco-close{
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			font-size: 1.5em;
+			color: white;
+			cursor: pointer!important;
+		}
+		ul.trackinstances{
+			li.instance{
+				cursor: pointer;
+				text-align: center;
+				list-style: none;
+				display: block;
+				float: left;
+				text-decoration: none;
+				margin: 50px;
+			}
+			padding: 0px;
+		}
+		display: none;
+	}
 }
 
 
 
+.ripplelink{
+	display:block;
+	position:relative;
+	overflow:hidden;
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+	z-index:0;
+}
 
+.ripplelink:hover{
+	z-index:1000;
+}
 
+.ink {
+	display: block;
+	position: absolute;
+	background:rgba(255, 255, 255, 0.3);
+	border-radius: 100%;
+	transform:scale(0);
+}
 
+@-webkit-keyframes ripple {
+	100% {opacity: 0; -webkit-transform: scale(2.5);}
+}
+@-moz-keyframes ripple {
+	100% {opacity: 0; -moz-transform: scale(2.5);}
+}
+@-o-keyframes ripple {
+	100% {opacity: 0; -o-transform: scale(2.5);}
+}
+@keyframes ripple {
+	100% {opacity: 0; transform: scale(2.5);}
+}
 
+.animate {
+	animation:ripple 0.65s linear;
+}
 
 
 
@@ -69,7 +119,9 @@ h2{
 
 @media screen and (min-width: @screen-sm) and (max-width: 1199px){
 	.home-page{
-
+		.tiles{
+			display: block;
+		}
 		.container{
 			width: 750px!important;
 		}		
@@ -94,7 +146,9 @@ h2{
 		.wrapper{
 			width: 100%;
 		}
-
+		.tiles{
+			display: block;
+		}
 	}
 	#trackPopup{
 		position: relative;
@@ -102,5 +156,7 @@ h2{
 		margin-top: 50px;
 	}
 }
+
+
 
 
