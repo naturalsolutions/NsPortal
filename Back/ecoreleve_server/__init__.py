@@ -25,6 +25,12 @@ from ecoreleve_server.Models import (
 from ecoreleve_server.GenericObjets import *
 from ecoreleve_server.Views import add_routes
 
+from ecoreleve_server.pyramid_jwtauth import (
+    JWTAuthenticationPolicy,
+    includeme
+    )
+
+
 def datetime_adapter(obj, request):
     """Json adapter for datetime objects.
     """
@@ -59,38 +65,9 @@ def main(global_config, **settings):
     config.add_renderer('gpx', GPXRenderer)
 
     # Set up authentication and authorization
-    authn_policy = AuthTktAuthenticationPolicy(
-            settings['auth.secret'],
-            cookie_name='ecoReleve-Core',
-            callback=role_loader,
-            hashalg='sha1',
-            max_age=86400)
-    authz_policy = ACLAuthorizationPolicy()
-    config.set_authentication_policy(authn_policy)
-    config.set_authorization_policy(authz_policy)
+
+    includeme(config)
     config.set_root_factory(SecurityRoot)
-
-
-
-    # criteria = [
-    # {'Column' : 'Poids',
-    # 'Operator' : 'Contains',
-    # 'Value' : '1'
-    # },
-    # # {'Column' : 'Name',
-    # # 'Operator' : 'Contains',
-    # # 'Value' : 'M29'
-    # # }
-    # ]
-    # searchInfo = {'criteria' : criteria}
-    # listObj = ListObjectWithDynProp(DBSession,Observation,searchInfo)
-    # # print ('\n\n\n______RESULT static____________')
-    # # print (listObj.statValues)
-    # # print('\nlength : '+str(len(listObj.statValues)))
-    # print ('\n\n\n______RESULT dynamic____________')
-    # # print (listObj.dynValues)
-    # # print('\nlength : '+str(len(listObj.dynValues)))
-    # print(listObj.GetFlatList())
 
 
     # Set the default permission level to 'read'

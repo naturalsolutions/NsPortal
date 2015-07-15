@@ -74,8 +74,23 @@ function(Marionette, Backbone, sha1, config, $ui) {
 			elt.preventDefault();
 			elt.stopPropagation();
 			var user = this.collection.findWhere({fullname: $('#username').val()});
-			var url = config.coreUrl + 'security/login';
+			var url = config.coreUrl + 'security/has_access';
 			var self = this;
+
+
+
+			$.ajax({
+				context: this,
+				type: 'POST',
+				url: url,
+			}).done( function() {
+				alert('ok');
+			}).fail( function () {
+				document.location.href="http://127.0.0.1/NsPortal/Front"; 
+			});
+
+
+			/*
 			if (user) {
 				$.ajax({
 					context: this,
@@ -101,7 +116,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 			else {
 				this.fail('#login-group', 'Invalid username');
 				this.shake();
-			}
+			}*/
 		},
 
 		fail: function(elt, text) {

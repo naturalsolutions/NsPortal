@@ -9,9 +9,9 @@ define([
 	'leaflet_google',
 
 ], function($, _, Backbone , Marionette, L, cluster //tpl_legend
-		) {
+) {
 
-	'use strict';  
+	'use strict';
 	// I am the internal, static counter for the number of Coms
 	// that have been created in the system. This is used to
 	// power the unique identifier of each instance.
@@ -37,8 +37,8 @@ define([
 			this.com.addModule(this);
 		}
 
-		this.url=options.url;
-		this.geoJson=options.geoJson;
+		this.url = options.url;
+		this.geoJson = options.geoJson;
 
 		this.elem = options.element || 'map';
 
@@ -393,10 +393,10 @@ define([
 				size+=15;
 				classe += 'medium';
 			} else if (childCount < 1000) {
-				size+= 25;
+				size+=25;
 				classe += 'medium-lg';
 			} else {
-				size+= 35;
+				size+=35;
 				classe += 'large';
 			}
 
