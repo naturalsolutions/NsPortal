@@ -13,6 +13,7 @@
     "animate.css": "https://github.com/daneden/animate.css.git#~3.2.6",
     "requirejs-text": "~2.0.14",
     "i18n": "https://github.com/jamuhl/i18next.git",
-    "reneco-fonts": "*"
+    "reneco-fonts": "*",
+    "moment": "~2.10.3"
   }
 }

@@ -1,7 +1,7 @@
 require.config({ 
 	baseUrl: 'app',
 	paths : {
-		
+
 		'tmp'					: './tmp',
 		
 		'app'					: 'app',
@@ -15,7 +15,6 @@ require.config({
 		'transition-region'		: './base/transition-region/transition-region',
 		'translater'            : 'translater', 
 		
-		
 		/*==========  NS modules  ==========*/
 		'ns_modules'			: 'ns_modules',
 		'ns_filter'				: 'ns_modules/ns_filter',
@@ -23,7 +22,6 @@ require.config({
 		'ns_grid'				: 'ns_modules/ns_grid',
 		'ns_map'				: 'ns_modules/ns_map',
 		'ns_stepper'			: 'ns_modules/ns_stepper',
-
 
 		/*==========  Bower  ==========*/
 		'jquery'				: '../bower_components/jquery/jquery.min',
@@ -36,9 +34,7 @@ require.config({
 		'radio'					: '../bower_components/backbone.radio/build/backbone.radio',
 		'bootstrap'				: '../bower_components/bootstrap/dist/js/bootstrap',
 		'sha1'					: '../bower_components/sha1/bin/sha1',
-		
-		'requirejs-text'		: '../bower_components/requirejs-text/text',
-
+		'moment'				: '../bower_components/moment/min/moment.min',
 		
 		'i18n'					: '../bower_components/i18n/i18next',
 		
@@ -76,12 +72,13 @@ require.config({
 		sha1: {
 			exports: 'sha1'
 		},
-		
+		moment : {
+			exports : 'moment'
+		},
 		i18n : {
 			deps: ['jquery'],
 			exports : '$'
 		},
-
 	},
 });
 

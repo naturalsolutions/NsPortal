@@ -17,7 +17,7 @@ define(['marionette', 'config',
 
 		home: function() {
 			Backbone.history.navigate('');
-			this.rgMain.show(new LytHome());
+			this.rgMain.show(new LytHome({app : this.options.app}));
 		},
 
 	});

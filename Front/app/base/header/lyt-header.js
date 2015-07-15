@@ -16,6 +16,11 @@ function(Marionette, config) {
 			'click #logout' : 'logout',
 		},
 
+
+		initialize: function(){
+			this.model = this.options.app.user;
+		},
+
 		logout: function(){
 			$.ajax({
 				context: this,
