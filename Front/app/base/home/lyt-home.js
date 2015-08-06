@@ -9,9 +9,8 @@ function(Marionette, moment) {
 		},
 
 
-		initialize: function(options){
-			this.model = this.options.app.user;
-
+		initialize: function(){
+			this.model = window.app.user;
 		},
 
 		animateIn: function() {
@@ -35,7 +34,21 @@ function(Marionette, moment) {
 				_.bind(this.trigger, this, 'animateOut')
 			);
 		},
+
+		style: function(){
+			var imgBackHomePage = window.app.siteInfo.get('imgBackHomePage');
+			$(this.$el[0]).css('background', 'url(data:image/png;base64,'+ imgBackHomePage +') ');
+
+			$(this.$el[0]).css({
+				'background-position': 'center',
+				'background-attachment': 'fixed',
+				'background-size': 'cover',
+			});
+
+		},
+
 		onShow : function(options) {
+			this.style();
 			this.$el.find('#tiles').i18n();
 
 			var popup = this.$el.find('#trackPopup');

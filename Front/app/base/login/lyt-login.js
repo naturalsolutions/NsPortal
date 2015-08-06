@@ -9,11 +9,10 @@
 define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui'],
 function(Marionette, Backbone, sha1, config, $ui) {
 	'use strict';
-	return Marionette.LayoutView.extend(   {  
+	return Marionette.LayoutView.extend({
 		template: 'app/base/login/tpl/tpl-login.html',
-		className: 'login-page ns-full-height '+config.site.name,
-
 		collection: new Backbone.Collection(),
+		className: 'full-height',
 
 		events: {
 			'submit': 'login',
@@ -23,15 +22,13 @@ function(Marionette, Backbone, sha1, config, $ui) {
 
 		ui: {
 			err: '#help-password',
-			pwd: '#pwd-group'
+			pwd: '#pwd-group',
+			logo: '#logo'
 		},
 
-		initialize: function(options) {
-			this.model = new Backbone.Model({
-				title : config.site.title,
-				legend : config.site.legend,
-				localization : config.site.localization
-			});
+		initialize: function() {
+			this.model = window.app.siteInfo;
+			console.log(this.model);
 		},
 
 		clear: function(evt) {
@@ -40,7 +37,22 @@ function(Marionette, Backbone, sha1, config, $ui) {
 			group.find(".help-block").text('');
 		},
 
+		style: function(){
+			var imgBackPortal = this.model.get('imgBackPortal');
+			var imgLogoPrtal = this.model.get('imgLogoPrtal');
+			$(this.$el[0]).css('background', 'url(data:image/png;base64,'+ imgBackPortal +') center center no-repeat');
+			this.ui.logo.css('background', 'url(data:image/png;base64,'+ imgLogoPrtal +') center center no-repeat');
+
+			$(this.$el[0]).css({
+				'background-position': 'center',
+				'background-attachment': 'fixed',
+				'background-size': 'cover',
+			});
+
+		},
+
 		onShow: function(){
+			this.style();
 			var ctx = this;
 			this.collection.url = config.coreUrl + 'user';
 			this.collection.fetch({
@@ -87,7 +99,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 					}
 				}).done( function() {
 					$('.login-form').addClass('rotate3d');
-					_this.options.app.user.set('name', $('#username').val());
+					window.app.user.set('name', $('#username').val());
 
 					setTimeout(function() {
 						Backbone.history.navigate('', {trigger: true});

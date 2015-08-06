@@ -61,6 +61,10 @@ _ESCAPED_CHAR = re.compile(r"\\.")
 
 
 def parse_authz_header(request, *default):
+
+    return request.cookies.get("ecoReleve-Core")
+
+
     """Parse the authorization header into an identity dict.
 
     This function can be used to extract the Authorization header from a
@@ -78,10 +82,14 @@ def parse_authz_header(request, *default):
          "username": "user1", "response": "123456"}
 
     """
+
+
+
     # This outer try-except catches ValueError and
     # turns it into return-default if necessary.
     try:
         # Grab the auth header from the request, if any.
+
         authz = request.environ.get("HTTP_AUTHORIZATION")
         if authz is None:
             raise ValueError("Missing auth parameters")

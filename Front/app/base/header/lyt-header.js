@@ -18,7 +18,7 @@ function(Marionette, config) {
 
 
 		initialize: function(){
-			this.model = this.options.app.user;
+			this.model = window.app.user;
 		},
 
 		logout: function(){

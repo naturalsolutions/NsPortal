@@ -1,14 +1,3 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
-"""
-
-A Pyramid authentication plugin for JSON Web Tokens:
-
-    http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html
-
-"""
-
 from __future__ import absolute_import
 
 __ver_major__ = 0
@@ -34,10 +23,18 @@ from pyramid.util import DottedNameResolver
 
 import jwt
 
-#from .utils import parse_authz_header, normalize_request_object
+from .utils import parse_authz_header, normalize_request_object
+from ecoreleve_server.pyramid_jwtauth.JWTAuthTktCookieHelper import JWTAuthTktCookieHelper
+
+
+def parse_authz_header(request, *default):
+
+    #return request.cookies.get("ecoReleve-Core")
+    return request.cookies.get("user_id")
 
 @implementer(IAuthenticationPolicy)
 class JWTAuthenticationPolicy(object):
+
     """Pyramid Authentication Policy implementing JWT Access Auth.
 
     This class provides an IAuthenticationPolicy implementation based on
@@ -144,6 +141,10 @@ class JWTAuthenticationPolicy(object):
         self.scheme = scheme
         self.decode_options = decode_options
 
+        self.cookie = JWTAuthTktCookieHelper(
+            secret = "test"
+        )
+
 
     @classmethod
     def from_settings(cls, settings={}, prefix="jwtauth.", **extra):
@@ -170,81 +171,22 @@ class JWTAuthenticationPolicy(object):
         # And finally we can finally create the object.
         return cls(**kwds)
 
-    @classmethod
-    def _parse_settings(cls, settings):
-        """Parse settings for an instance of this class.
 
-        This classmethod takes a dict of string settings and parses them into
-        a dict of properly-typed keyword arguments, suitable for passing to
-        the default constructor of this class.
+    def remember(self, request, principal, **kw):
+        """Get headers to remember to given principal identity.
 
-        Implementations should remove each setting from the dict as it is
-        processesed, so that any unsupported settings can be detected by the
-        calling code.
+        This is a no-op for this plugin; the client is supposed to remember
+        its MAC credentials and use them for all requests.
         """
-        load_function = _load_function_from_settings
-        # load_object = _load_object_from_settings
-        kwds = {}
-        kwds["find_groups"] = load_function("find_groups", settings)
-        kwds["master_secret"] = settings.pop("master_secret", None)
-        kwds["private_key"] = settings.pop("private_key", None)
-        kwds["private_key_file"] = settings.pop("private_key_file", None)
-        kwds["public_key"] = settings.pop("public_key", None)
-        kwds["public_key_file"] = settings.pop("public_key_file", None)
-        kwds["algorithm"] = settings.pop("algorithm", "HS256")
-        kwds["leeway"] = settings.pop("leeway", 0)
-        kwds["userid_in_claim"] = settings.pop("userid_in_claim", "sub")
-        disable_options = {
-            'verify_signature': settings.pop("disable_verify_signature", None),
-            'verify_exp': settings.pop("disable_verify_exp", None),
-            'verify_nbf': settings.pop("disable_verify_nbf", None),
-            'verify_iat': settings.pop("disable_verify_iat", None),
-            'verify_aud': settings.pop("disable_verify_aud", None),
-        }
-        kwds["decode_options"] = {
-            k: not v for k, v in disable_options.items()}
-        return kwds
-
-
-
-    def get_userID(self, request):
-        try :
-            token = request.cookies.get("ecoReleve-Core")
-            claims = self.decode_jwt(request, token)
-            userid = claims['iss']
-            return userid
-        except: 
-            self.challenge(request)
-
-
-    def authenticated_userid(self, request):
-        userid = self.get_userID(request)
-        if userid is None:
-            return None
-        return userid
-
-    def unauthenticated_userid(self, request):
-        userid = self.get_userID(request)
-        return userid
-
-    def effective_principals(self, request):
-        principals = [Everyone]
-
-        userid = self.get_userID(request)
-        if userid is None:
-            return principals
-        groups = self.find_groups(userid, request)
-        if userid:
-            principals += [Authenticated, 'u:%s' % userid]
-        return principals
-
-    def remember(self, response, principal, **kw):
-        response.set_cookie('ecoReleve-Core', principal, max_age = 100000)
+        return self.cookie.remember(request, principal, **kw)
 
     def forget(self, request):
-        request.response.delete_cookie('ecoReleve-Core')
+
+        return self.cookie.forget(request)
+        #return [("WWW-Authenticate", self.scheme)]
 
     def challenge(self, request, content="Unauthorized"):
+        print("challenge_______________")
         """Challenge the user for credentials.
 
         This method returns a 401 response using the WWW-Authenticate field
@@ -252,9 +194,6 @@ class JWTAuthenticationPolicy(object):
         "forbidden view" when using this auth policy.
         """
         return HTTPUnauthorized(content, headers=self.forget(request))
-
-    def find_groups(self, userid, request):
-        return []
 
     def decode_jwt(self, request, jwtauth_token,
                    leeway=None, verify=True, options=None):
@@ -326,95 +265,3 @@ class JWTAuthenticationPolicy(object):
 
         jwtauth_token = jwt.encode(encode_claims, key=key, algorithm=algorithm)
         return jwtauth_token
-
-
-def maybe_encode_time_claims(claims):
-    encode_claims = claims.copy()
-    # convert datetime to a intDate value in known time-format claims
-    for time_claim in ['exp', 'iat', 'nbf']:
-        if isinstance(encode_claims.get(time_claim), datetime):
-            encode_claims[time_claim] = (
-                timegm(encode_claims[time_claim].utctimetuple()))
-    return encode_claims
-
-
-def _load_function_from_settings(name, settings):
-    """Load a plugin argument as a function created from the given settings.
-
-    This function is a helper to load and possibly curry a callable argument
-    to the plugin.  It grabs the value from the dotted python name found in
-    settings[name] and checks that it is a callable.  It then looks for args
-    of the form settings[name_*] and curries them into the function as extra
-    keyword argument before returning.
-    """
-    # See if we actually have the named object.
-    dotted_name = settings.pop(name, None)
-    if dotted_name is None:
-        return None
-    func = DottedNameResolver(None).resolve(dotted_name)
-    # Check that it's a callable.
-    if not callable(func):
-        raise ValueError("Argument %r must be callable" % (name,))
-    # Curry in any keyword arguments.
-    func_kwds = {}
-    prefix = name + "_"
-    for key in list(settings.keys()):
-        if key.startswith(prefix):
-            func_kwds[key[len(prefix):]] = settings.pop(key)
-    # Return the original function if not currying anything.
-    # This is both more efficent and better for unit testing.
-    if func_kwds:
-        func = functools.partial(func, **func_kwds)
-    return func
-
-
-def _load_object_from_settings(name, settings):
-    """Load a plugin argument as an object created from the given settings.
-
-    This function is a helper to load and possibly instanciate an argument
-    to the plugin.  It grabs the value from the dotted python name found in
-    settings[name].  If this is a callable, it looks for arguments of the
-    form settings[name_*] and calls it with them to instanciate an object.
-    """
-    # See if we actually have the named object.
-    dotted_name = settings.pop(name, None)
-    if dotted_name is None:
-        return None
-    obj = DottedNameResolver(None).resolve(dotted_name)
-    # Extract any arguments for the callable.
-    obj_kwds = {}
-    prefix = name + "_"
-    for key in list(settings.keys()):
-        if key.startswith(prefix):
-            obj_kwds[key[len(prefix):]] = settings.pop(key)
-    # Call it if callable.
-    if callable(obj):
-        obj = obj(**obj_kwds)
-    elif obj_kwds:
-        raise ValueError("arguments provided for non-callable %r" % (name,))
-    return obj
-
-
-def includeme(config):
-    """Install JWTAuthenticationPolicy into the provided configurator.
-
-    This function provides an easy way to install JWT Access Authentication
-    into your pyramid application.  Loads a JWTAuthenticationPolicy from the
-    deployment settings and installs it into the configurator.
-    """
-    # Hook up a default AuthorizationPolicy.
-    # ACLAuthorizationPolicy is usually what you want.
-    # If the app configures one explicitly then this will get overridden.
-    # In auto-commit mode this needs to be set before adding an authn policy.
-    authz_policy = ACLAuthorizationPolicy()
-    config.set_authorization_policy(authz_policy)
-
-    # Build a JWTAuthenticationPolicy from the deployment settings.
-    settings = config.get_settings()
-    authn_policy = JWTAuthenticationPolicy.from_settings(master_secret = "test")
-    config.set_authentication_policy(authn_policy)
-
-    # Set the forbidden view to use the challenge() method on the policy.
-    # The following causes a problem with cornice (fighting - open to options
-    # about them playing properly together.)
-    # config.add_forbidden_view(authn_policy.challenge)

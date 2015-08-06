@@ -24,15 +24,16 @@ define(['jquery', 'marionette', 'backbone', 'config', './base/login/lyt-login',
 				callback.apply(this, args);
 			}).fail( function(msg) {
 				$('body').removeClass('app');
-				this.options.controller.rgHeader.empty();
-				this.options.controller.rgMain.show(new LytLogin({app: this.options.app}));
+
+				window.app.rootView.rgHeader.empty();
+				window.app.rootView.rgMain.show(new LytLogin());
 				Backbone.history.navigate('login', {trigger: true});
 			});
 		},
 
 		insertHeader: function(){
-			if(!this.options.controller.rgHeader.hasView()){
-				this.options.controller.rgHeader.show( new LytHeader({app: this.options.app}));
+			if(!window.app.rootView.rgHeader.hasView()){
+				window.app.rootView.rgHeader.show( new LytHeader({app: this.options.app}));
 			}
 		},
 	});
