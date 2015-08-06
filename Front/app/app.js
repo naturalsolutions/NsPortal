@@ -1,3 +1,4 @@
+
 define(['marionette', 'backbone', 'moment', './base/rootView/lyt-rootview', 'router', 'controller', 'config'],
 function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller, config) {
 
@@ -11,16 +12,17 @@ function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller, config)
 
 	app = new Marionette.Application();
 
+
 	app.on('start', function() {
-
-
 		var _this = this;
 		var Patern = Backbone.Model.extend({
 			urlRoot : config.infosUrl,
 		});
+
 		var model = new Patern();
 		model.fetch({
 			success: function(){
+
 				app.rootView = new Lyt_rootview();
 				app.rootView.render();
 				app.controller = new Controller({app : app});
@@ -32,7 +34,6 @@ function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller, config)
 				Backbone.history.start();
 			}
 		});
-
 	});
 
 	$( document ).ajaxStart(function(e) {

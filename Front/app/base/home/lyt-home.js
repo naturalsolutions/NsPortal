@@ -48,7 +48,9 @@ function(Marionette, moment) {
 		},
 
 		onShow : function(options) {
+
 			this.style();
+
 			this.$el.find('#tiles').i18n();
 
 			var popup = this.$el.find('#trackPopup');

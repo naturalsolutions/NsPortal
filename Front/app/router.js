@@ -24,7 +24,6 @@ define(['jquery', 'marionette', 'backbone', 'config', './base/login/lyt-login',
 				callback.apply(this, args);
 			}).fail( function(msg) {
 				$('body').removeClass('app');
-
 				window.app.rootView.rgHeader.empty();
 				window.app.rootView.rgMain.show(new LytLogin());
 				Backbone.history.navigate('login', {trigger: true});

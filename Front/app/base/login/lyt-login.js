@@ -9,7 +9,7 @@
 define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui'],
 function(Marionette, Backbone, sha1, config, $ui) {
 	'use strict';
-	return Marionette.LayoutView.extend({
+	return Marionette.LayoutView.extend(   {  
 		template: 'app/base/login/tpl/tpl-login.html',
 		collection: new Backbone.Collection(),
 		className: 'full-height',
@@ -29,6 +29,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 		initialize: function() {
 			this.model = window.app.siteInfo;
 			console.log(this.model);
+
 		},
 
 		clear: function(evt) {
@@ -88,6 +89,8 @@ function(Marionette, Backbone, sha1, config, $ui) {
 			var user = this.collection.findWhere({fullname: $('#username').val()});
 			var url = config.coreUrl + 'security/login';
 			var self = this;
+
+			
 			if (user) {
 				$.ajax({
 					context: this,

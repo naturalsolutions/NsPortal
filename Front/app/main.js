@@ -83,6 +83,7 @@ require.config({
 });
 
 require(['app', 'templates','translater'], function(app,templates,Translater){
+		console.log('');
 		app.start();
 		this.translater = Translater.getTranslater();
 });
