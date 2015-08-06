@@ -10,7 +10,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 requires = [
     'pyramid',
-	'pypyodbc',
+    'pypyodbc',
     'pyramid_chameleon',
     'pyramid_debugtoolbar',
     'pyramid_tm',
@@ -21,9 +21,9 @@ requires = [
     'webtest'
     ]
 
-setup(name='ecoReleve_Server',
+setup(name='ns_portal',
       version='0.0',
-      description='ecoReleve_Server',
+      description='ns_portal',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -38,12 +38,12 @@ setup(name='ecoReleve_Server',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='ecoreleve_server',
+      test_suite='ns_portal',
       install_requires=requires,
       entry_points="""\
       [paste.app_factory]
-      main = ecoreleve_server:main
+      main = ns_portal:main
       [console_scripts]
-      initialize_ecoReleve_Server_db = ecoreleve_server.scripts.initializedb:main
+      initialize_ns_portal_db = ns_portal.scripts.initializedb:main
       """,
       )

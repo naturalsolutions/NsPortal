@@ -10,15 +10,5 @@ dbConfig = {
     'sensor_schema': 'ecoReleve_Sensor.dbo'
 }
 
-DynPropNames = {
-    'ProtocoleType':{
-        'DynPropContextTable':'ProtocoleType_ObservationDynProp',
-        'DynPropTable':'ObservationDynProp',
-        'FKToDynPropTable':'FK_ObservationDynProp'
-    }
-}
 
-from .Protocoles import *
 from .User import User
-from .Station import * 
-from .Region import * 

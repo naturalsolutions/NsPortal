@@ -11,21 +11,15 @@ from pyramid.renderers import JSON
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
-from ecoreleve_server.controllers.security import SecurityRoot, role_loader
-from ecoreleve_server.renderers.csvrenderer import CSVRenderer
-from ecoreleve_server.renderers.pdfrenderer import PDFrenderer
-from ecoreleve_server.renderers.gpxrenderer import GPXRenderer
-from ecoreleve_server.Models import (
+from ns_portal.controllers.security import SecurityRoot, role_loader
+from ns_portal.Models import (
     DBSession,
     Base,
     dbConfig,
-    Station,
-    Observation
     )
-from ecoreleve_server.GenericObjets import *
-from ecoreleve_server.Views import add_routes
+from ns_portal.Views import add_routes
 
-from ecoreleve_server.pyramid_jwtauth import (
+from ns_portal.pyramid_jwtauth import (
     JWTAuthenticationPolicy,
     includeme
     )
@@ -59,13 +53,7 @@ def main(global_config, **settings):
     json_renderer.add_adapter(Decimal, decimal_adapter)
     config.add_renderer('json', json_renderer)
 
-    # Add renderer for CSV files.
-    config.add_renderer('csv', CSVRenderer)
-    config.add_renderer('pdf', PDFrenderer)
-    config.add_renderer('gpx', GPXRenderer)
-
     # Set up authentication and authorization
-
     includeme(config)
     config.set_root_factory(SecurityRoot)
 

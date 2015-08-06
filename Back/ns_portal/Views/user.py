@@ -3,7 +3,7 @@
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 from sqlalchemy import select
-from ecoreleve_server.Models import DBSession, User
+from ns_portal.Models import DBSession, User
 
 @view_config(
     route_name='core/user',

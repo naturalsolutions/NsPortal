@@ -8,7 +8,7 @@ from .Models import Base,DBSession
 from sqlalchemy import create_engine, engine_from_config
 from paste.deploy.loadwsgi import appconfig
 from webtest import TestApp
-from ecoreleve_server import main
+from ns_portal import main
 
 
 here = os.path.dirname(__file__)
@@ -60,11 +60,11 @@ class BaseTest(unittest.TestCase):
 class IntegrationTestBase(BaseTest):
     @classmethod
     def setUpClass(cls):
-        cls.ecoreleve_server = main({}, **settings)
+        cls.ns_portal = main({}, **settings)
         super(IntegrationTestBase, cls).setUpClass()
 
     def setUp(self):
-        self.ecoreleve_server = TestApp(self.ecoreleve_server)
+        self.ns_portal = TestApp(self.ns_portal)
         self.config = testing.setUp()
         super(IntegrationTestBase, self).setUp()
 
@@ -74,7 +74,7 @@ class TestView(BaseTest) :
         registrations your application declares in its ``includeme``
         function.
         """
-        from ecoreleve_server import main
+        from ns_portal import main
         app = main({},**settings)
         self.config = testing.setUp()
         self.config.include('app')

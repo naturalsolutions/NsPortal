@@ -28,8 +28,6 @@ function(Marionette, Backbone, sha1, config, $ui) {
 
 		initialize: function() {
 			this.model = window.app.siteInfo;
-			console.log(this.model);
-
 		},
 
 		clear: function(evt) {
