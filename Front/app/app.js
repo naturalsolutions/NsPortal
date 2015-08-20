@@ -32,7 +32,10 @@ function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller, config)
 				});
 				app.siteInfo = model;
 				Backbone.history.start();
-			}
+			},
+			error: function(){
+				//TODO : choose the default behavior
+			},
 		});
 	});
 
