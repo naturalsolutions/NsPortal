@@ -22,6 +22,7 @@ class User(Base):
     Login = Column(String, nullable=False)
     Password = Column(String, nullable=False)
     Language = Column(String(2))
+    Role = Column(String(15), nullable=False)
     ModificationDate = Column(DateTime, nullable=False,server_default=func.now())
     if db_dialect =='mssql':
         __table_args__ = (

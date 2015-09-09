@@ -22,7 +22,7 @@ function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller, config)
 		var model = new Patern();
 		model.fetch({
 			success: function(){
-
+				console.log('success')
 				app.rootView = new Lyt_rootview();
 				app.rootView.render();
 				app.controller = new Controller({app : app});
@@ -32,12 +32,14 @@ function(Marionette, Backbone, moment, Lyt_rootview, Router, Controller, config)
 				});
 				app.siteInfo = model;
 				Backbone.history.start();
+				console.log(model);
 			},
 			error: function(){
 				//TODO : choose the default behavior
 			},
 		});
 	});
+
 
 	$( document ).ajaxStart(function(e) {
 		$('#header-loader').removeClass('hidden');
