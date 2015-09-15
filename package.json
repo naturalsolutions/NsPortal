@@ -13,7 +13,5 @@
     "icon": "Front/icon.png",
     "position" : "center",
     "no-edit-menu" : true
-    //"fullscreen" : true
-    // "toolbar" : false,
   }
 }
