@@ -6,7 +6,7 @@
 ## Features
 
 
-## Instalation
+## Installation
 
 
 ### Requirements
@@ -18,7 +18,7 @@
 
 *Verify that node is in your PATH*
 
-### Instalation Process
+### Installation Process
 
 #### Front
 - `npm install`
