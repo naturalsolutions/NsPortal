@@ -103,7 +103,7 @@ Thank you!
 
 ## Commercial Support
 
-We have programs for companies that require additional level of assistance through training or commercial support, need special licensing or want additional levels of capabilities. Please visit the [Natural Solutions](http://www.natural-solutions.eu/) Website for more information about ecoReleve or email contact@natural-solutions.com.
+We have programs for companies that require additional level of assistance through training or commercial support, need special licensing or want additional levels of capabilities. Please visit the [Natural Solutions](http://www.natural-solutions.eu/) Website for more information about the portal or contact us by email at contact@natural-solutions.com.
 
 ## License
 
