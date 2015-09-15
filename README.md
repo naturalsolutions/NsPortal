@@ -36,6 +36,7 @@ Install those packages with `pip` or `conda` :
 - [sqlalchemy](http://www.sqlalchemy.org/)
 - zope.interface
 - pandas=0.15.0
+- pyjwt
 
 Run the setup install : 
 - `python setup.py install`
@@ -53,7 +54,6 @@ Run the setup install :
   1. compile less files to app/styles/main.css (+ map file in dev mode)
   2. build html files with JST (app/build/templates.js)
   3. build js files : requirejs optimisation, minify and uglify (app/buil/prod.js)
-  4. run jasmine test (soon replaced for mocha)
 
 - `grunt release` : launch `grunt build` then change entry file in the index for production mode (prod.js)
 
@@ -62,9 +62,8 @@ Run the setup install :
  RequireJS
  Backbone Underscore
  MarionetteJs
- Leaflet
 
-
+- rename the config.js.default to config.js then add your specifications (url of the REST server, can be a reverse proxy)
 
 ### Back
 
@@ -72,7 +71,7 @@ Run the setup install :
  >[SQLAlchemy](http://www.sqlalchemy.org/)
 
 
-You have to configure the [development.ini](https://github.com/NaturalSolutions/ecoReleve-Data-refact/tree/master/Back/development.ini.default) which can be found in the [Back folder](https://github.com/NaturalSolutions/ecoReleve-Data-refact/tree/master/Back/)
+You have to configure the [development.ini](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/development.ini.default) which can be found in the [Back folder](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/)
 Run `pserve development.ini` command in order to launch a Pyramid server.
 
 #### Database configuaration
@@ -92,7 +91,7 @@ Natural Solutions (NS) is based upon the collaborative development process of Gi
 If you want to contribute on this project, please create a new pull request :
 1. Fork the repository into your own GitHub repository in order to work on this one,
 2. Then create a new branch first,
-3. Finally, send a pull request to the [main repository](https://github.com/NaturalSolutions/ecoReleve-Data-refact/) when the task is ready for review.
+3. Finally, send a pull request to the [main repository](https://github.com/NaturalSolutions/NsPortal/) when the task is ready for review.
 4. When the pull request received at least one validation comment from an owner member of the repository, it will be merge to this one.
 
 Thank you!
