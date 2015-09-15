@@ -14,7 +14,7 @@ route_prefix = 'security/'
     permission=NO_PERMISSION_REQUIRED,
     request_method='POST')
 def login(request): 
-    user_id = request.POST.get('user_id', '')
+    user_id = request.POST.get('userId', '')
     pwd = request.POST.get('password', '')
     user = DBSession.query(User).filter(User.id==user_id).one()
     if user is not None and user.check_password(pwd):
