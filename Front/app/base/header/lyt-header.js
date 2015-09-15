@@ -5,33 +5,31 @@
 
 **/
 
-
 define(['marionette', 'config'],
 function(Marionette, config) {
-	'use strict';
-	return Marionette.LayoutView.extend({
-		template: 'app/base/header/tpl-header.html',
-		className: 'header',
-		events: {
-			'click #logout' : 'logout',
-		},
+  'use strict';
+  return Marionette.LayoutView.extend({
+    template: 'app/base/header/tpl-header.html',
+    className: 'header',
+    events: {
+      'click #logout': 'logout',
+    },
 
+    initialize: function() {
+      this.model = window.app.user;
+    },
 
-		initialize: function(){
-			this.model = window.app.user;
-		},
+    logout: function() {
+      $.ajax({
+        context: this,
+        url: config.coreUrl + 'security/logout',
+      }).done(function() {
+        Backbone.history.navigate('login', {trigger: true});
+      });
+    },
 
-		logout: function(){
-			$.ajax({
-				context: this,
-				url: config.coreUrl + 'security/logout'
-			}).done( function() {
-				Backbone.history.navigate('login', {trigger: true});
-			});
-		},
+    onShow: function() {
 
-		onShow: function(){
-			
-		},
-	});
+    },
+  });
 });
