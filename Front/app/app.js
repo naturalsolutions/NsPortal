@@ -25,7 +25,9 @@ define(['marionette', 'backbone', 'moment',
        var model = new Patern();
        model.fetch({
          success: function() {
+           model.set('siteClassName', model.get('title').replace(/ /g,'-'));
 
+           app.siteInfo = model;
            app.rootView = new LytRootview();
            app.rootView.render();
            app.controller = new Controller({app: app});
@@ -33,7 +35,6 @@ define(['marionette', 'backbone', 'moment',
            app.user = new Backbone.Model({
              user: 'Admin User',
            });
-           app.siteInfo = model;
            Backbone.history.start();
          },
 
