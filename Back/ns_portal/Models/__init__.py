@@ -12,3 +12,4 @@ dbConfig = {
 
 
 from .User import User
+from .Site import Site

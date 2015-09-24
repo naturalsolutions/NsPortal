@@ -15,6 +15,10 @@ function(Marionette, config) {
       'click #logout': 'logout',
     },
 
+    ui: {
+      'user': '#user'
+    },
+
     initialize: function() {
       this.model = window.app.user;
     },
@@ -29,7 +33,7 @@ function(Marionette, config) {
     },
 
     onShow: function() {
-
+      this.ui.user.html(this.model.get('fullname'));
     },
   });
 });

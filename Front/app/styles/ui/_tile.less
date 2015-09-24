@@ -1,12 +1,55 @@
 
 /* approx.. */
-@small_tile: 150px;
-@margin: 39px;
-@big_tile: @small_tile*2+@margin;
+@small-tile: 150px;
+@margin: 25px;
+@big_tile: @small-tile*2+@margin;
 @height_tile: 150px;
 
+.tile-nav{
+	position: absolute;
+	top: 25px;
+	bottom: 30px;
+	border: none;
+	height: 350px;
+	color: white;
+	border-radius: 3px;
+	background: rgba(0,0,0,.8);
+	transition: 0.5s all ease;
+	width: 50px;
+	&:hover{
+		background: rgba(0,0,0,.5);
+	}
+	&.prev {
+		left: 0;
+	}
+	&.next{
+		right: 0;
+	}
+}
+
+.plouf{
+	background: url(http://media.giphy.com/media/NtjfsDr6P8XYs/giphy.gif) no-repeat center 102%;
+}
+
+.tiles-wrapper{
+	width: 1000px;
+	margin: auto;
+	position: relative;
+}
+@media screen and (max-width: @screen-lg){
+	.tiles-wrapper{
+		width: 100%;
+	}
+	.page{
+		display: block!important;
+	}
+	.tile-nav{
+		display: none!important;
+	}
+}
 
 .tile{
+	background: #000;
 	color: white;
 	text-align: center;
 	height: @height_tile;
@@ -16,14 +59,21 @@
 	opacity: 1;
 	position: relative;
 	border-radius: 3px;
+	overflow: hidden;
 	transition: opacity ease .5s;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	&.small_tile{
-		width: @small_tile;
+	& a{
+		display: block;
+		height: 100%;
+		width: 100%;
+		padding: 20px;
+		color: white;
+		&:hover, &:focus{
+			color: white;
+		}
+		word-wrap: break-word;
+	}
+	&.small-tile{
+		width: @small-tile;
 	}
 	&.big_tile{
 		width: @big_tile;
@@ -48,13 +98,11 @@
 		color: white;
 		opacity: 0.8;
 	}
-
-
 }
 
 @media screen and (max-width: @screen-sm){
 	.tile{
-		&.small_tile, &.big-tile, &.last, &.first{
+		&.small-tile, &.big-tile, &.last, &.first{
 			margin-left: 0px!important;
 			width: 100%;
 		}
@@ -62,28 +110,29 @@
 }
 
 
-.tile-ecoreleve{
+.TRACK_DEV{
 	background: @ecoreleve;
 }
-.tile-track{
+
+.track-dev,.track-faucon,.track-ganga,.track-macq,.track-oedic,.track-other,.track-undu{
 	background: @track;
 }
-.tile-ecoll{
+.ecoll-bota, .ecoll-entomo, .ecoll-veto{
 	background: @ecoll;
 }
-.tile-thesaurus{
+.thesaurus{
 	background: @thesaurus;
 }
-.tile-secu{
+.securite{
 	background: @secu;
 }
-.tile-formbuilder{
+.formbuilder{
 	background: @formbuilder;
 }
-.tile-position{
+.position{
 	background: @position;
 }
-.tile-taxonomie{
+.documentation{
 	background: @taxonomie;
 }
 

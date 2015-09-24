@@ -5,7 +5,7 @@
 
 **/
 define(['jquery', 'marionette', 'backbone', 'config', './base/login/lyt-login',
-  './base/header/lyt-header',],
+  './base/header/lyt-header'],
   function($, Marionette, Backbone, config, LytLogin, LytHeader) {
 
 'use strict';
@@ -15,13 +15,19 @@ return Marionette.AppRouter.extend({
   },
 
   execute: function(callback, args) {
+    var _this = this;
     $.ajax({
       context: this,
       url: config.coreUrl + 'security/has_access',
     }).done(function() {
-      $('body').addClass('app');
-      this.insertHeader();
-      callback.apply(this, args);
+
+      window.app.user.fetch({
+        success: function() {
+          $('body').addClass('app');
+          _this.insertHeader();
+          callback.apply(_this, args);
+        }
+      });
     }).fail(function(msg) {
       $('body').removeClass('app');
       window.app.rootView.rgHeader.empty();

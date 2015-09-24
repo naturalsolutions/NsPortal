@@ -23,7 +23,7 @@ from ns_portal.pyramid_jwtauth import (
     JWTAuthenticationPolicy,
     includeme
     )
-
+import base64
 
 def datetime_adapter(obj, request):
     """Json adapter for datetime objects.
@@ -35,12 +35,16 @@ def decimal_adapter(obj, request):
     """
     return float(obj)
 
+def bytes_adapter(obj, request):
+    return base64.b64encode(obj).decode()
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
     settings['sqlalchemy.url'] = settings['cn.dialect'] + quote_plus(settings['sqlalchemy.url'])
     engine = engine_from_config(settings, 'sqlalchemy.')
     dbConfig['url'] = settings['sqlalchemy.url']
+    dbConfig['siteName'] = settings['siteName']
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
     Base.metadata.create_all(engine)
@@ -51,6 +55,7 @@ def main(global_config, **settings):
     json_renderer = JSON()
     json_renderer.add_adapter(datetime, datetime_adapter)
     json_renderer.add_adapter(Decimal, decimal_adapter)
+    json_renderer.add_adapter(bytes, bytes_adapter)
     config.add_renderer('json', json_renderer)
 
     # Set up authentication and authorization

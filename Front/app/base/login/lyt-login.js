@@ -27,13 +27,22 @@ function(Marionette, Backbone, sha1, config, $ui) {
 
     initialize: function() {
       this.model = window.app.siteInfo;
-      console.log(this.model);
+
+      var tmp = this.model.get('label').split('^');
+      if (tmp.length > 1) {
+        this.model.set({'title' : tmp[0]});
+        this.model.set({'sup' : tmp[1]});
+      }else {
+        this.model.set({'title' : tmp[0]});
+        this.model.set({'sup' : ''});
+      }
     },
 
     clear: function(evt) {
       var group = $(evt.target).parent();
       group.removeClass('has-error');
       group.find('.help-block').text('');
+
     },
 
     style: function() {

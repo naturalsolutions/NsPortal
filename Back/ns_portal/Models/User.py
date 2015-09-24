@@ -5,7 +5,8 @@ from sqlalchemy import (
    Integer,
    Sequence,
    String,
-   func
+   func,
+   Boolean
  )
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -14,23 +15,18 @@ from ns_portal.Models import Base, dbConfig
 db_dialect = dbConfig['dialect']
 
 class User(Base):
-    __tablename__ = 'User'
-    id = Column('ID', Integer, Sequence('seq_user_pk_id'), primary_key=True)
-    Lastname = Column(String(50), nullable=False)
-    Firstname = Column(String(50), nullable=False)
-    CreationDate = Column(DateTime, nullable=False,server_default=func.now())
-    Login = Column(String, nullable=False)
-    Password = Column(String, nullable=False)
-    Language = Column(String(2))
-    ModificationDate = Column(DateTime, nullable=False,server_default=func.now())
-    if db_dialect =='mssql':
-        __table_args__ = (
-            Index('idx_Tuser_lastname_firstname', Lastname, Firstname, mssql_include=[id]),
-        )
-    else:
-        __table_args__ = (
-            Index('idx_Tuser_lastname_firstname', Lastname, Firstname),
-        )
+    __tablename__ = 'TUsers'
+    id = Column('TUse_PK_ID', Integer, primary_key=True)
+    Lastname = Column( 'TUse_LastName', String(50), nullable=False)
+    Firstname = Column( 'TUse_FirstName', String(50), nullable=False)
+    CreationDate = Column( 'TUse_CreationDate', DateTime, nullable=False,server_default=func.now())
+    Login = Column( 'TUse_Login', String, nullable=False)
+    Password = Column( 'TUse_Password', String, nullable=False)
+    Language = Column( 'TUse_Language', String(2))
+    ModificationDate = Column( 'TUse_ModificationDate', DateTime, nullable=False,server_default=func.now())
+    HasAccess = Column( 'TUse_HasAccess', Boolean)
+    Photos = Column( 'TUse_Photo', String(255))
+    IsObserver = Column( 'TUse_Observer', Boolean)
 
     @hybrid_property
     def fullname(self):

@@ -1,6 +1,5 @@
 
 
-
 ### test if the match url is integer
 def integers(*segment_names):
     def predicate(info, request):
@@ -28,6 +27,11 @@ def add_routes(config):
     ##### User #####
     config.add_route('core/user', 'ecoReleve-Core/user')
     config.add_route('core/currentUser', 'ecoReleve-Core/currentUser')
+
+
+    ##### Site #####
+    config.add_route('core/site', 'ecoReleve-Core/site')
+    config.add_route('core/instance', 'ecoReleve-Core/instance')
 
 
 

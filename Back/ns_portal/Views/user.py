@@ -16,7 +16,7 @@ def users(request):
     query = select([
         User.id.label('PK_id'),
         User.Login.label('fullname')
-    ]).order_by(User.Lastname, User.Firstname)
+    ]).where(User.HasAccess == True).order_by(User.Lastname, User.Firstname)
     return [dict(row) for row in DBSession.execute(query).fetchall()]
     
 @view_config(
