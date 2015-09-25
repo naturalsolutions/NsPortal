@@ -17,6 +17,8 @@ def login(request):
     user_id = request.POST.get('userId', '')
     pwd = request.POST.get('password', '')
     user = DBSession.query(User).filter(User.id==user_id).one()
+    
+
     if user is not None and user.check_password(pwd):
         claims = {
             "iss": user_id,
