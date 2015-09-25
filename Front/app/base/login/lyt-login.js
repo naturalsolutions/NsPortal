@@ -59,6 +59,9 @@ function(Marionette, Backbone, sha1, config, $ui) {
       $(this.$el[0]).css('background', logo + ' center center no-repeat');
       var bg = 'url(data:image/png;base64,' + imgLogoPrtal + ')';
       this.ui.logo.css('background', bg + 'center center no-repeat');
+      this.ui.logo.css({
+        'background-size': 'contain',
+      });
 
       $(this.$el[0]).css({
         'background-position': 'center',
