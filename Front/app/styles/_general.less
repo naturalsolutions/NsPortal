@@ -3,6 +3,13 @@ html, body{
 	height: 100%;
 	overflow: hidden;
 	font-family: 'Exo 2', sans-serif;
+		-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */    
+	*:focus{
+		outline: none;
+	}
 }
 
 body{
@@ -17,6 +24,8 @@ body.app{
 		display: block;
 	}
 }
+
+
 main{
 	height: 100%;
 }
@@ -42,8 +51,9 @@ a{
 	overflow: auto;
 	height: 100%;
 }
-.ns-mid-height{
+.mid-height{
 	height: 50%;
+	position: relative;
 }
 
 .col-border {
@@ -112,3 +122,4 @@ li.list-group-item{
 	clear : both;
 	float: none;
 }
+

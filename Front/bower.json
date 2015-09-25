@@ -14,6 +14,7 @@
     "requirejs-text": "~2.0.14",
     "i18n": "https://github.com/jamuhl/i18next.git",
     "reneco-fonts": "*",
-    "moment": "~2.10.3"
+    "moment": "~2.10.3",
+    "lodash": "~3.10.1"
   }
 }

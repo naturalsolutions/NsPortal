@@ -1,134 +1,25 @@
 <div class="container">
-	<div id="trackPopup" class="trackPopup">
-		<span id="close" class=" reneco reneco-close"></span>
-		<ul id="trackinstances" class="trackinstances clearfix">
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-			<li class="instance">
-				<i class="reneco reneco-trackbird icon-four"></i>
-				<br>
-				<br>
-				Track1
-			</li>
-		</ul>
-	</div>
 
-
-
-
-	<div id="infos" class="infos clearfix ns-mid-height hidden-xs hidden-sm hidden-md">
+	<div id="infos" class="infos clearfix mid-height hidden-xs hidden-sm hidden-md">
 		<div class="col-lg-6">
 			<time></time>
 
 		</div>
 		<div class=" col-lg-6">
-			<h1>Hello<br><%= user %></h1>
+			<h1>Hello<br><span id="user"></span></h1>
 		</div>
 	</div>
 
+	<div class="clearfix mid-height">
+		<button id="prevPage" class="hidden tile-nav prev ripplelink">
+			<i class="reneco reneco-leftarrow"></i>
+		</button>
 
+		<div id="tileContainer" class="tiles clearfix ns-mid-height animated"></div>
 
-
-
-
-	<div id="tiles" class="tiles clearfix ns-mid-height animated">
-		<a href="http://127.0.0.1/ecoReleve-data-refact/Front/#" id="ecoreleve" class="tile small_tile tile-ecoreleve ripplelink ">
-			<span>
-				<i class="reneco reneco-releve"></i>
-				<span>EcoReleve</span>
-			</span>
-		</a>
-
-		<a href="#" id="track" class="tile small_tile tile-track ripplelink">
-			<span>
-				<i class="reneco reneco-trackbird"></i> 
-				<span>Track</span>
-			</span>
-		</a>
-
-		<a href="#" id="ecoll" class="tile small_tile tile-ecoll ripplelink">
-			
-			<span>
-				<i class="reneco reneco-ecollectionbig"></i>
-				<span>Ecollection</span>
-			</span>
-		</a>
-
-		<a href="#" id="thesaurus" class="tile small_tile tile-thesaurus ripplelink">
-			<span>
-				<i class="reneco reneco-thesaurus"></i>
-				<span>Thesaurus</span>
-			</span>
-		</a>
-
-		<a href="#" id="security" class="tile small_tile tile-secu ripplelink">
-			<span>
-				<i class="reneco reneco-security"></i>
-				<span>Security</span>
-			</span>
-		</a>
-		
+		<button id="nextPage" class="hidden tile-nav next ripplelink">
+			<i class="reneco reneco-rightarrow"></i>
+		</button>
 	</div>
-
-
-
 
 </div>

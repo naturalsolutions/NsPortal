@@ -1,11 +1,21 @@
-define(['marionette', 'moment', 'i18n'],
-function(Marionette, Moment) {
+define([
+  'underscore', 'marionette', 'jquery', 'config',
+  'moment', './lyt-tile', 'i18n'
+],
+function(_, Marionette, $, config, Moment, LytTile) {
   'use strict';
 
   return Marionette.LayoutView.extend({
     template: 'app/base/home/tpl/tpl-home.html',
     className: 'home-page ns-full-height',
     events: {
+      'click #nextPage': 'nextPage',
+      'click #prevPage': 'prevPage',
+    },
+
+    ui: {
+      'tileContainer': '#tileContainer',
+      'user': '#user'
     },
 
     initialize: function() {
@@ -14,9 +24,7 @@ function(Marionette, Moment) {
 
     animateIn: function() {
       this.$el.find('#tiles').removeClass('zoomOutDown');
-
       this.$el.find('#tiles').addClass('zoomInDown');
-
       this.$el.find('#tiles').animate(
       {opacity: 1},
       500,
@@ -28,9 +36,9 @@ function(Marionette, Moment) {
     animateOut: function() {
       this.$el.find('#tiles').removeClass('zoomInUp');
       this.$el.animate(
-      {opacity: 0},
-      500,
-      _.bind(this.trigger, this, 'animateOut')
+        {opacity: 0},
+        500,
+        _.bind(this.trigger, this, 'animateOut')
       );
     },
 
@@ -48,26 +56,13 @@ function(Marionette, Moment) {
     },
 
     onShow: function(options) {
-
       this.style();
+      this.ui.user.html(this.model.get('fullname'));
+      this.startTime();
+      this.displayTiles();
+    },
 
-      this.$el.find('#tiles').i18n();
-
-      var popup = this.$el.find('#trackPopup');
-      this.$el.find('#track').on('click', function() {
-        popup.fadeIn('fast');
-      });
-
-      popup.find('#close').on('click', function() {
-        popup.fadeOut('fast');
-      });
-
-      $(document).mouseup(function(e) {
-        if (!popup.is(e.target) && popup.has(e.target).length === 0) {
-          popup.fadeOut('fast');
-        }
-      });
-
+    ripple: function(){
       var ink;
       var d;
       var x;
@@ -90,8 +85,6 @@ function(Marionette, Moment) {
 
         ink.css({top: y + 'px', left: x + 'px'}).addClass('animate');
       });
-
-      this.startTime();
     },
 
     startTime: function() {
@@ -102,6 +95,132 @@ function(Marionette, Moment) {
       var t = setTimeout(function() {
         _this.startTime();
       }, 1000);
+    },
+
+    displayTiles: function() {
+      var _this = this;
+      var TileColl = Backbone.Collection.extend({
+        url: config.coreUrl + '/tiles',
+      });
+
+      this.tileColl = new TileColl();
+
+      this.tileColl.url = config.coreUrl + 'instance';
+
+      var TileCollView = Backbone.Marionette.CollectionView.extend({
+        className: 'tiles-wrapper',
+        childView: LytTile,
+
+        _renderChildren: function() {
+          this.destroyEmptyView();
+          this.destroyChildren();
+          if (this.isEmpty(this.collection)) {
+            this.showEmptyView();
+          } else {
+            this.triggerMethod('before:render:collection', this);
+            this.startBuffering();
+            this.showCollection();
+            this.endBuffering();
+            this.triggerMethod('render:collection', this);
+            if (!this.children.length) {
+              this.filter = null;
+              this.render();
+            }
+
+            // If we have shown children and none have passed the filter, show the empty view
+            if (this.children.isEmpty()) {
+              this.showEmptyView();
+            }
+          }
+        },
+
+        attachBuffer: function(collectionView) {
+          if (collectionView.children.length != 0) {
+            var html = $(this._createBuffer(collectionView));
+            var page = '';
+            var perPageTab = _.chunk(html.children(), 10);
+            collectionView.$el.empty();
+            for (var i = 0; i < html.children().length; i++) {
+              if (i % 10 == 0) {
+                page = '<div class="page clearfix hidden"></div>';
+                collectionView.$el.append(page);
+              }
+            };
+
+            collectionView.$el.find('.page').each(function(index) {
+              $(this).append(perPageTab[index]);
+              if (index === 0) {
+                $(this).removeClass('hidden');
+              }
+            });
+
+            if (collectionView.$el.find('.page').length > 1) {
+              _this.$el.find('#nextPage').removeClass('hidden');
+            }else {
+              _this.$el.find('#nextPage').addClass('hidden');
+            }
+            _this.$el.find('#prevPage').addClass('hidden');
+          }
+        },
+      });
+      this.tileCollView = new TileCollView({
+        collection: this.tileColl
+      });
+
+      //keyboard events
+      var timer;
+      $(document).keydown(function(e) {
+        var char = String.fromCharCode(e.keyCode || e.charCode);
+        var code = e.keyCode;
+        if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
+          _this.tileCollView.filter = function(child, index, collection) {
+            var tmp = child.get('TIns_Database').toUpperCase();
+            return tmp.lastIndexOf(char, 0) === 0;
+          },
+          _this.tileCollView.render();
+          clearTimeout(timer);
+          timer = setTimeout(function(){
+            _this.tileCollView.filter = null;
+            _this.tileCollView.render();
+          }, 2000);
+        }
+        return;
+      });
+      this.tileColl.fetch({
+        success: function() {
+          _this.tileCollView.render();
+          _this.ui.tileContainer.html(_this.tileCollView.el);
+        }
+      });
+    },
+
+    //a bit dirty
+    nextPage: function() {
+      var current = this.$el.find('.tiles-wrapper').find('.page:not(.hidden)');
+      var index = parseInt(current.index());
+      var nbPage = this.$el.find('.tiles-wrapper').find('.page').length;
+      if (nbPage !== (index + 1)) {
+        current.addClass('hidden');
+        current.next().removeClass('hidden');
+        if ((current.next().index() + 1) == nbPage) {
+          this.$el.find('#nextPage').addClass('hidden');
+        }
+        this.$el.find('#prevPage').removeClass('hidden');
+      }
+    },
+
+    prevPage: function() {
+      var current = this.$el.find('.tiles-wrapper').find('.page:not(.hidden)');
+      var nbPage = this.$el.find('.tiles-wrapper').find('.page').length;
+      var index = current.index();
+      if (index >= 1) {
+        current.addClass('hidden');
+        current.prev().removeClass('hidden');
+        this.$el.find('#nextPage').removeClass('hidden');
+        if ( current.prev().index() == 0 ) {
+          this.$el.find('#prevPage').addClass('hidden');
+        }
+      }
     },
 
   });

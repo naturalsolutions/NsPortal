@@ -18,7 +18,7 @@ require.config({
     /*==========  Bower  ==========*/
     jquery: '../bower_components/jquery/jquery.min',
     jqueryui: '../bower_components/jqueryui/jquery-ui.min',
-    underscore: '../bower_components/underscore/underscore',
+    underscore: '../bower_components/lodash/lodash',
     backbone: '../bower_components/backbone/backbone',
     marionette: '../bower_components/marionette/lib/core/backbone.marionette',
     'backbone.babysitter': '../bower_components/backbone.babysitter/' +
