@@ -18,7 +18,7 @@ def site(request):
         Site.Locality.label('locality'),
         Site.LongName.label('legend'),
         Site.ImageBackPortal.label('imgBackPortal'),
-        Site.ImageLogoPortal.label('imgLogoPrtal'),
+        Site.ImageLogoPortal.label('imgLogoPortal'),
         Site.BackgroundHomePage.label('imgBackHomePage'),
         Site.UILabel.label('label')
     ]).where(Site.Name == dbConfig['siteName'])

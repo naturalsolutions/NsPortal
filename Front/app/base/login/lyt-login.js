@@ -54,7 +54,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
     style: function() {
       var _this = this;
       var imgBackPortal = this.model.get('imgBackPortal');
-      var imgLogoPrtal = this.model.get('imgLogoPrtal');
+      var imgLogoPrtal = this.model.get('imgLogoPortal');
       var logo = 'url(data:image/png;base64,' + imgBackPortal + ')';
       $(this.$el.find('.blur')).css('background', logo + ' center center no-repeat');
       var bg = 'url(data:image/png;base64,' + imgLogoPrtal + ')';
