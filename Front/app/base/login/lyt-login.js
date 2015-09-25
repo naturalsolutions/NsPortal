@@ -56,11 +56,11 @@ function(Marionette, Backbone, sha1, config, $ui) {
       var imgBackPortal = this.model.get('imgBackPortal');
       var imgLogoPrtal = this.model.get('imgLogoPortal');
       var logo = 'url(data:image/png;base64,' + imgBackPortal + ')';
-      $(this.$el.find('.blur')).css('background', logo + ' center center no-repeat');
+      $(this.$el[0]).css('background', logo + ' center center no-repeat');
       var bg = 'url(data:image/png;base64,' + imgLogoPrtal + ')';
       this.ui.logo.css('background', bg + 'center center no-repeat');
 
-      $(this.$el.find('.blur')).css({
+      $(this.$el[0]).css({
         'background-position': 'center',
         'background-attachment': 'fixed',
         'background-size': 'cover',

@@ -8,9 +8,7 @@ function(Marionette, TransitionRegion) {
 
     regions: {
       rgHeader: 'header',
-      rgMain: new Marionette.TransitionRegion({
-        el: 'main'
-      }),
+      rgMain: 'main',
       rgFooter: 'footer',
     },
   });
