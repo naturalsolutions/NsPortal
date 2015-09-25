@@ -17,6 +17,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
       'submit': 'login',
       'change #username': 'checkUsername',
       'focus input': 'clear',
+      'blur input': 'unBlur',
     },
 
     ui: {
@@ -30,15 +31,20 @@ function(Marionette, Backbone, sha1, config, $ui) {
 
       var tmp = this.model.get('label').split('^');
       if (tmp.length > 1) {
-        this.model.set({'title' : tmp[0]});
         this.model.set({'sup' : tmp[1]});
       }else {
-        this.model.set({'title' : tmp[0]});
         this.model.set({'sup' : ''});
       }
+      this.model.set({'title' : tmp[0]});
+    },
+
+    unBlur: function(){
+      this.$el.find('.blur').removeClass('da');
     },
 
     clear: function(evt) {
+      this.$el.find('.blur').addClass('da');
+
       var group = $(evt.target).parent();
       group.removeClass('has-error');
       group.find('.help-block').text('');
@@ -46,19 +52,19 @@ function(Marionette, Backbone, sha1, config, $ui) {
     },
 
     style: function() {
+      var _this = this;
       var imgBackPortal = this.model.get('imgBackPortal');
       var imgLogoPrtal = this.model.get('imgLogoPrtal');
       var logo = 'url(data:image/png;base64,' + imgBackPortal + ')';
-      $(this.$el[0]).css('background', logo + ' center center no-repeat');
+      $(this.$el.find('.blur')).css('background', logo + ' center center no-repeat');
       var bg = 'url(data:image/png;base64,' + imgLogoPrtal + ')';
       this.ui.logo.css('background', bg + 'center center no-repeat');
 
-      $(this.$el[0]).css({
+      $(this.$el.find('.blur')).css({
         'background-position': 'center',
         'background-attachment': 'fixed',
         'background-size': 'cover',
       });
-
     },
 
     onShow: function() {

@@ -27,10 +27,6 @@
 	}
 }
 
-.plouf{
-	background: url(http://media.giphy.com/media/NtjfsDr6P8XYs/giphy.gif) no-repeat center 102%;
-}
-
 .tiles-wrapper{
 	width: 1000px;
 	margin: auto;
@@ -49,7 +45,7 @@
 }
 
 .tile{
-	background: #000;
+	opacity: 1;
 	color: white;
 	text-align: center;
 	height: @height_tile;
@@ -61,6 +57,7 @@
 	border-radius: 3px;
 	overflow: hidden;
 	transition: opacity ease .5s;
+	background: @ecoreleve;
 	& a{
 		display: block;
 		height: 100%;
@@ -110,9 +107,9 @@
 }
 
 
-.TRACK_DEV{
-	background: @ecoreleve;
-}
+
+
+
 
 .track-dev,.track-faucon,.track-ganga,.track-macq,.track-oedic,.track-other,.track-undu{
 	background: @track;
@@ -133,7 +130,7 @@
 	background: @position;
 }
 .documentation{
-	background: @taxonomie;
+	background: @documentation;
 }
 
 .tile-locked

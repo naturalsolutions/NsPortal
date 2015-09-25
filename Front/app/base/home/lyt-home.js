@@ -56,27 +56,13 @@ function(_, Marionette, $, config, Moment, LytTile) {
     },
 
     onShow: function(options) {
-
       this.style();
       this.ui.user.html(this.model.get('fullname'));
+      this.startTime();
+      this.displayTiles();
+    },
 
-      this.$el.find('#tiles').i18n();
-
-      var popup = this.$el.find('#trackPopup');
-      this.$el.find('#track').on('click', function() {
-        popup.fadeIn('fast');
-      });
-
-      popup.find('#close').on('click', function() {
-        popup.fadeOut('fast');
-      });
-
-      $(document).mouseup(function(e) {
-        if (!popup.is(e.target) && popup.has(e.target).length === 0) {
-          popup.fadeOut('fast');
-        }
-      });
-
+    ripple: function(){
       var ink;
       var d;
       var x;
@@ -99,10 +85,6 @@ function(_, Marionette, $, config, Moment, LytTile) {
 
         ink.css({top: y + 'px', left: x + 'px'}).addClass('animate');
       });
-
-      this.startTime();
-
-      this.displayTiles();
     },
 
     startTime: function() {
