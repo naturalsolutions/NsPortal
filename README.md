@@ -73,7 +73,8 @@ Run the setup install :
  >[SQLAlchemy](http://www.sqlalchemy.org/)
 
 
-You have to configure the [development.ini](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/development.ini.default) which can be found in the [Back folder](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/)
+You have to configure the [development.ini](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/development.ini.default) which can be found in the [Back folder](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/).
+You have to enter the siteName parameter which the site name of the local site (### Site name).
 Run `pserve development.ini` command in order to launch a Pyramid server.
 
 #### Database configuaration
