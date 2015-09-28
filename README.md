@@ -77,6 +77,8 @@ You have to configure the [development.ini](https://github.com/NaturalSolutions/
 You have to enter the siteName parameter which the site name of the local site (### Site name).
 Run `pserve development.ini` command in order to launch a Pyramid server.
 
+If pserve fails because it doesn't find the development.ini file, try a `python setup.py develop` to avoid targeting the wrong egg.
+
 #### Database configuaration
 
 ## Quality && Test
