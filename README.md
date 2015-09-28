@@ -65,7 +65,8 @@ Run the setup install :
  Backbone Underscore
  MarionetteJs
 
-- rename the config.js.default to config.js then add your specifications (url of the REST server, can be a reverse proxy)
+- Rename the config.js.default to config.js then add your specifications (url of the REST server)
+- If you setted a reverse proxy, don't forget to include "/portal-core/" in your URL-Rewrite part (example: http://127.0.0.1:6544/portal-core/{R:1})
 
 ### Back
 
