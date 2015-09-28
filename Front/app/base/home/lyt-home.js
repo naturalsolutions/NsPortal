@@ -90,8 +90,9 @@ function(_, Marionette, $, config, Moment, LytTile) {
     startTime: function() {
       var _this = this;
       this.$el.find('time').html(
-        new Moment().format('MMMM Do YYYY, h:mm:ss a')
+        new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\$1</sup> 2015")
       );
+      console.log(new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\\$1</sup> 2015"));
       var t = setTimeout(function() {
         _this.startTime();
       }, 1000);

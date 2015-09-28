@@ -40,6 +40,8 @@ Install those packages with `pip` or `conda` :
 - pandas=0.15.0
 - pyjwt
 
+#####Config File
+
 Run the setup install : 
 - `python setup.py install`
 
