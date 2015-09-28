@@ -80,6 +80,8 @@ Run `pserve development.ini` command in order to launch a Pyramid server.
 
 If pserve fails because it doesn't find the development.ini file, try a `python setup.py develop` to avoid targeting the wrong egg.
 
+If you want to avoid Numpy errors fired when launching the server, make sure you have no lib referencing it then restart the whole installation thing. 
+
 #### Database configuaration
 
 ## Quality && Test
