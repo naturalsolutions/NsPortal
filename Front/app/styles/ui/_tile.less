@@ -1,13 +1,14 @@
 
 /* approx.. */
 @small-tile: 150px;
-@margin: 25px;
-@big_tile: @small-tile*2+@margin;
+@margin-hoz: 25px;
+@margin-ver: 5px;
+@big_tile: @small-tile*2+@margin-hoz;
 @height_tile: 150px;
 
 .tile-nav{
 	position: absolute;
-	top: 25px;
+	top: 0px;
 	bottom: 30px;
 	border: none;
 	height: 350px;
@@ -50,7 +51,7 @@
 	text-align: center;
 	height: @height_tile;
 	float: left;
-	margin: @margin;
+	margin: @margin-ver @margin-hoz;
 	color: white;
 	opacity: 1;
 	position: relative;
@@ -75,12 +76,7 @@
 	&.big_tile{
 		width: @big_tile;
 	}
-	&.last{
-		margin: @margin*4;
-	}
-	&.first{
-		margin: @margin*2;
-	}
+
 
 	span{
 		font-size: 16px;
