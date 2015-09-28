@@ -67,6 +67,7 @@ Run the setup install :
 
 - Rename the config.js.default to config.js then add your specifications (url of the REST server)
 - If you setted a reverse proxy, don't forget to include "/portal-core/" in your URL-Rewrite part (example: http://127.0.0.1:6544/portal-core/{R:1})
+- Don't forget to remove "bin" folders from hidden segments on IIS (Filtering demands -> Hidden sengments)
 
 ### Back
 
