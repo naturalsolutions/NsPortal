@@ -23,6 +23,7 @@
 #### Front
 - `npm install`
 - `bower install`
+- `pyjwt`
 
 optional but recommended :
 
