@@ -23,7 +23,6 @@
 #### Front
 - `npm install`
 - `bower install`
-- `pyjwt`
 
 optional but recommended :
 
@@ -35,6 +34,7 @@ Install those packages with `pip` or `conda` :
 
 - pyodbc (for SQL Server database) or psycopg2 (for PostrgreSQL database)
 - [sqlalchemy](http://www.sqlalchemy.org/)
+- pyjwt
 
 #####Config File
 
