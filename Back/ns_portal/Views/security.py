@@ -22,6 +22,8 @@ def login(request):
     if user is not None and user.check_password(pwd):
         claims = {
             "iss": user_id,
+            "username": user.Login,
+            "userlanguage": user.Language
         }
         jwt = make_jwt(request, claims)
         response = Response(body='login success', content_type='text/plain')
