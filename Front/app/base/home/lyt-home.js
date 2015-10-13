@@ -62,7 +62,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
       this.displayTiles();
     },
 
-    ripple: function(){
+    ripple: function() {
       var ink;
       var d;
       var x;
@@ -92,7 +92,6 @@ function(_, Marionette, $, config, Moment, LytTile) {
       this.$el.find('time').html(
         new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\$1</sup> 2015")
       );
-      console.log(new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\\$1</sup> 2015"));
       var t = setTimeout(function() {
         _this.startTime();
       }, 1000);
@@ -180,7 +179,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
           },
           _this.tileCollView.render();
           clearTimeout(timer);
-          timer = setTimeout(function(){
+          timer = setTimeout(function() {
             _this.tileCollView.filter = null;
             _this.tileCollView.render();
           }, 2000);
@@ -218,7 +217,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
         current.addClass('hidden');
         current.prev().removeClass('hidden');
         this.$el.find('#nextPage').removeClass('hidden');
-        if ( current.prev().index() == 0 ) {
+        if (current.prev().index() == 0) {
           this.$el.find('#prevPage').addClass('hidden');
         }
       }
