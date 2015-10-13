@@ -33,11 +33,7 @@ optional but recommended :
 Install those packages with `pip` or `conda` :
 
 - pyodbc (for SQL Server database) or psycopg2 (for PostrgreSQL database)
-- reportlab
-- [scikit-learn](http://scikit-learn.org/stable/)
 - [sqlalchemy](http://www.sqlalchemy.org/)
-- zope.interface
-- pandas=0.15.0
 - pyjwt
 
 #####Config File
@@ -67,7 +63,9 @@ Run the setup install :
  Backbone Underscore
  MarionetteJs
 
-- rename the config.js.default to config.js then add your specifications (url of the REST server, can be a reverse proxy)
+- Rename the config.js.default to config.js then add your specifications (url of the REST server)
+- If you setted a reverse proxy, don't forget to include "/portal-core/" in your URL-Rewrite part (example: http://127.0.0.1:6544/portal-core/{R:1})
+- Don't forget to remove "bin" folders from hidden segments on IIS (Filtering demands -> Hidden sengments)
 
 ### Back
 
@@ -78,6 +76,10 @@ Run the setup install :
 You have to configure the [development.ini](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/development.ini.default) which can be found in the [Back folder](https://github.com/NaturalSolutions/NsPortal/tree/master/Back/).
 You have to enter the siteName parameter which the site name of the local site (### Site name).
 Run `pserve development.ini` command in order to launch a Pyramid server.
+
+If pserve fails because it doesn't find the development.ini file, try a `python setup.py develop` to avoid targeting the wrong egg.
+
+If you want to avoid Numpy errors fired when launching the server, make sure you have no lib referencing it then restart the whole installation thing. 
 
 #### Database configuaration
 

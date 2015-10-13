@@ -3,15 +3,14 @@
 @small-tile: 150px;
 @margin-hoz: 25px;
 @margin-ver: 5px;
-@big_tile: @small-tile*2+@margin-hoz;
-@height_tile: 150px;
+@big_tile: @small-tile*2 + @margin-hoz;
 
 .tile-nav{
 	position: absolute;
-	top: 0px;
-	bottom: 30px;
+	top: @margin-ver;
+	bottom: 0px;
 	border: none;
-	height: 350px;
+	height: @small-tile*2 + @margin-ver*2;
 	color: white;
 	border-radius: 3px;
 	background: rgba(0,0,0,.8);
@@ -49,7 +48,7 @@
 	opacity: 1;
 	color: white;
 	text-align: center;
-	height: @height_tile;
+	height: @small-tile;
 	float: left;
 	margin: @margin-ver @margin-hoz;
 	color: white;
