@@ -174,7 +174,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
         var code = e.keyCode;
         if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
           _this.tileCollView.filter = function(child, index, collection) {
-            var tmp = child.get('TIns_Database').toUpperCase();
+            var tmp = child.get('TIns_Label').toUpperCase();
             return tmp.lastIndexOf(char, 0) === 0;
           },
           _this.tileCollView.render();
