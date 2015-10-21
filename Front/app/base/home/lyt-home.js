@@ -62,7 +62,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
       this.displayTiles();
     },
 
-    ripple: function(){
+    ripple: function() {
       var ink;
       var d;
       var x;
@@ -174,12 +174,12 @@ function(_, Marionette, $, config, Moment, LytTile) {
         var code = e.keyCode;
         if ((code >= 65 && code <= 90) || (code >= 97 && code <= 122)) {
           _this.tileCollView.filter = function(child, index, collection) {
-            var tmp = child.get('TIns_Database').toUpperCase();
+            var tmp = child.get('TIns_Label').toUpperCase();
             return tmp.lastIndexOf(char, 0) === 0;
           },
           _this.tileCollView.render();
           clearTimeout(timer);
-          timer = setTimeout(function(){
+          timer = setTimeout(function() {
             _this.tileCollView.filter = null;
             _this.tileCollView.render();
           }, 2000);
@@ -217,7 +217,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
         current.addClass('hidden');
         current.prev().removeClass('hidden');
         this.$el.find('#nextPage').removeClass('hidden');
-        if ( current.prev().index() == 0 ) {
+        if (current.prev().index() == 0) {
           this.$el.find('#prevPage').addClass('hidden');
         }
       }
