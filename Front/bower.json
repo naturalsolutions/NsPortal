@@ -12,10 +12,10 @@
     "lodash": "~3.10.1",
     "marionette": "~2.4.1",
     "moment": "~2.10.3",
+    "lodash": "~3.10.1",
+    "jsSHA": "https://github.com/Caligatio/jsSHA.git#~2.0.1",
     "reneco-fonts": "*",
     "requirejs": "~2.1.16",
     "requirejs-text": "~2.0.14",
-    "sha1": "https://bitbucket.org/keesey/sha1.git",
-    "utf8": "~2.1.1"
   }
 }
