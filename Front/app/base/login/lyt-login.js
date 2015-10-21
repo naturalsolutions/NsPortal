@@ -15,7 +15,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 
     events: {
       'submit': 'login',
-      'change #username': 'checkUsername',
+      'change #UNportal': 'checkUsername',
       'focus input': 'clear',
       'blur input': 'unBlur',
     },
@@ -81,7 +81,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
             ctx.users.push(m.get('fullname'));
           });
 
-          $('#username').autocomplete({
+          $('#UNportal').autocomplete({
             source: function(request, response) {
               var exp = '^' + $.ui.autocomplete.escapeRegex(request.term);
               var matcher = new RegExp(exp, 'i');
@@ -95,7 +95,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
     },
 
     checkUsername: function() {
-      var user = this.collection.findWhere({fullname: $('#username').val()});
+      var user = this.collection.findWhere({fullname: $('#UNportal').val()});
       if (!user) {
         this.fail('#login-group', 'Invalid username');
       }
@@ -105,11 +105,13 @@ function(Marionette, Backbone, sha1, config, $ui) {
       var _this = this;
       elt.preventDefault();
       elt.stopPropagation();
-      var user = this.collection.findWhere({fullname: $('#username').val()});
+      var user = this.collection.findWhere({fullname: $('#UNportal').val()});
       var url = config.coreUrl + 'security/login';
       var self = this;
 
       if (user) {
+
+        console.log(sha1.hash(encodeURIComponent($('#password').val())));
         $.ajax({
           context: this,
           type: 'POST',
@@ -120,7 +122,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
           },
         }).done(function() {
           $('.login-form').addClass('rotate3d');
-          window.app.user.set('name', $('#username').val());
+          window.app.user.set('name', $('#UNportal').val());
 
           setTimeout(function() {
             Backbone.history.navigate('', {trigger: true});
