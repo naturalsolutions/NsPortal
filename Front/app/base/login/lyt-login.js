@@ -27,6 +27,7 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
     },
 
     pwd: function(pwd) {
+
       pwd = window.btoa(unescape(decodeURIComponent( pwd )));
       var hashObj = new JsSHA('SHA-1', 'B64', 1);
 
@@ -37,7 +38,6 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
     },
 
     initialize: function() {
-      this.pwd();
       this.model = window.app.siteInfo;
 
       var tmp = this.model.get('label').split('^');
