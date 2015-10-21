@@ -33,7 +33,6 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
 
       hashObj.update(pwd);
       pwd = hashObj.getHash('HEX');
-      console.log(pwd);
       return pwd;
     },
 
@@ -121,8 +120,6 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
       var self = this;
 
       if (user) {
-
-        console.log(sha1.hash(encodeURIComponent($('#password').val())));
         $.ajax({
           context: this,
           type: 'POST',
