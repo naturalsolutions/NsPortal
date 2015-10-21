@@ -6,7 +6,7 @@
 
 **/
 define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui'],
-function(Marionette, Backbone, sha1, config, $ui) {
+function(Marionette, Backbone, JsSHA, config, $ui) {
   'use strict';
   return Marionette.LayoutView.extend({
     template: 'app/base/login/tpl/tpl-login.html',
@@ -26,7 +26,18 @@ function(Marionette, Backbone, sha1, config, $ui) {
       logo: '#logo',
     },
 
+    pwd: function(pwd) {
+      pwd = window.btoa(unescape(decodeURIComponent( pwd )));
+      var hashObj = new JsSHA('SHA-1', 'B64', 1);
+
+      hashObj.update(pwd);
+      pwd = hashObj.getHash('HEX');
+      console.log(pwd);
+      return pwd;
+    },
+
     initialize: function() {
+      this.pwd();
       this.model = window.app.siteInfo;
 
       var tmp = this.model.get('label').split('^');
@@ -116,7 +127,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
           url: url,
           data: {
             userId: user.get('PK_id'),
-            password: sha1.hash($('#password').val()),
+            password: this.pwd($('#password').val()),
           },
         }).done(function() {
           $('.login-form').addClass('rotate3d');

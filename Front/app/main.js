@@ -26,10 +26,11 @@ require.config({
     'backbone.wreqr': '../bower_components/backbone.wreqr/lib/backbone.wreqr',
     radio: '../bower_components/backbone.radio/build/backbone.radio',
     bootstrap: '../bower_components/bootstrap/dist/js/bootstrap',
-    sha1: '../bower_components/sha1/bin/sha1',
+    sha1: '../bower_components/jsSHA/src/sha1',
     moment: '../bower_components/moment/min/moment.min',
 
     i18n: '../bower_components/i18n/i18next',
+    utf8: '../bower_components/utf8/utf8',
 
   },
 
