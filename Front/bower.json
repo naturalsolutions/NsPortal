@@ -16,6 +16,6 @@
     "jsSHA": "https://github.com/Caligatio/jsSHA.git#~2.0.1",
     "reneco-fonts": "*",
     "requirejs": "~2.1.16",
-    "requirejs-text": "~2.0.14",
+    "requirejs-text": "~2.0.14"
   }
 }
