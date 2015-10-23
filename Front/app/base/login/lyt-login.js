@@ -6,7 +6,7 @@
 
 **/
 define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui'],
-function(Marionette, Backbone, sha1, config, $ui) {
+function(Marionette, Backbone, JsSHA, config, $ui) {
   'use strict';
   return Marionette.LayoutView.extend({
     template: 'app/base/login/tpl/tpl-login.html',
@@ -15,7 +15,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
 
     events: {
       'submit': 'login',
-      'change #username': 'checkUsername',
+      'change #UNportal': 'checkUsername',
       'focus input': 'clear',
       'blur input': 'unBlur',
     },
@@ -24,6 +24,16 @@ function(Marionette, Backbone, sha1, config, $ui) {
       err: '#help-password',
       pwd: '#pwd-group',
       logo: '#logo',
+    },
+
+    pwd: function(pwd) {
+
+      pwd = window.btoa(unescape(decodeURIComponent( pwd )));
+      var hashObj = new JsSHA('SHA-1', 'B64', 1);
+
+      hashObj.update(pwd);
+      pwd = hashObj.getHash('HEX');
+      return pwd;
     },
 
     initialize: function() {
@@ -81,7 +91,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
             ctx.users.push(m.get('fullname'));
           });
 
-          $('#username').autocomplete({
+          $('#UNportal').autocomplete({
             source: function(request, response) {
               var exp = '^' + $.ui.autocomplete.escapeRegex(request.term);
               var matcher = new RegExp(exp, 'i');
@@ -95,7 +105,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
     },
 
     checkUsername: function() {
-      var user = this.collection.findWhere({fullname: $('#username').val()});
+      var user = this.collection.findWhere({fullname: $('#UNportal').val()});
       if (!user) {
         this.fail('#login-group', 'Invalid username');
       }
@@ -105,7 +115,7 @@ function(Marionette, Backbone, sha1, config, $ui) {
       var _this = this;
       elt.preventDefault();
       elt.stopPropagation();
-      var user = this.collection.findWhere({fullname: $('#username').val()});
+      var user = this.collection.findWhere({fullname: $('#UNportal').val()});
       var url = config.coreUrl + 'security/login';
       var self = this;
 
@@ -116,11 +126,11 @@ function(Marionette, Backbone, sha1, config, $ui) {
           url: url,
           data: {
             userId: user.get('PK_id'),
-            password: sha1.hash($('#password').val()),
+            password: this.pwd($('#password').val()),
           },
         }).done(function() {
           $('.login-form').addClass('rotate3d');
-          window.app.user.set('name', $('#username').val());
+          window.app.user.set('name', $('#UNportal').val());
 
           setTimeout(function() {
             Backbone.history.navigate('', {trigger: true});
