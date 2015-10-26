@@ -17,6 +17,10 @@ def users(request):
         User.id.label('PK_id'),
         User.Login.label('fullname')
     ]).where(User.HasAccess == True).order_by(User.Lastname, User.Firstname)
+    print(request)
+
+    
+
     return [dict(row) for row in DBSession.execute(query).fetchall()]
     
 @view_config(
@@ -30,5 +34,4 @@ def current_user(request):
         User.id.label('PK_id'),
         User.Login.label('fullname')
     ]).where(User.id == request.authenticated_userid)
-    print 
     return dict(DBSession.execute(query).fetchone())
