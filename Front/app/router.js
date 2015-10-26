@@ -18,7 +18,8 @@ return Marionette.AppRouter.extend({
     var _this = this;
     $.ajax({
       context: this,
-      url: config.coreUrl + 'security/has_access',
+      cache:false,
+      url: config.coreUrl + 'security/has_access' + '?nocache='+Date.now(),
     }).done(function() {
 
       window.app.user.fetch({
