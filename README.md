@@ -23,6 +23,8 @@
 #### Front
 - `npm install`
 - `bower install`
+- `npm install grunt`
+- `npm install grunt-cli`
 
 optional but recommended :
 
