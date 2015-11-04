@@ -24,7 +24,6 @@ function(Marionette, config) {
     },
 
     logout: function() {
-      Backbone.history.navigate('login', {trigger: true});
       $.ajax({
         context: this,
         cache:false,
