@@ -15,6 +15,8 @@ Controller, config) {
 
   app = new Marionette.Application();
 
+  $.ajaxSetup({ cache: false });
+
   app.on('start', function() {
     var _this = this;
     var Patern = Backbone.Model.extend({
