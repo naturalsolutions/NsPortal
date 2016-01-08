@@ -26,7 +26,7 @@ function(Marionette) {
             this.model.set({'icon' : 'reneco-ecollectionbig'});
             break;
           case 'position':
-            this.model.set({'icon' : 'reneco-position'});
+            this.model.set({'icon' : 'reneco-positions'});
             break;
           default:
             this.model.set({'icon' : 'reneco-releve'});
