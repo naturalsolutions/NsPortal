@@ -60,6 +60,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
       this.ui.user.html(this.model.get('fullname'));
       this.startTime();
       this.displayTiles();
+      this.$el.i18n();
     },
 
     ripple: function() {
@@ -91,6 +92,7 @@ function(_, Marionette, $, config, Moment, LytTile) {
       var _this = this;
       this.$el.find('time').html(
         new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\$1</sup> 2015")
+        //new Date(Moment().locale('fr').format('LLLL'))
       );
       var t = setTimeout(function() {
         _this.startTime();
