@@ -1,6 +1,7 @@
 Front/bower_components/*
 Front/node_modules/*
 Front/build/*
+Back/build/*
 **/*.css
 **/*.css.map
 
