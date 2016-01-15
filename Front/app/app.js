@@ -1,8 +1,13 @@
 
-define(['marionette', 'backbone', 'moment',
-  './base/rootView/lyt-rootview', 'router',
-   'controller', 'config'],
-function(Marionette, Backbone, moment, LytRootview, Router,
+define([
+  'marionette', 'backbone', 'moment',
+  './base/rootView/lyt-rootview',
+  'router',
+  'controller',
+  'config',
+  
+],
+function(Marionette, Backbone, Moment, LytRootview, Router,
 Controller, config) {
 
   var app = {};
