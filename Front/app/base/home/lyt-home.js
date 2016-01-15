@@ -96,7 +96,6 @@ function(_, Marionette, $, config, Moment, LytTile) {
     startTime: function() {
       
       var locale = config.language;
-      console.log(locale);
       var dateNow ;
       if(locale == 'fr'){
         //require(['momentLocale/fr']);
