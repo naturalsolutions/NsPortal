@@ -17,15 +17,13 @@ define(['marionette','config','i18n'], function(Marionette, config) {
 
     getValueFromKey: function(key) {
       return $.t(key);
-    },
+    }
   });
 
   var translater = new Translater();
 
   return {
-    getTranslater: function(options) {
-      return translater;
-    },
+    getTranslater: function(options) { return translater; }
   };
 
 });

@@ -132,6 +132,7 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
         }).fail(function() {
           this.displayPwdError(true, this.ui.password, 'Invalid password');
           this.shake();
+		  $('#password').val('');
         });
       } else {
         this.shake();
