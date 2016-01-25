@@ -34,6 +34,7 @@ Controller, config) {
           controller: app.controller,
           app: app
         });
+        app.siteInfos = model;
         app.user = new Backbone.Model();
         app.user.url = config.coreUrl + 'currentUser';
         Backbone.history.start();
