@@ -32,6 +32,8 @@ def current_user(request):
     """
     query = select([
         User.id.label('PK_id'),
-        User.Login.label('fullname')
+        User.Login.label('fullname'),
+        User.Firstname.label('firstname'),
+        User.Lastname.label('lastname')
     ]).where(User.id == request.authenticated_userid)
     return dict(DBSession.execute(query).fetchone())

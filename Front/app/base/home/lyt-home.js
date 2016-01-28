@@ -63,8 +63,6 @@ function(_, Marionette, $, config, Moment, LytTile) {
 
     onShow: function(options) {
       this.style();
-      this.ui.user.html(this.model.get('fullname'));
-      console.log(window.app.siteInfo);
       this.ui.country.html(window.app.siteInfo.get('country'));
       this.ui.siteName.html(window.app.siteInfo.get('legend'));
       this.startTime();
