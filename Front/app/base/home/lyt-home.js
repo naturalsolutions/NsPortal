@@ -57,7 +57,6 @@ function(_, Marionette, $, config, Moment, LytTile) {
 
     onShow: function(options) {
       this.style();
-      this.ui.user.html(this.model.get('fullname'));
       this.startTime();
       this.displayTiles();
     },
