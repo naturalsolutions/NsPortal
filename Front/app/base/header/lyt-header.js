@@ -5,7 +5,7 @@
 
 **/
 
-define(['marionette', 'config'],
+define(['marionette', 'config','i18n'],
 function(Marionette, config) {
   'use strict';
   return Marionette.LayoutView.extend({
@@ -34,6 +34,7 @@ function(Marionette, config) {
     },
 
     onShow: function() {
+      this.$el.i18n();
     },
   });
 });
