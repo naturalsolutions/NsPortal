@@ -15,7 +15,9 @@ function(_, Marionette, $, config, Moment, LytTile) {
 
     ui: {
       'tileContainer': '#tileContainer',
-      'user': '#user'
+      'user': '#user',
+      'country': '#country',
+      'siteName': '#siteName',
     },
 
     initialize: function() {
@@ -62,10 +64,12 @@ function(_, Marionette, $, config, Moment, LytTile) {
     onShow: function(options) {
       this.style();
       this.ui.user.html(this.model.get('fullname'));
+      console.log(window.app.siteInfo);
+      this.ui.country.html(window.app.siteInfo.get('country'));
+      this.ui.siteName.html(window.app.siteInfo.get('legend'));
       this.startTime();
       this.displayTiles();
       this.$el.i18n();
-
     },
 
     ripple: function() {
