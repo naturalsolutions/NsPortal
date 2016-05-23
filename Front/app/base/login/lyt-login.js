@@ -15,15 +15,16 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
 
     events: {
       'submit': 'login',
-      'change #UNportal': 'checkUsername',
+      'change #UNportal': 'isValidUserName',
       'focus input': 'clear',
-      'blur input': 'unBlur',
     },
 
     ui: {
       err: '#help-password',
-      pwd: '#pwd-group',
       logo: '#logo',
+
+      userName: '#UNportal',
+      password: '#password',
     },
 
     pwd: function(pwd) {
@@ -46,19 +47,6 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
         this.model.set({'sup' : ''});
       }
       this.model.set({'title' : tmp[0]});
-    },
-
-    unBlur: function(){
-      this.$el.find('.blur').removeClass('da');
-    },
-
-    clear: function(evt) {
-      this.$el.find('.blur').addClass('da');
-
-      var group = $(evt.target).parent();
-      group.removeClass('has-error');
-      group.find('.help-block').text('');
-
     },
 
     style: function() {
@@ -105,10 +93,13 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
        this.$el.i18n();
     },
 
-    checkUsername: function() {
-      var user = this.collection.findWhere({fullname: $('#UNportal').val()});
+    isValidUserName: function() {
+      var user = this.collection.findWhere({fullname: this.ui.userName.val()});
       if (!user) {
-        this.fail('#login-group', 'Invalid username');
+        this.displayError(true, this.ui.userName, 'Invalid username');
+        return false;
+      } else {
+        return user;
       }
     },
 
@@ -116,9 +107,13 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
       var _this = this;
       elt.preventDefault();
       elt.stopPropagation();
-      var user = this.collection.findWhere({fullname: $('#UNportal').val()});
       var url = config.coreUrl + 'security/login';
-      var self = this;
+      var user = this.isValidUserName();
+      
+      if (!$('#password').val().length) {
+        this.displayPwdError(true, this.ui.password, 'Invalid password');
+        this.shake();
+      }
 
       if (user) {
         $.ajax({
@@ -132,25 +127,43 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
         }).done(function() {
           $('.login-form').addClass('rotate3d');
           window.app.user.set('name', $('#UNportal').val());
-
           setTimeout(function() {
             Backbone.history.navigate('', {trigger: true});
           }, 500);
-
         }).fail(function() {
-          this.fail('#pwd-group', 'Invalid password');
+          this.displayPwdError(true, this.ui.password, 'Invalid password');
           this.shake();
 		  $('#password').val('');
         });
       } else {
-        this.fail('#login-group', 'Invalid username');
         this.shake();
       }
     },
 
-    fail: function(elt, text) {
-      $(elt).addClass('has-error');
-      $(elt + ' .help-block').text(text);
+    clear: function(evt) {
+      $(evt.target).removeClass('help-error');
+      $(evt.target).val('');
+
+      this.ui.password.attr('placeholder', 'Password');
+      this.ui.password.val('');
+      this.ui.password.removeClass('help-error');
+    },
+
+    displayError: function(error, elt, placeholder){
+      if(error){
+        elt.addClass('help-error');
+        elt.val(placeholder);
+      } else {
+        elt.removeClass('help-error');
+      }
+    },
+
+    displayPwdError: function(error, elt, placeholder){
+      if(error){
+        elt.addClass('help-error');
+        elt.val('');
+        elt.attr('placeholder', 'Invalid password');
+      }
     },
 
     shake: function() {

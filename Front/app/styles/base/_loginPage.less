@@ -1,3 +1,29 @@
+.ui-autocomplete {
+	background: rgba(0,0,0,0.9);
+	border: none;
+	color: white;
+	font-family: 'Exo 2', sans-serif!important;
+	*{
+		font-family: 'Exo 2', sans-serif!important;
+	}
+	li{
+		padding: 10px 12px!important;
+		height: 40px;
+		&:nth-child(odd){
+			background: rgba(255,255,255,0.1);
+		}
+
+		&.ui-state-focus, &:hover, &:focus{
+			padding: 10px 12px!important;
+			background: rgba(255,255,255,0.5);
+			border: none!important;
+			margin: 0px!important;
+			color: white;
+		}
+
+	}
+}
+
 
 .login-page{
 	color: white;
@@ -6,6 +32,8 @@
 		height: 100px;
 		width: 100%;
 	}
+
+
 
 	
 	.login-form{
@@ -88,36 +116,35 @@
 			line-height: 25px;
 			margin: 10px 0px;
 		}
-		.help-block{
-			transition: all .5s ease;
-			margin: 0px;
-			background: #e7332a;
-			color: white;
-			padding-left: 15px;
-			line-height: 40px;
-			text-align: left;
-		}
+
+
 		.hidden{
 			display: none;
 		}
-		#UNportal{
+
+		input{
 			background: transparent;
-			color: white;
 			box-shadow: none;
+			color: white;
 			border: none;
 			height: 40px;
 			border-radius: 0px;
-			border-bottom: 1px solid white;
+			&#UNportal{
+				border-bottom: 1px solid white;
+			}
+			&.help-error{
+				transition: all .3s ease;
+				margin: 0px;
+				background: #e7332a;
+				color: white;
+				padding-left: 15px;
+				line-height: 40px;
+				text-align: left;
+			}
 		}
 
-		#password{
-			background: transparent;
-			color: white;
-			box-shadow: none;
-			border: none;
-			height: 40px;
-			border-radius: 0px;
-		}
+
+
 		button[type="submit"]{
 			margin-top: 20px;
 			background: transparent;
@@ -280,6 +307,20 @@
 			color: @form-color;
 		}
 	}
+	&.NARC-JH{
+		@form-color: #192d50;
+		// background: url(./img/bg-login/SKHBC_AD_bg.jpg) center center no-repeat;
+		.login-form{
+			background-image: linear-gradient(to top, #4f1e84 0%, #299cd6 100%);
+		}
+		.logo{
+			// background: url(./img/logo/NARC_logo.png) center center no-repeat;
+		}
+		h1, h2{
+			color: @form-color;
+		}
+	}
+	
 	&.SKHBCKZ-Shayan{
 		@form-color: #1c4018;
 		// background: url(./img/bg-login/SKHBC_KZ_bg.jpg) center center no-repeat;
@@ -359,4 +400,7 @@
 			padding: 100px 0px!important;
 		}
 	}
+
+
+
 }
