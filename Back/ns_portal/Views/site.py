@@ -12,7 +12,21 @@ import base64
     renderer='json'
 )
 def site(request):
-    query = select([
+    print('portal request')
+    print('************ noimage ***********')
+    noimage = request.params.get('noimage')
+    print(noimage)
+    print('************ ')
+    if(noimage):
+        query = select([
+        Site.Name.label('title'),
+        Site.Country.label('country'),
+        Site.Locality.label('locality'),
+        Site.LongName.label('legend'),
+        Site.UILabel.label('label')
+        ]).where(Site.Name == dbConfig['siteName'])
+    else :
+       query = select([
         Site.Name.label('title'),
         Site.Country.label('country'),
         Site.Locality.label('locality'),
@@ -21,8 +35,10 @@ def site(request):
         Site.ImageLogoPortal.label('imgLogoPortal'),
         Site.BackgroundHomePage.label('imgBackHomePage'),
         Site.UILabel.label('label')
-    ]).where(Site.Name == dbConfig['siteName'])
+        ]).where(Site.Name == dbConfig['siteName']) 
     result = DBSession.execute(query).fetchone()
+    print('*************************')
+    #print(dict(result))
     return dict(result)
 
 @view_config(

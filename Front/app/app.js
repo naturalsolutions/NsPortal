@@ -24,8 +24,13 @@ Controller, config) {
 
   app.on('start', function() {
     var _this = this;
+    var noimage = config.noimage ;
+    var url = config.coreUrl + 'site';
+    if(noimage){
+      url = url + '?noimage=true';
+    }
     var Patern = Backbone.Model.extend({
-      urlRoot: config.coreUrl + 'site'
+      urlRoot: url
     });
     var model = new Patern();
     model.fetch({
