@@ -23,10 +23,20 @@ Controller, config) {
 
   app.on('start', function() {
     var _this = this;
-    var noimage = config.noimage ;
-    var link = window.location.hostname;
+    var params={};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
+        params[key] = value;
+      }
+    );
+    var val;
+    if(params.img){
+      val = params.img;
+    }
+    if (params.image){
+      val = params.image;
+    }
     var url = config.coreUrl + 'site';
-    if(link=="localhost"){
+    if(val=="0" || val=="false" || val == false){
       url = url + '?noimage=true';
     }
     var Patern = Backbone.Model.extend({
