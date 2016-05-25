@@ -12,11 +12,7 @@ import base64
     renderer='json'
 )
 def site(request):
-    print('portal request')
-    print('************ noimage ***********')
     noimage = request.params.get('noimage')
-    print(noimage)
-    print('************ ')
     if(noimage):
         query = select([
         Site.Name.label('title'),
