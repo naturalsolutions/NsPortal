@@ -24,8 +24,9 @@ Controller, config) {
   app.on('start', function() {
     var _this = this;
     var noimage = config.noimage ;
+    var link = window.location.hostname;
     var url = config.coreUrl + 'site';
-    if(noimage){
+    if(link=="localhost"){
       url = url + '?noimage=true';
     }
     var Patern = Backbone.Model.extend({
