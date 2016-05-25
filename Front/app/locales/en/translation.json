@@ -1,6 +1,7 @@
 {
 	"home" : {
-		"hello" : "Hello"
+		"hello" : "Hello",
+		"login" : "Login"
 
 		},
 

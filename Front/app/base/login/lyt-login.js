@@ -5,7 +5,7 @@
 	- autocomplete vincent plugin (bb collection)
 
 **/
-define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui'],
+define(['marionette', 'backbone', 'sha1', 'config', 'jqueryui','i18n'],
 function(Marionette, Backbone, JsSHA, config, $ui) {
   'use strict';
   return Marionette.LayoutView.extend({
@@ -90,6 +90,7 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
           });
         },
       });
+       this.$el.i18n();
     },
 
     isValidUserName: function() {

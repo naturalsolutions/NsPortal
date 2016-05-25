@@ -1,6 +1,7 @@
 {
 	"home" : {
-		"hello" : "Bonjour"
+		"hello" : "Bonjour",
+		"login" : "Identifiez-vous"
 
 	},
 
