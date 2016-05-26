@@ -24,7 +24,7 @@
 - `npm install`
 - `bower install`
 - `npm install grunt`
-- `npm install grunt-cli`
+- `npm install -g grunt-cli`
 
 optional but recommended :
 
