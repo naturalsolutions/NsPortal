@@ -49,21 +49,16 @@ function(_, Marionette, $, config, Moment, LytTile) {
     },
 
     style: function() {
-      console.log(window.doNotloadBg);
-      if(window.doNotloadBg) {
-        $(this.$el[0]).css('background', 'grey');
-      } else {
-        var imgBackHomePage = window.app.siteInfo.get('imgBackHomePage');
-        $(this.$el[0]).css('background',
-          'url(data:image/png;base64,' + imgBackHomePage + ') ');
+      var imgBackHomePage = window.app.siteInfo.get('imgBackHomePage');
+      $(this.$el[0]).css('background',
+        'url(data:image/png;base64,' + imgBackHomePage + ') ');
 
-        $(this.$el[0]).css({
-          'background-position': 'center',
-          'background-attachment': 'fixed',
-          'background-size': 'cover',
-        });
-      }
-      
+      $(this.$el[0]).css({
+        'background-position': 'center',
+        'background-attachment': 'fixed',
+        'background-size': 'cover',
+      });
+
     },
 
     onShow: function(options) {

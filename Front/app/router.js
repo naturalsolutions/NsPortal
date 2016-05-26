@@ -16,11 +16,6 @@ return Marionette.AppRouter.extend({
 
   execute: function(callback, args) {
     var _this = this;
-
-    if(!window.doNotloadBg){
-      window.doNotloadBg = (window.location.hash.split('=')[1] === 'false');
-    }
-
     $.ajax({
       context: this,
       cache:false,
@@ -38,11 +33,7 @@ return Marionette.AppRouter.extend({
       $('body').removeClass('app');
       window.app.rootView.rgHeader.empty();
       window.app.rootView.rgMain.show(new LytLogin());
-      if(window.doNotloadBg){
-        Backbone.history.navigate('login?img=false', {trigger: true});
-      } else {
-        Backbone.history.navigate('login', {trigger: true});
-      }
+      Backbone.history.navigate('login', {trigger: true});
     });
   },
 
