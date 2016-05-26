@@ -51,20 +51,24 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
 
     style: function() {
       var _this = this;
-      var imgBackPortal = this.model.get('imgBackPortal');
+      
+      if(window.doNotloadBg){
+        $(this.$el[0]).css('background', 'grey');
+      } else {
+        var imgBackPortal = this.model.get('imgBackPortal');
+        var bg = 'url(data:image/png;base64,' + imgBackPortal + ')';
+        $(this.$el[0]).css('background', bg + ' center center no-repeat');
+        $(this.$el[0]).css({
+          'background-position': 'center',
+          'background-attachment': 'fixed',
+          'background-size': 'cover',
+        });
+      }
       var imgLogoPrtal = this.model.get('imgLogoPortal');
-      var logo = 'url(data:image/png;base64,' + imgBackPortal + ')';
-      $(this.$el[0]).css('background', logo + ' center center no-repeat');
-      var bg = 'url(data:image/png;base64,' + imgLogoPrtal + ')';
-      this.ui.logo.css('background', bg + 'center center no-repeat');
+      var logo = 'url(data:image/png;base64,' + imgLogoPrtal + ')';
+      this.ui.logo.css('background', logo + 'center center no-repeat');
       this.ui.logo.css({
         'background-size': 'contain',
-      });
-
-      $(this.$el[0]).css({
-        'background-position': 'center',
-        'background-attachment': 'fixed',
-        'background-size': 'cover',
       });
     },
 
