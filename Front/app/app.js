@@ -21,8 +21,6 @@ Controller, config) {
 
   $.ajaxSetup({ cache: false });
 
-  
-  
   app.on('start', function() {
     var _this = this;
     var params={};
@@ -73,8 +71,6 @@ Controller, config) {
   $(document).ajaxStop(function() {
     $('#header-loader').addClass('hidden');
   });
-
-
 
   window.app = app;
   return app;
