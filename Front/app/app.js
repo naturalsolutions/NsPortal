@@ -5,7 +5,6 @@ define([
   'router',
   'controller',
   'config',
-  
 ],
 function(Marionette, Backbone, Moment, LytRootview, Router,
 Controller, config) {
@@ -24,8 +23,24 @@ Controller, config) {
 
   app.on('start', function() {
     var _this = this;
+    var params={};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
+        params[key] = value;
+      }
+    );
+    var val;
+    if(params.img){
+      val = params.img;
+    }
+    if (params.image){
+      val = params.image;
+    }
+    var url = config.coreUrl + 'site';
+    if(val=="0" || val=="false" || val == false){
+      url = url + '?noimage=true';
+    }
     var Patern = Backbone.Model.extend({
-      urlRoot: config.coreUrl + 'site'
+      urlRoot: url
     });
     var model = new Patern();
     model.fetch({
@@ -39,6 +54,7 @@ Controller, config) {
           controller: app.controller,
           app: app
         });
+        app.siteInfos = model;
         app.user = new Backbone.Model();
         app.user.url = config.coreUrl + 'currentUser';
         Backbone.history.start();
