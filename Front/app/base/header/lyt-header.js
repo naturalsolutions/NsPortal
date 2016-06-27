@@ -5,7 +5,7 @@
 
 **/
 
-define(['marionette', 'config'],
+define(['marionette', 'config','i18n'],
 function(Marionette, config) {
   'use strict';
   return Marionette.LayoutView.extend({
@@ -24,11 +24,10 @@ function(Marionette, config) {
     },
 
     logout: function() {
-      Backbone.history.navigate('login', {trigger: true});
       $.ajax({
         context: this,
-        cache:false,
-        url: config.coreUrl + 'security/logout?nocache='+Date.now(),
+        cache: false,
+        url: config.coreUrl + 'security/logout?nocache=' + Date.now(),
       }).done(function() {
         Backbone.history.navigate('login', {trigger: true});
       });
@@ -36,6 +35,7 @@ function(Marionette, config) {
 
     onShow: function() {
       this.ui.user.html(this.model.get('fullname'));
+      this.$el.i18n();
     },
   });
 });

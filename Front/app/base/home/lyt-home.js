@@ -20,6 +20,10 @@ function(_, Marionette, $, config, Moment, LytTile) {
 
     initialize: function() {
       this.model = window.app.user;
+            var locale = config.language;
+      if(locale == 'fr'){
+        require(['momentLocale/fr']);
+      }
     },
 
     animateIn: function() {
@@ -60,6 +64,8 @@ function(_, Marionette, $, config, Moment, LytTile) {
       this.ui.user.html(this.model.get('fullname'));
       this.startTime();
       this.displayTiles();
+      this.$el.i18n();
+
     },
 
     ripple: function() {
@@ -88,10 +94,17 @@ function(_, Marionette, $, config, Moment, LytTile) {
     },
 
     startTime: function() {
+      
+      var locale = config.language;
+      var dateNow ;
+      if(locale == 'fr'){
+        //require(['momentLocale/fr']);
+        dateNow = new Moment().locale('fr').format('LLLL');
+      } else {
+        dateNow = new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\$1</sup> 2015");
+      }
       var _this = this;
-      this.$el.find('time').html(
-        new Moment().format('MMMM Do YYYY, h:mm:ss a').replace(/([rdths]{2})\s2015/,"<sup>\$1</sup> 2015")
-      );
+      this.$el.find('time').html(dateNow);
       var t = setTimeout(function() {
         _this.startTime();
       }, 1000);

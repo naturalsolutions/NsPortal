@@ -139,6 +139,7 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
         }).fail(function() {
           this.fail('#pwd-group', 'Invalid password');
           this.shake();
+		  $('#password').val('');
         });
       } else {
         this.fail('#login-group', 'Invalid username');
