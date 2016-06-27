@@ -1,7 +1,7 @@
 from pyramid.httpexceptions import HTTPUnauthorized
 from pyramid.security import remember, forget, NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
-from ns_portal.Models import DBSession, User
+from ..Models import DBSession, User
 from pyramid.interfaces import IAuthenticationPolicy
 from pyramid.response import Response
 

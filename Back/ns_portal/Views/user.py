@@ -3,7 +3,7 @@
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 from sqlalchemy import select
-from ns_portal.Models import DBSession, User
+from ..Models import DBSession, User
 
 @view_config(
     route_name='core/user',
@@ -33,5 +33,5 @@ def current_user(request):
     query = select([
         User.id.label('PK_id'),
         User.Login.label('fullname')
-    ]).where(User.id == request.authenticated_userid)
+    ]).where(User.id == request.authenticated_userid['iss'])
     return dict(DBSession.execute(query).fetchone())
