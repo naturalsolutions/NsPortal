@@ -5,6 +5,7 @@
 conda install pyodbc
 conda install sqlalchemy
 conda install zope.interface
-pip install pyjwt
+pip install pyramid_jwtauth
+
 
 python setup.py install
