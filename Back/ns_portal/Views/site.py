@@ -3,7 +3,7 @@
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 from sqlalchemy import select
-from ns_portal.Models import DBSession, User, dbConfig, Base, Site
+from ..Models import DBSession, User, dbConfig, Base, Site
 import base64
 
 @view_config(
@@ -45,6 +45,6 @@ def instance(request):
     table = Base.metadata.tables['VAllUsersApplications']
     query = select([
         table
-    ]).where((table.c['TSit_Name'] == dbConfig['siteName']) & (table.c['TUse_PK_ID'] == request.authenticated_userid) & (table.c['TRol_Label'] != 'Interdit')).order_by(table.c['TIns_Order'])
+    ]).where((table.c['TSit_Name'] == dbConfig['siteName']) & (table.c['TUse_PK_ID'] == request.authenticated_userid['iss']) & (table.c['TRol_Label'] != 'Interdit')).order_by(table.c['TIns_Order'])
     result = DBSession.execute(query).fetchall()
     return [dict(row) for row in result]

@@ -11,18 +11,18 @@ from pyramid.renderers import JSON
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
-from ns_portal.controllers.security import SecurityRoot, role_loader
-from ns_portal.Models import (
+from .controllers.security import SecurityRoot, role_loader,myJWTAuthenticationPolicy
+from .Models import (
     DBSession,
     Base,
     dbConfig,
     )
-from ns_portal.Views import add_routes
+from .Views import add_routes
 
-from ns_portal.pyramid_jwtauth import (
-    JWTAuthenticationPolicy,
-    includeme
-    )
+# from .pyramid_jwtauth import (
+#     JWTAuthenticationPolicy,
+#     includeme
+#     )
 import base64
 
 def datetime_adapter(obj, request):
@@ -37,6 +37,15 @@ def decimal_adapter(obj, request):
 
 def bytes_adapter(obj, request):
     return base64.b64encode(obj).decode()
+
+def includeme(config):
+    authz_policy = ACLAuthorizationPolicy()
+    config.set_authorization_policy(authz_policy)
+
+    settings = config.get_settings()
+    authn_policy = myJWTAuthenticationPolicy.from_settings(settings)
+    config.set_authentication_policy(authn_policy)
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
