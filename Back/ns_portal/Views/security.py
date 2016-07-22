@@ -13,11 +13,11 @@ route_prefix = 'security/'
     route_name=route_prefix+'login',
     permission=NO_PERMISSION_REQUIRED,
     request_method='POST')
-def login(request): 
+def login(request):
     user_id = request.POST.get('userId', '')
     pwd = request.POST.get('password', '')
     user = DBSession.query(User).filter(User.id==user_id).one()
-    
+
 
     if user is not None and user.check_password(pwd):
         claims = {
@@ -39,12 +39,12 @@ def make_jwt(request, claims):
     return policy.encode_jwt(request, claims)
 
 @view_config(
-    route_name=route_prefix+'logout', 
+    route_name=route_prefix+'logout',
     permission=NO_PERMISSION_REQUIRED,)
 def logout(request):
     forget(request)
     return request.response
-    
+
 @view_config(route_name=route_prefix+'has_access')
 def has_access(request):
     transaction.commit()

@@ -26,22 +26,21 @@ class User(Base):
     ModificationDate = Column( 'TUse_ModificationDate', DateTime, nullable=False,server_default=func.now())
     HasAccess = Column( 'TUse_HasAccess', Boolean)
     Photos = Column( 'TUse_Photo', String(255))
-    IsObserver = Column( 'TUse_Observer', Boolean)
 
     @hybrid_property
     def fullname(self):
         """ Return the fullname of a user.
         """
         return self.Lastname + ' ' + self.Firstname
-    
+
     def check_password(self, given_pwd):
         """Check the password of a user.
-        
+
         Parameters
         ----------
         given_pwd : string
             The password to check, assumed to be an SHA1 hash of the real one.
-            
+
         Returns
         -------
         boolean
