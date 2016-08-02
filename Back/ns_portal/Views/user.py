@@ -3,8 +3,7 @@
 from pyramid.security import NO_PERMISSION_REQUIRED
 from pyramid.view import view_config
 from sqlalchemy import select
-from ..Models import DBSession, User
-
+from ..Models import DBSession, User, dbConfig
 @view_config(
     route_name='core/user',
     permission=NO_PERMISSION_REQUIRED,
@@ -36,4 +35,10 @@ def current_user(request):
         User.Firstname.label('firstname'),
         User.Lastname.label('lastname')
     ]).where(User.id == request.authenticated_userid['iss'])
-    return dict(DBSession.execute(query).fetchone())
+
+    toret = dict(DBSession.execute(query).fetchone())
+    toret['site'] = dbConfig['siteName']
+
+    print ("********************************************")
+
+    return toret
