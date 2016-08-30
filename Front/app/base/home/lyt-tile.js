@@ -1,5 +1,5 @@
-define(['marionette', 'config','i18n'],
-function(Marionette,config) {
+define(['marionette', 'i18n'],
+function(Marionette) {
   'use strict';
 
   return Marionette.LayoutView.extend({
