@@ -1,5 +1,5 @@
-define(['marionette', 'i18n'],
-function(Marionette) {
+define(['marionette', 'config','i18n'],
+function(Marionette,config) {
   'use strict';
 
   return Marionette.LayoutView.extend({
@@ -35,6 +35,11 @@ function(Marionette) {
       }else{
         this.model.set({'icon' : 'reneco-releve'});
       }
+      // set hostname
+      var hostname  = window.location.hostname ;
+      var appliPath = this.model.get('TIns_ApplicationPath');
+      var newPath = appliPath.replace("@@hostname@@", hostname);
+      this.model.set('TIns_ApplicationPath','http://' + newPath);
     }
   });
 
