@@ -91,6 +91,8 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
         },
       });
        this.$el.i18n();
+
+      $("body").css('background-image', 'none');
     },
 
     isValidUserName: function() {
