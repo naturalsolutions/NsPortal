@@ -35,6 +35,11 @@ function(Marionette) {
       }else{
         this.model.set({'icon' : 'reneco-releve'});
       }
+      // set hostname
+      var hostname  = window.location.hostname ;
+      var appliPath = this.model.get('TIns_ApplicationPath');
+      var newPath = appliPath.replace("@@hostname@@", hostname);
+      this.model.set('TIns_ApplicationPath','http://' + newPath);
     }
   });
 
