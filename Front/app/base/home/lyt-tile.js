@@ -39,7 +39,7 @@ function(Marionette) {
       var hostname  = window.location.hostname ;
       var appliPath = this.model.get('TIns_ApplicationPath');
       var newPath = appliPath.replace("@@hostname@@", hostname);
-      this.model.set('TIns_ApplicationPath','http://' + newPath);
+      this.model.set('TIns_ApplicationPath', newPath);
     }
   });
 
