@@ -34,6 +34,8 @@ return Marionette.AppRouter.extend({
       window.app.rootView.rgHeader.empty();
       window.app.rootView.rgMain.show(new LytLogin());
       Backbone.history.navigate('login', {trigger: true});
+    }).always(function(){
+      $("body").css('background-image', 'none');
     });
   },
 
