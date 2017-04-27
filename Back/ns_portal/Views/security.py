@@ -11,9 +11,22 @@ route_prefix = 'security/'
 
 @view_config(
     route_name=route_prefix+'login',
-    permission=NO_PERMISSION_REQUIRED,
-    request_method='POST')
+    permission=NO_PERMISSION_REQUIRED)
 def login(request):
+
+    if request.method == "OPTIONS":
+        response = Response()
+        response.headers['Access-Control-Expose-Headers'] = (
+            'Content-Type, Date, Content-Length, Authorization, X-Request-ID, X-Requested-With')
+        response.headers['Access-Control-Allow-Origin'] = (
+            request.headers['Origin'])
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Headers'] = 'Access-Control-Allow-Origin, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+        response.headers['Access-Control-Allow-Methods'] = ('POST,GET,DELETE,PUT,OPTIONS')
+        response.headers['Content-Type'] = ('application/json')
+        return response
+
+
     user_id = request.POST.get('userId', '')
     pwd = request.POST.get('password', '')
     user = DBSession.query(User).filter(User.id==user_id).one()

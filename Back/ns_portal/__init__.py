@@ -72,6 +72,31 @@ def main(global_config, **settings):
     config.set_root_factory(SecurityRoot)
 
 
+
+
+    def add_cors_headers_response_callback(event):
+        print('\n\n pass \n\n')
+        def cors_headers(request, response):
+            # response.headers.update({
+            # # 'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS',
+            # # 'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Authorization',
+            # # 'Access-Control-Allow-Credentials': 'true',
+            # })
+
+
+            response.headers['Access-Control-Expose-Headers'] = ('Content-Type, Date, Content-Length, Authorization, X-Request-ID, X-Requested-With')
+            response.headers['Access-Control-Allow-Origin'] = (request.headers['Origin'])
+            response.headers['Access-Control-Allow-Credentials'] = 'true'
+            response.headers['Access-Control-Allow-Headers'] = 'Access-Control-Allow-Origin, Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+            response.headers['Access-Control-Allow-Methods'] = ('POST,GET,DELETE,PUT,OPTIONS')
+
+
+        event.request.add_response_callback(cors_headers)
+
+    from pyramid.events import NewRequest
+    config.add_subscriber(add_cors_headers_response_callback, NewRequest)
+
+
     # Set the default permission level to 'read'
     config.set_default_permission('read')
     config.include('pyramid_tm')
