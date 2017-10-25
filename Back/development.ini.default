@@ -18,7 +18,7 @@ pyramid.includes =
 
 
 ###Custom config
-auth.secret = authentication key
+jwtauth.master_secret = authentication key
 siteName = siteName here
 
 
