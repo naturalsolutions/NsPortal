@@ -11,29 +11,29 @@ function(Marionette) {
         var tmp = this.model.get('TIns_Theme').split('-');
         switch(tmp[0]){
           case 'track':
-            this.model.set({'icon' : 'reneco-trackbird'});
+            this.model.set({'icon' : 'reneco-TRACK-trackbird'});
             break;
           case 'securite':
             this.model.set({'icon' : 'reneco-security'});
             break;
           case 'formbuilder':
-            this.model.set({'icon' : 'reneco-releve'});
+            this.model.set({'icon' : 'reneco-FOR-formbuilder'});
             break;
           case 'thesaurus':
-            this.model.set({'icon' : 'reneco-thesaurus'});
+            this.model.set({'icon' : 'reneco-THE-thesaurus'});
             break;
           case 'ecoll':
-            this.model.set({'icon' : 'reneco-ecollectionbig'});
+            this.model.set({'icon' : 'reneco-ECO-ecollectionbig'});
             break;
           case 'position':
-            this.model.set({'icon' : 'reneco-positions'});
+            this.model.set({'icon' : 'reneco-POS-positions'});
             break;
           default:
-            this.model.set({'icon' : 'reneco-releve'});
+            this.model.set({'icon' : 'reneco-ECO-releve'});
             break;
         }
       }else{
-        this.model.set({'icon' : 'reneco-releve'});
+        this.model.set({'icon' : 'reneco-ECO-releve'});
       }
       // set hostname
       var hostname  = window.location.hostname ;
