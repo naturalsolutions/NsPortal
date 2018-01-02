@@ -70,6 +70,7 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
 
     onShow: function() {
       this.style();
+      this.focus();
       var ctx = this;
       this.collection.url = config.coreUrl + 'user';
       this.collection.fetch({
@@ -169,11 +170,15 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
     },
 
     shake: function() {
+      this.focus();
       $('.login-form').addClass('animated shake');
       setTimeout(function() {
         $('.login-form').removeClass('animated shake');
       }, 1000);
     },
 
+    focus: function() {
+      $('#UNportal').focus();
+    }
   });
 });
