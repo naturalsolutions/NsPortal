@@ -33,7 +33,8 @@ def current_user(request):
         User.id.label('PK_id'),
         User.Login.label('fullname'),
         User.Firstname.label('firstname'),
-        User.Lastname.label('lastname')
+        User.Lastname.label('lastname'),
+        User.Language.label('language')
     ]).where(User.id == request.authenticated_userid['iss'])
 
     toret = dict(DBSession.execute(query).fetchone())
