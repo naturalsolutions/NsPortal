@@ -3,6 +3,7 @@ Front/node_modules/*
 Front/build/*
 Front/.idea/*
 Back/build/*
+Back/ns_portal/static/webapp
 **/*.css
 **/*.css.map
 
