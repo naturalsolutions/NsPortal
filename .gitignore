@@ -24,3 +24,4 @@ npm-debug.log
 web.config
 
 .grunt/grunt-contrib-jasmine
+Back/portalvenv/
