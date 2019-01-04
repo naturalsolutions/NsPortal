@@ -18,7 +18,12 @@ requires = [
     'transaction',
     'zope.sqlalchemy',
     'waitress',
-    'webtest'
+    'webtest',
+    'pyodbc',
+    'sqlalchemy',
+    'pyramid_jwt',
+    'pyramid_jwtauth',
+    'zope.interface'
     ]
 
 setup(name='ns_portal',
