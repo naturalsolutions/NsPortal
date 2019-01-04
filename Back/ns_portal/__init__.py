@@ -60,6 +60,11 @@ def main(global_config, **settings):
     Base.metadata.reflect(views=True, extend_existing=False)
 
     config = Configurator(settings=settings)
+    config.include('.cors')
+    config.add_cors_preflight_handler()
+
+    config.add_static_view(name='static', path='static')
+
     # Add renderer for datetime objects
     json_renderer = JSON()
     json_renderer.add_adapter(datetime, datetime_adapter)
