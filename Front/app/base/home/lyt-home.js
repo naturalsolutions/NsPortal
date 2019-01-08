@@ -1,8 +1,8 @@
 define([
   'underscore', 'marionette', 'jquery', 'config',
-  'moment', './lyt-tile', 'i18n'
+  'moment', './lyt-tile', 'translater','i18n'
 ],
-function(_, Marionette, $, config, Moment, LytTile) {
+function(_, Marionette, $, config, Moment, LytTile, grostrans) {
   'use strict';
 
   return Marionette.LayoutView.extend({
@@ -67,7 +67,14 @@ function(_, Marionette, $, config, Moment, LytTile) {
       this.ui.siteName.html(window.app.siteInfo.get('legend'));
       this.startTime();
       this.displayTiles();
-      this.$el.i18n();
+      // alert();
+    },
+    onRender: function(){
+      // var tempLng = 'fr';
+      // var _this = this; 
+      // grostrans.setTranslater(tempLng, function(t) {
+         this.$el.i18n();
+      // });
     },
 
     ripple: function() {

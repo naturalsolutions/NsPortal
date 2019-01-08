@@ -5,8 +5,8 @@
 
 **/
 define(['jquery', 'marionette', 'backbone', 'config', './base/login/lyt-login',
-  './base/header/lyt-header'],
-  function($, Marionette, Backbone, config, LytLogin, LytHeader) {
+  './base/header/lyt-header','i18n', 'translater'], 
+  function($, Marionette, Backbone, config, LytLogin, LytHeader,i18n, translater) {
 
 'use strict';
 return Marionette.AppRouter.extend({
@@ -26,6 +26,12 @@ return Marionette.AppRouter.extend({
         success: function() {
           $('body').addClass('app');
           _this.insertHeader();
+          // debugger;
+          var lng = translater.getUserLng()
+          // console.log('lng', lng)
+          translater.setTranslater(lng, function(t) {
+            _this.$el.i18n();
+          });
           callback.apply(_this, args);
         }
       });
