@@ -1,7 +1,7 @@
 
 define([
   'marionette', 'backbone', 'moment',
-  './base/rootView/lyt-rootview',
+  './base/rootview/lyt-rootview',
   'router',
   'controller',
   'config',

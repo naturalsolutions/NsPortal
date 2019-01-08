@@ -28,6 +28,15 @@ function(Marionette) {
           case 'position':
             this.model.set({'icon' : 'reneco-POS-positions'});
             break;
+          case 'repro':
+            this.model.set({'icon' : 'reneco-tuile'});
+            break;
+          case 'centralization':
+            this.model.set({'icon' : 'reneco-tuile1'});
+            break;
+          case 'reneco-apps':
+            this.model.set({'icon' : 'reneco-tuile2'});
+            break;
           default:
             this.model.set({'icon' : 'reneco-ECO-releve'});
             break;
