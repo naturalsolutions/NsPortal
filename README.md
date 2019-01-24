@@ -28,7 +28,7 @@
 
 optional but recommended :
 
-- `grunt build`
+- `grunt build` (each time you modify config.js)
 
 #### Back
 
