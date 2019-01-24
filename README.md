@@ -12,7 +12,7 @@
 ### Requirements
 
  - [Node.js](https://nodejs.org/) (for [npm](https://www.npmjs.com/))
- - [bower](http://bower.io/) `npm install -g bower`
+ - [bower](http://bower.io/) `npm install -g bower` (restart console after install, if it's not working add the path in environment variables by hand)
  - [python3.4](https://www.python.org/download/releases/3.4.0/) (for Windows you can install [miniconda3.4](http://conda.pydata.org/miniconda.html))
 
 
