@@ -21,6 +21,9 @@ pyramid.includes =
 jwtauth.master_secret = authentication key
 siteName = siteName here
 
+###Use to set a parent domain for multi server instances
+###Leave commented if there is only one server
+#parent_domain=track.int
 
 ###DB config
 cn.dialect = mssql+pyodbc:///?odbc_connect=

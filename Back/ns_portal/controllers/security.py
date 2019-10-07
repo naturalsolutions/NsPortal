@@ -76,7 +76,12 @@ class myJWTAuthenticationPolicy(JWTAuthenticationPolicy):
         return userid
 
     def remember(self, response, principal, **kw):
-        response.set_cookie('ecoReleve-Core', principal, max_age = 100000)
+        if kw.get('domain') == '' :
+            response.set_cookie('ecoReleve-Core', principal, max_age = 100000)
+        else :
+            response.set_cookie('ecoReleve-Core', principal, max_age = 100000, domain = kw.get('domain'))
+
+
 
     def forget(self, request):
         request.response.delete_cookie('ecoReleve-Core')
