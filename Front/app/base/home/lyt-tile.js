@@ -37,6 +37,9 @@ function(Marionette) {
           case 'reneco-apps':
             this.model.set({'icon' : 'reneco-tuile2'});
             break;
+          case 'CentralMonitoring':
+            this.model.set({'icon' : 'reneco-data-centralisation'});
+            break;
           default:
             this.model.set({'icon' : 'reneco-ECO-releve'});
             break;
