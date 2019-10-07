@@ -79,12 +79,12 @@ You have to configure the [development.ini](https://github.com/NaturalSolutions/
 You have to enter the siteName parameter which the site name of the local site (### Site name).
 
 ### New Feature (Multi server)
-Server configuration example : track.int, ecology.track.int, breeding.track.int
-Install the portal on the top domain server : track.int
-Then, in the development.ini file, uncomment the "parent_domain" parameter and fill it in with the address of the top domain server: track.int
+Server configuration example : track.int, ecology.track.int, breeding.track.int .
+Install the portal on the top domain server : track.int .
+Then, in the development.ini file, uncomment the "parent_domain" parameter and fill it in with the address of the top domain server: track.int.
 The application will generate a cookie available for the domain .track.int. The other servers (ecology.track.int & breeding.track.int) will now access the cookie and you will be authenticated on their application.
 
-If the parent_domain variable remains commented, you will only be authenticated on the current domain. (single server architecture as before)
+If the parent_domain variable remains commented, you will only be authenticated on the current domain. (single server architecture as before).
 
 Run `pserve development.ini` command in order to launch a Pyramid server.
 
