@@ -37,7 +37,13 @@ def login(request):
             
         jwt = make_jwt(request, claims)
         response = Response(body='login success', content_type='text/plain')
-        remember(response, jwt)
+        
+        try:
+            domain = '.' + request.registry.settings['parent_domain']
+        except:
+            domain = ''
+
+        remember(response, jwt, domain=domain)
         transaction.commit()
         return response
     else:
