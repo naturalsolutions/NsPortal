@@ -122,6 +122,33 @@ Thank you!
 
 We have programs for companies that require additional level of assistance through training or commercial support, need special licensing or want additional levels of capabilities. Please visit the [Natural Solutions](http://www.natural-solutions.eu/) Website for more information about the portal or contact us by email at contact@natural-solutions.com.
 
+## Tutoriel
+
+### Créer un nouveau thème
+
+1. Se rendre dans l'application sécurité
+2. Lors du choix du thème pour l'instance, si le thème n'a jamais été créé, alors l'écrire dans le champ text à côté de la sélection de thème.
+3. Une fois le thème créé et associer à l’instance, se rendre dans le fichier Front/app/base/home/lyt-tile.js et rajouter la case qui correspond à votre thème créé précédemment. Exemple si le thème se prénomme « CentralMonitoring » alors :
+```js
+case 'CentralMonitoring':
+ this.model.set({'icon' : 'reneco-CentralMonitoring'});
+break;
+```
+Ceci a pour but de définir l’icône créée au préalable dans la rénéco-font
+
+4. Se rendre dans le fichier  Front/app/styles/ui/_tile.less et ajouter une class avec une variable, ceci représente la couleur de fond qu’aura l’icône, dans notre exemple :
+```css
+.CentralMonitoring{
+ background : @CentralMonitoring;
+}
+```
+5. Pour finir, créer la variable et lui associer une couleur dans le fichier Front/app/styles/_theme.less toujours dans notre exemple :
+```css
+@CentralMonitoring : #4B6099;
+```
+6. Vous voilà avec un nouveau thème de créé et vous n'avez pas perdu 1 journée à chercher quelqu'un qui saurait le faire :)
+
+
 ## License
 
 Copyright (c) 2015 Natural Solutions
