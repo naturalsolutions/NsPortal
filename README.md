@@ -126,9 +126,11 @@ We have programs for companies that require additional level of assistance throu
 
 ### Créer un nouveau thème
 
-1. Se rendre dans l'application sécurité
+1. Se rendre dans l'application sécurité depuis le portail
+
 2. Lors du choix du thème pour l'instance, si le thème n'a jamais été créé, alors l'écrire dans le champ text à côté de la sélection de thème.
-3. Une fois le thème créé et associer à l’instance, se rendre dans le fichier Front/app/base/home/lyt-tile.js et rajouter la case qui correspond à votre thème créé précédemment. Exemple si le thème se prénomme « CentralMonitoring » alors :
+
+3. Une fois le thème créé et associé à l’instance, se rendre dans dossier du projet NsPortal, trouver le fichier Front/app/base/home/lyt-tile.js et rajouter la case qui correspond à votre thème créé précédemment. Exemple si le thème se prénomme « CentralMonitoring » alors :
 ```js
 case 'CentralMonitoring':
  this.model.set({'icon' : 'reneco-CentralMonitoring'});
@@ -146,8 +148,14 @@ Ceci a pour but de définir l’icône créée au préalable dans la rénéco-fo
 ```css
 @CentralMonitoring : #4B6099;
 ```
-6. Vous voilà avec un nouveau thème de créé et vous n'avez pas perdu 1 journée à chercher quelqu'un qui saurait le faire :)
 
+6. Se diriger à la racine du front du projet, c'est à dire dans le dossier Front et exécuter la commande
+```cmd
+grunt build
+```
+Cette commande permet de mettre à jour le dossier "build" donc le dossier de prod, celui qui sera lu par le navigateur web
+
+7. Vous voilà avec un nouveau thème de créé et vous n'avez pas perdu 1 journée à chercher quelqu'un qui saurait le faire :)
 
 ## License
 
