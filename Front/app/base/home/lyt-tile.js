@@ -40,6 +40,9 @@ function(Marionette) {
           case 'CentralMonitoring':
             this.model.set({'icon' : 'reneco-data-centralisation'});
             break;
+          case 'qrtag':
+            this.model.set({'icon' : 'reneco-QRTAG-logo'});
+            break;
           default:
             this.model.set({'icon' : 'reneco-ECO-releve'});
             break;
