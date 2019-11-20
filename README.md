@@ -151,7 +151,7 @@ Ceci a pour but de définir l’icône créée au préalable dans la rénéco-fo
 
 6. Se diriger à la racine du front du projet, c'est à dire dans le dossier Front et exécuter la commande
 ```cmd
-grunt build
+grunt release
 ```
 Cette commande permet de mettre à jour le dossier "build" donc le dossier de prod, celui qui sera lu par le navigateur web
 
