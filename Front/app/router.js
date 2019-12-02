@@ -25,7 +25,7 @@ return Marionette.AppRouter.extend({
       window.app.user.fetch({
         success: function() {
           $('body').addClass('app');
-          _this.insertHeader();
+         // _this.insertHeader();
           // debugger;
           var lng = translater.getUserLng()
           // console.log('lng', lng)
@@ -37,7 +37,7 @@ return Marionette.AppRouter.extend({
       });
     }).fail(function(msg) {
       $('body').removeClass('app');
-      window.app.rootView.rgHeader.empty();
+      //window.app.rootView.rgHeader.empty();
       window.app.rootView.rgMain.show(new LytLogin());
       Backbone.history.navigate('login', {trigger: true});
     }).always(function(){
@@ -45,12 +45,12 @@ return Marionette.AppRouter.extend({
     });
   },
 
-  insertHeader: function() {
+  /* insertHeader: function() {
     if (!window.app.rootView.rgHeader.hasView()) {
       window.app.rootView.rgHeader.show(
         new LytHeader({app: this.options.app}));
     }
-  },
+  }, */
 
 });
 });

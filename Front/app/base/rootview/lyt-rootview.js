@@ -7,7 +7,7 @@ function(Marionette, TransitionRegion) {
     className: 'ns-full-height',
 
     regions: {
-      rgHeader: 'header',
+      // rgHeader: 'header',
       rgMain: 'main',
       rgFooter: 'footer',
     },

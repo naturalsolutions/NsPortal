@@ -12,6 +12,19 @@ Controller, config) {
   var app = {};
   var JST = window.JST = window.JST || {};
 
+    // HEADER STENCIL
+	function initHeader() {
+		var header = document.getElementsByTagName('reneco-header')[0];
+		header.options = {
+			appTitle: "Portail",
+			appIcon: "worldsmall",
+			langCode: 'fr',
+			user: {
+				nickname: 'User name'
+			}
+		};
+	};
+
   Backbone.Marionette.Renderer.render = function(template, data) {
     if (!JST[template]) throw 'Template \'' + template + '\' not found!';
     return JST[template](data);
@@ -49,6 +62,7 @@ Controller, config) {
         app.siteInfo = model;
         app.rootView = new LytRootview();
         app.rootView.render();
+        initHeader();
         app.controller = new Controller({app: app});
         app.router = new Router({
           controller: app.controller,
