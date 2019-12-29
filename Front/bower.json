@@ -1,6 +1,6 @@
 {
-  "name": "EcoReleve",
-  "version": "0.1.0",
+  "name": "NsPortal",
+  "version": "1.0",
   "dependencies": {
     "almond": "~0.3.1",
     "animate.css": "https://github.com/daneden/animate.css.git#~3.2.6",
@@ -12,7 +12,6 @@
     "lodash": "~3.10.1",
     "marionette": "~2.4.1",
     "moment": "~2.10.3",
-    "lodash": "~3.10.1",
     "jsSHA": "https://github.com/Caligatio/jsSHA.git#~2.0.1",
     "reneco-fonts": "*",
     "requirejs": "~2.1.16",
