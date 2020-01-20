@@ -9,15 +9,16 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 requires = [
+    'pyodbc==4.0.28',
     'pyramid==1.10.4',
     'sqlalchemy==1.3.12',
+    'transaction==3.0.0',
     'waitress==1.4.2',
-    'pyodbc==4.0.28'
     ]
 
 setup(
     name='ns_portal',
-    version='0.0',
+    version='0.1',
     description='ns_portal',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
