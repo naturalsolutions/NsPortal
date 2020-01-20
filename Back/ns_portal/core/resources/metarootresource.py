@@ -2,6 +2,7 @@ from ns_portal.core.resources.restviews import (
     IRESTview
 )
 from zope.interface import implementer
+from pyramid.response import Response
 
 
 @implementer(IRESTview)
@@ -10,6 +11,27 @@ class MetaRootResource (dict):
     __parent__ = None
     __ROUTES__ = {}
     __specialKey__ = None
+    __CORS__ = {
+        'Access-Control-Allow-Origin': [
+            'http://api.com'
+            ],
+        'Access-Control-Allow-Methods': [
+            'GET',
+            'HEAD',
+            'POST',
+            'DELETE',
+            'OPTIONS',
+            'TRACE',
+            'PATCH',
+            'PUT'
+        ],
+        'Access-Control-Allow-Headers': [
+            'Authorization',
+            'Content-Type'
+        ],
+        'Access-Control-Allow-Credentials': 'true',
+        'Access-Control-Max-Age': '86400'
+    }
 
     def __init__(self, name, parent, request):
         self.__name__ = name
@@ -81,7 +103,9 @@ class MetaRootResource (dict):
         raise NotImplementedError(f'DELETE for Ressource: {self.__name__}')
 
     def OPTIONS(self):
-        raise NotImplementedError(f'OPTIONS for Ressource: {self.__name__}')
+        self.checkAndApplyCORS()
+        return self.request.response
+        # raise NotImplementedError(f'OPTIONS for Ressource: {self.__name__}')
 
     def TRACE(self):
         raise NotImplementedError(f'TRACE for Ressource: {self.__name__}')
@@ -91,6 +115,101 @@ class MetaRootResource (dict):
 
     def PUT(self):
         raise NotImplementedError(f'PUT for Ressource: {self.__name__}')
+
+    def checkHeadersRequestOrigin(self):
+        '''
+        request.headers['Origin'] is set by User-Agent browser
+        we check if origin exist
+        and if he is in the access control list
+        if in the control list we will returned
+        response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+        not the entire access control list
+        '''
+        headers = {}
+        requestHeaderKey = 'Origin'
+        reqOrigin = self.request.headers.get(requestHeaderKey, None)
+        responseHeaderKey = 'Access-Control-Allow-Origin'
+        originsAllowed = self.__CORS__.get(responseHeaderKey)
+
+        if reqOrigin is None:
+            headers = False
+        else:
+            if (
+                reqOrigin in originsAllowed
+                or
+                '*' in originsAllowed
+            ):
+                headers[responseHeaderKey] = reqOrigin
+        return headers
+
+    def checkHeadersRequestMethod(self):
+        headers = {}
+        requestHeaderKey = 'Access-Control-Request-Method'
+        reqMethod = self.request.headers.get(requestHeaderKey, None)
+        responseHeaderKey = 'Access-Control-Allow-Methods'
+        methodsAllowed = self.__CORS__.get(responseHeaderKey)
+        methodsStr = ','.join(methodsAllowed)
+
+        if reqMethod is None:
+            headers = False
+        else:
+            if reqMethod in methodsAllowed:
+                headers[responseHeaderKey] = methodsStr
+        return headers
+
+    def checkHeadersRequestHeaders(self):
+        headers = {}
+        requestHeaderKey = 'Access-Control-Request-Headers'
+        reqHeadersStr = self.request.headers.get(requestHeaderKey, None)
+        if reqHeadersStr is not None:
+            reqHeadersList = reqHeadersStr.split(',')
+        responseHeadersKey = 'Access-Control-Allow-Headers'
+        headersAllowed = self.__CORS__.get(responseHeadersKey)
+        headersStr = ','.join(headersAllowed)
+
+        if reqHeadersStr is None:
+            headers[responseHeadersKey] = ''
+        else:
+            for reqHeader in reqHeadersList:
+                if reqHeader not in headersAllowed:
+                    headers = False
+                    print(f'{reqHeader} is not allowed')
+                    break
+            if headers == {}:
+                headers[responseHeadersKey] = headersStr
+
+        return headers
+
+    def checkHeadersRequestCredentials(self):
+        headers = {}
+        requestHeaderKey = 'Access-Control-Allow-Credentials'
+        headers[requestHeaderKey] = self.__CORS__.get(requestHeaderKey)
+        return headers
+
+    def addHeadersMaxAge(self):
+        headers = {}
+        requestHeaderKey = 'Access-Control-Max-Age'
+        headers[requestHeaderKey] = self.__CORS__.get('Access-Control-Max-Age')
+        return headers
+
+    def addHeadersForCORS(self, headers=None):
+        self.request.response.headers.update(headers)
+
+    def checkAndApplyCORS(self):
+        orderedStepForCORS = [
+            self.checkHeadersRequestOrigin,
+            self.checkHeadersRequestMethod,
+            self.checkHeadersRequestHeaders,
+            self.checkHeadersRequestCredentials,
+            self.addHeadersMaxAge
+        ]
+        stepHeaders = {}
+        for method in orderedStepForCORS:
+            stepHeaders = method()
+            if stepHeaders is False:
+                return self.request.response
+            else:
+                self.addHeadersForCORS(headers=stepHeaders)
 
 
 class MetaEmptyRessource(MetaRootResource):
