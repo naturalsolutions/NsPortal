@@ -14,7 +14,7 @@ class ISECURITYview(Interface):
     pass
 
 
-@view_defaults(context=ISECURITYview)
+@view_defaults(context=ISECURITYview, renderer='json')
 class SECURITYview(object):
     def __init__(self, context, request):
         self.request = request
@@ -35,3 +35,19 @@ class SECURITYview(object):
     )
     def logout(self):
         return self.context.logout()
+
+    @view_config(
+        request_method='GET',
+        name="authorize",
+        permission=NO_PERMISSION_REQUIRED
+    )
+    def authorize(self):
+        return self.context.authorize()
+
+    @view_config(
+        request_method='GET',
+        name="token",
+        permission=NO_PERMISSION_REQUIRED
+    )
+    def token(self):
+        return self.context.token()
