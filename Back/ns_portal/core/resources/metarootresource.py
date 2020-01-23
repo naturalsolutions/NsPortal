@@ -2,7 +2,33 @@ from ns_portal.core.resources.restviews import (
     IRESTview
 )
 from zope.interface import implementer
-from pyramid.response import Response
+# from webargs.pyramidparser import parser
+from webargs.pyramidparser import PyramidParser
+
+
+class Parser(PyramidParser):
+    DEFAULT_VALIDATION_STATUS = 400
+
+
+parser = Parser()  # global ref :( maybe not good
+use_args = parser.use_args
+use_kwargs = parser.use_kwargs
+
+
+class CustomErrorParsingArgs(Exception):
+
+    def __init__(self, value):
+        print("error")
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
+# @parser.error_handler
+# def handle_error(error, req, schema, status_code, headers):
+#     print("stop")
+#     raise CustomErrorParsingArgs(error.messages)
 
 
 @implementer(IRESTview)
@@ -43,6 +69,9 @@ class MetaRootResource (dict):
 
     def __acl__(self):
         return []
+
+    def __parser__(self, args={}):
+        return parser.parse(args, req=self.request, location='querystring')
 
     @property
     def __specialKey__(self):
