@@ -14,11 +14,12 @@ requires = [
     'sqlalchemy==1.3.12',
     'transaction==3.0.0',
     'waitress==1.4.2',
+    'webargs==6.0.0b2'
     ]
 
 setup(
     name='ns_portal',
-    version='0.1',
+    version='0.3',
     description='ns_portal',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
