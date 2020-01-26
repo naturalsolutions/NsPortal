@@ -8,7 +8,6 @@ def main(global_config, **settings):
         config.include('ns_portal.routes')
         config.include('ns_portal.database')
         config.include('ns_portal.core.resources')
-        config.include('ns_portal.resources')
         config.include('ns_portal.utils')
 
     return config.make_wsgi_app()
