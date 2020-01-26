@@ -60,4 +60,6 @@ class tokenSchema(Schema):
 class TokenResource(MetaEndPointResource):
 
     def GET(self):
+        requiredArgs = self.__parser__(args=tokenSchema())
+        print(requiredArgs)
         return "ok"
