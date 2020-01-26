@@ -150,8 +150,8 @@ class MetaRootResource (dict):
         request.headers['Origin'] is set by User-Agent browser
         we check if origin exist
         and if he is in the access control list
-        if in the control list we will returned
-        response.headers['Access-Control-Allow-Origin'] = request.headers['Origin']
+        if in the control list we will returned headers
+        headers['Access-Control-Allow-Origin'] = headers['Origin']
         not the entire access control list
         '''
         headers = {}
@@ -246,4 +246,8 @@ class MetaEmptyRessource(MetaRootResource):
 
 
 class MetaCollectionRessource(MetaRootResource):
+    pass
+
+
+class MetaEndPointResource(MetaRootResource):
     pass
