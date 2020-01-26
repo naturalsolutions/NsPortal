@@ -1,12 +1,12 @@
 from ns_portal.core.resources import (
-    MetaEmptyRessource
+    MetaEmptyResource
 )
 from .v1 import (
     VersionResource
 )
 
 
-class OAuth2Resource(MetaEmptyRessource):
+class OAuth2Resource(MetaEmptyResource):
     __ROUTES__ = {
         'v1': VersionResource
     }

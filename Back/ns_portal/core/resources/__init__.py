@@ -1,7 +1,7 @@
 from .metarootresource import (
     MetaRootResource,
-    MetaCollectionRessource,
-    MetaEmptyRessource,
+    MetaCollectionResource,
+    MetaEmptyResource,
     MetaEndPointResource
 )
 from .restviews import (
@@ -10,8 +10,8 @@ from .restviews import (
 
 __all__ = [
     "MetaRootResource",
-    "MetaCollectionRessource",
-    "MetaEmptyRessource",
+    "MetaCollectionResource",
+    "MetaEmptyResource",
     "MetaEndPointResource",
     "IRESTview"
 ]

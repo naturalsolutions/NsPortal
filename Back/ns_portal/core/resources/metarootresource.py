@@ -87,7 +87,7 @@ class MetaRootResource (dict):
         '''
         toRet = None
 
-        if isinstance(self, MetaCollectionRessource):
+        if isinstance(self, MetaCollectionResource):
             '''
             If the current node is a Collection
             the next node should be an instance of this collection
@@ -115,35 +115,35 @@ class MetaRootResource (dict):
                 toRet = self.__routes__.get(nextNode, None)
 
         if toRet is None:
-            raise KeyError(f'__getitem__ for Ressource: {self.__name__}')
+            raise KeyError(f'__getitem__ for Resource: {self.__name__}')
         else:
             return toRet(name=nextNode, parent=self, request=self.request)
 
     def GET(self):
-        raise NotImplementedError(f'GET for Ressource: {self.__name__}')
+        raise NotImplementedError(f'GET for Resource: {self.__name__}')
 
     def HEAD(self):
-        raise NotImplementedError(f'HEAD for Ressource: {self.__name__}')
+        raise NotImplementedError(f'HEAD for Resource: {self.__name__}')
 
     def POST(self):
-        raise NotImplementedError(f'POST for Ressource: {self.__name__}')
+        raise NotImplementedError(f'POST for Resource: {self.__name__}')
 
     def DELETE(self):
-        raise NotImplementedError(f'DELETE for Ressource: {self.__name__}')
+        raise NotImplementedError(f'DELETE for Resource: {self.__name__}')
 
     def OPTIONS(self):
         self.checkAndApplyCORS()
         return self.request.response
-        # raise NotImplementedError(f'OPTIONS for Ressource: {self.__name__}')
+        # raise NotImplementedError(f'OPTIONS for Resource: {self.__name__}')
 
     def TRACE(self):
-        raise NotImplementedError(f'TRACE for Ressource: {self.__name__}')
+        raise NotImplementedError(f'TRACE for Resource: {self.__name__}')
 
     def PATCH(self):
-        raise NotImplementedError(f'PATCH for Ressource: {self.__name__}')
+        raise NotImplementedError(f'PATCH for Resource: {self.__name__}')
 
     def PUT(self):
-        raise NotImplementedError(f'PUT for Ressource: {self.__name__}')
+        raise NotImplementedError(f'PUT for Resource: {self.__name__}')
 
     def checkHeadersRequestOrigin(self):
         '''
@@ -241,11 +241,11 @@ class MetaRootResource (dict):
                 self.addHeadersForCORS(headers=stepHeaders)
 
 
-class MetaEmptyRessource(MetaRootResource):
+class MetaEmptyResource(MetaRootResource):
     pass
 
 
-class MetaCollectionRessource(MetaRootResource):
+class MetaCollectionResource(MetaRootResource):
     pass
 
 

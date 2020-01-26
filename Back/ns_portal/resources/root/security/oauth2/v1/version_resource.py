@@ -1,5 +1,5 @@
 from ns_portal.core.resources import (
-    MetaEmptyRessource
+    MetaEmptyResource
 )
 from .authorize import (
     AuthorizeResource
@@ -15,7 +15,7 @@ from .token import (
 )
 
 
-class VersionResource(MetaEmptyRessource):
+class VersionResource(MetaEmptyResource):
     __ROUTES__ = {
         'authorize': AuthorizeResource,
         'login': LoginResource,

@@ -1,14 +1,14 @@
 from .resources import (
     MetaRootResource,
-    MetaCollectionRessource,
-    MetaEmptyRessource,
+    MetaCollectionResource,
+    MetaEmptyResource,
     IRESTview
 )
 
 __all__ = [
     "MetaRootResource",
-    "MetaCollectionRessource",
-    "MetaEmptyRessource",
+    "MetaCollectionResource",
+    "MetaEmptyResource",
     "IRESTview"
 
 ]
