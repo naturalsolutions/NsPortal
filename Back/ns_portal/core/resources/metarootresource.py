@@ -18,12 +18,21 @@ use_kwargs = parser.use_kwargs
 class CustomErrorParsingArgs(Exception):
 
     def __init__(self, value):
-        print("error")
         self.value = value
 
     def __str__(self):
         return repr(self.value)
 
+
+class MyNotImplementedError(Exception):
+    def __init__(self, reqObj):
+        self.method = getattr(reqObj, 'method')
+        self.path_url = getattr(reqObj, 'path_url')
+        self.query_string = getattr(reqObj, 'query_string')
+        self.value = 'Not Implemented'
+
+    def __str__(self):
+        return self.value
 
 # @parser.error_handler
 # def handle_error(error, req, schema, status_code, headers):
@@ -93,13 +102,20 @@ class MetaRootResource (dict):
             the next node should be an instance of this collection
             by default REST say collection/{id}
             in most cases {id} = int
-            so we have to check if the name is an int first
-            but keep in min that Traversal use __getitem__
-            and we can't populate all items with id
-            so we need a special key {int} in our __routes__ dict
+            so we have to check if the "name" is an int first
+
+            Keep in mind that Traversal use __getitem__
+            and we can't populate all items with id in a dict
+            before continue descend through resource tree
+
+            So we need a special key {int} in our __routes__ dict
 
             TODO __specialKey__ should be declare is type
             and we check if name is same type
+            TODO Maybe that's not true for all collection
+            if we have case collection/**endpoint**
+            we should handle it... will see
+            but for now will fail and we raise an error
             '''
             try:
                 int(name)
@@ -120,16 +136,16 @@ class MetaRootResource (dict):
             return toRet(name=nextNode, parent=self, request=self.request)
 
     def GET(self):
-        raise NotImplementedError(f'GET for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def HEAD(self):
-        raise NotImplementedError(f'HEAD for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def POST(self):
-        raise NotImplementedError(f'POST for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def DELETE(self):
-        raise NotImplementedError(f'DELETE for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def OPTIONS(self):
         self.checkAndApplyCORS()
@@ -137,13 +153,13 @@ class MetaRootResource (dict):
         # raise NotImplementedError(f'OPTIONS for Resource: {self.__name__}')
 
     def TRACE(self):
-        raise NotImplementedError(f'TRACE for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def PATCH(self):
-        raise NotImplementedError(f'PATCH for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def PUT(self):
-        raise NotImplementedError(f'PUT for Resource: {self.__name__}')
+        raise MyNotImplementedError(reqObj=self.request)
 
     def checkHeadersRequestOrigin(self):
         '''
