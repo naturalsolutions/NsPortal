@@ -1,7 +1,7 @@
 from ns_portal.core.resources import (
     MetaRootResource
 )
-from ns_portal.resources.security import (
+from .security import (
     SecurityResource
 )
 
