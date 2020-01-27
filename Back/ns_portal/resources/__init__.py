@@ -1,4 +1,4 @@
-from ns_portal.resources.root import MyRoot
+from .root import MyRoot
 
 
 def root_factory(request):
