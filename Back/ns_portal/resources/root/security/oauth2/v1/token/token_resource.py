@@ -5,7 +5,8 @@ from marshmallow import (
     Schema,
     fields,
     ValidationError,
-    validates_schema
+    validates_schema,
+    pre_load
 )
 
 
@@ -22,6 +23,15 @@ class tokenSchema(Schema):
     scope = fields.String()
     username = fields.String()
 
+    # @property
+    # def session(self):
+    #     print("toto")
+    #     return "12"
+
+    # @pre_load
+    # def validate_token(self, data, **kwargs):
+    #     step1_data = self.validate_grantType(data)
+
     @validates_schema
     def validate_token(self, data, **kwargs):
         errors = {}
@@ -37,29 +47,38 @@ class tokenSchema(Schema):
                 'client_credentials': [
                     'client_id',
                     'client_secret',
-                    'scope'
+                    # 'scope'
                     ],
                 'password': [
                     'client_id',
-                    'client_secret',
+                    # 'client_secret',
                     'username',
                     'password'
                     ]
             }
         }
-        typeGrant = data['grant_type']
+        grantType = data['grant_type']
         grantTypeToTest = conf.get('grant_type').get(data['grant_type'])
         for item in grantTypeToTest:
             if item not in data:
-                errors[item] = f'is required when grant_type is {typeGrant}'
+                errors[item] = (
+                    f'is required in query string'
+                    f' when grant_type is {grantType}'
+                )
 
-        if errors != {}:
+        if errors:
             raise ValidationError(errors)
 
 
 class TokenResource(MetaEndPointResource):
 
     def GET(self):
-        requiredArgs = self.__parser__(args=tokenSchema())
+        requiredArgs = self.__parser__(
+            args=tokenSchema(
+                context={
+                    "session": self.request.dbsession
+                }
+            )
+        )
         print(requiredArgs)
         return "ok"
