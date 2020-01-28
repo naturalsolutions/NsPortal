@@ -79,8 +79,8 @@ class MetaRootResource (dict):
     def __acl__(self):
         return []
 
-    def __parser__(self, args={}):
-        return parser.parse(args, req=self.request, location='querystring')
+    def __parser__(self, args, location):
+        return parser.parse(args, req=self.request, location=location)
 
     @property
     def __specialKey__(self):
