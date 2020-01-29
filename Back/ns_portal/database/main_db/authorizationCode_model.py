@@ -4,12 +4,6 @@ from ns_portal.database.meta import (
 from sqlalchemy import (
     Column,
     DateTime,
-    Float,
-    ForeignKey,
-    Integer,
-    Numeric,
-    String,
-    Sequence,
     func
 )
 from sqlalchemy.dialects.mssql import (
