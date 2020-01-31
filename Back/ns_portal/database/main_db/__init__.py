@@ -7,9 +7,13 @@ from .tapplications_model import (
 from .tusers_model import (
     TUsers
 )
+from .tsite_model import (
+    TSite
+)
 
 __all__ = [
     "AuthorizationCode",
     "TApplications",
-    "TUsers"
+    "TUsers",
+    "TSite"
 ]
