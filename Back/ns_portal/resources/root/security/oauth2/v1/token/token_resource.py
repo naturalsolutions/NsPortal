@@ -210,7 +210,6 @@ class TokenResource(MetaEndPointResource):
 
         return payload
 
-
     def POST(self):
         reqParams = self.__parser__(
             args=tokenSchema(
@@ -230,7 +229,7 @@ class TokenResource(MetaEndPointResource):
         payload = self.buildPayload(params=reqParams, policy=policy)
         token = getToken(
             payload=payload,
-            secret=getattr(policy, 'hashedsecretToken'),
+            secret=getattr(policy, 'secretToken'),
             algorithm=getattr(policy, 'algorithm')
         )
 
