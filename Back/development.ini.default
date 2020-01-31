@@ -100,6 +100,48 @@ sqlalchemy.url = mssql+pyodbc://username:password@host\instance/initialDB
 sqlalchemy.implicit_returning = False
 sqlalchemy.pool_reset_on_return = commit
 
+##############################################################################################################################
+#                                                                                                                            #
+#                           STARTING SECURITY                                                                                #
+#                                                                                                                            #
+##############################################################################################################################
+#  INFOS SECURITY                                                                                                            #
+#  JWTSECURITY.MASTER_SECRETTOKEN = this key will be used generate cookie THAT MUST BE THE SAME AS IN THE PORTAL             #
+#  JWTSECURITY.MASTER_SECRETREFRESHTOKEN = this key wil be used for refresh token                                            #
+#  JWTSECURITY.MASTER_SECRETCODE = this key will be used for code                                                            #
+#  JWTSECURITY.COOKIENAME    = this key will be used to identify the cookie we want to retrieve in the request and get claims#
+##############################################################################################################################
+
+JWTSECURITY.MASTER_SECRETTOKEN          =   test
+JWTSECURITY.MASTER_SECRETREFRESHTOKEN   =   test2
+JWTSECURITY.MASTER_SECRETCODE           =   test3
+JWTSECURITY.COOKIENAME                  =   NSPortal-Core
+JWTSECURITY.ALGORITHM                   =   HS512
+
+#                           ENDING SECURITY                                                                                  #
+#                                                                                                                            #
+##############################################################################################################################
+
+##############################################################################################################################
+#                                                                                                                            #
+#                           STARTING RENECO CONTEXT                                                                          #
+#                                                                                                                            #
+##############################################################################################################################
+#  INFOS RENECO                                                                                                              #
+#  RENECO.SECURITE.TINS_LABEL = this is specific for RENECO                                                                  #
+#                               YOU HAVE TO KNOW WHICH APPLICATION IN SECURITE                                               #
+#                               when authentificated by the portal, the payload will have an "dictionaries"                  #
+#                                 "roles" : {                                                                                #
+#                                            TIns_Label : Role                                                               #
+#                                           }                                                                                #
+##############################################################################################################################
+
+RENECO.SECURITE.TINS_LABEL =
+RENECO.SECURITE.TSIT_NAME = NS-Marseille
+
+#                           ENDING RENECO CONTEXT                                                                            #
+#                                                                                                                            #
+##############################################################################################################################
 
 
 # By default, the toolbar only appears for clients from IP addresses
