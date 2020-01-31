@@ -87,6 +87,7 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
         principals = [Everyone]
         verifedClaims = self.authenticated_userid(request)
         if verifedClaims:
+            principals += [Authenticated]
             # map new with old :(
             GROUPS = {
                 'Super Utilisateur': 'group:superUser',
@@ -97,7 +98,7 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
             if 'roles' in verifedClaims:
                 cookieRole = verifedClaims['roles'].get(self.TIns_Label, None)
                 if cookieRole:
-                    principals += [Authenticated, GROUPS.get(cookieRole, None)]
+                    principals += [GROUPS.get(cookieRole, None)]
 
         return principals
 
@@ -122,11 +123,11 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
             # DUMB TEST (we trust cookie payload )!!!! that's not really "verfiedClaims"
             # if you really want to "verify"" claims role in cookie match TRUE roles in database when request is invoked
             # you should make a request to database and implement your own check :) dunno if it's really possible with import scaffold for now and sqlachemy dbsession
-            if (
-                userCookieClaims.get('roles').get(self.TIns_Label) ==
-                effectiveClaimsOnRequestTime.get('roles').get(self.TIns_Label)
-            ):
-                verifedClaims = effectiveClaimsOnRequestTime
+            # if (
+            #     userCookieClaims.get('roles').get(self.TIns_Label) ==
+            #     effectiveClaimsOnRequestTime.get('roles').get(self.TIns_Label)
+            # ):
+            verifedClaims = effectiveClaimsOnRequestTime
 
         return verifedClaims
 
