@@ -4,20 +4,36 @@ from ns_portal.core.resources import (
 from marshmallow import (
     Schema,
     fields,
-    # validates,
+    EXCLUDE,
     ValidationError,
-    # validates_schema,
-    pre_load
+    pre_load,
+    post_load
+)
+from ns_portal.database import (
+    Main_Db_Base
 )
 from ns_portal.database.main_db import (
     TApplications,
     TUsers
 )
 from sqlalchemy import (
+    select,
     and_
 )
 from sqlalchemy.orm.exc import (
     MultipleResultsFound
+)
+from pyramid.security import (
+    Allow,
+    Everyone,
+    _get_authentication_policy,
+    remember
+)
+from pyramid.httpexceptions import (
+    HTTPFound
+)
+from ns_portal.utils import (
+    getToken
 )
 
 
@@ -34,24 +50,16 @@ class tokenSchema(Schema):
     scope = fields.String()
     username = fields.String()
 
+    # will exclude any key in request
+    # not defined in schema
+    class Meta:
+        unknown = EXCLUDE
+
     @pre_load
     def validate_token(self, data, **kwargs):
-        stepVsGrantType = {
-            'authorization_code': self.doAuthorization_Code,
-            'client_credentials': [
-                self.validate_client_id
-                ],
-            'password': [
-                self.validate_client_id,
-                self.validateUserCredentials
-                ]
-        }
-
         grantType, requiredList = self.checkGrantTypeAndGetOthersRequired(data)
         self.checkRequired(data, requiredList, grantType)
-        algo = stepVsGrantType.get(grantType)
-        for step in algo:
-            step(data)
+        self.validate_client_id(data)
 
         return data
 
@@ -71,10 +79,8 @@ class tokenSchema(Schema):
         conf = {
                 'authorization_code': [
                     'client_id',
-                    'scope',
                     'redirect_uri',
-                    'code',
-                    'code_verifier'
+                    'code'
                     ],
                 'client_credentials': [
                     'client_id',
@@ -123,7 +129,7 @@ class tokenSchema(Schema):
                     )
                 })
         if res:
-            return True
+            return data
         else:
             raise ValidationError({
                 "client_id": (
@@ -131,8 +137,15 @@ class tokenSchema(Schema):
                     )
                 })
 
-    def validateUserCredentials(self, data):
-        query = self.context['session'].query(TUsers.TUse_PK_ID)
+    # we will add userId key in tokenSchema
+    # will need it for token generation
+    # optimisation for fetching credentials one time only
+    @post_load
+    def validateUserCredentials(self, data, **kwargs):
+        query = self.context['session'].query(
+            TUsers.TUse_PK_ID,
+            TUsers.TUse_Language
+            )
         query = query.filter(
             and_(
                 TUsers.TUse_Login == data.get('username'),
@@ -150,7 +163,10 @@ class tokenSchema(Schema):
                     )
                 })
         if res:
-            return True
+            # this key is added after validation
+            data['userId'] = res.TUse_PK_ID
+            data['userLanguage'] = res.TUse_Language
+            return data
         else:
             raise ValidationError({
                 "error": (
@@ -166,8 +182,37 @@ class tokenSchema(Schema):
 
 class TokenResource(MetaEndPointResource):
 
+    __acl__ = [
+        (Allow, Everyone, 'create')
+        ]
+
+    def buildPayload(self, params, policy):
+        viewToQuery = Main_Db_Base.metadata.tables['VAllUsersApplications']
+        query = select([
+            viewToQuery
+        ]).where((
+            viewToQuery.c['TSit_Name'] == getattr(policy, 'TSit_Name'))
+            &
+            (viewToQuery.c['TUse_PK_ID'] == params.get('userId'))
+            &
+            (viewToQuery.c['TRol_Label'] != 'Interdit'))
+        query = query.order_by(viewToQuery.c['TIns_Order'])
+        result = self.request.dbsession.execute(query).fetchall()
+        payload = {
+            "iss": 'NSPortal',
+            "sub": params.get('userId'),
+            "username": params.get('username'),
+            "userlanguage": params.get('userLanguage'),
+            "roles": {
+                row.TIns_Label: row.TRol_Label for row in result
+            }
+        }
+
+        return payload
+
+
     def POST(self):
-        requiredArgs = self.__parser__(
+        reqParams = self.__parser__(
             args=tokenSchema(
                 context={
                     "session": self.request.dbsession
@@ -175,7 +220,26 @@ class TokenResource(MetaEndPointResource):
             ),
             location='form'
         )
-        print(requiredArgs)
-        print("validation is ok")
-        print("generate token")
-        return "ok"
+        # CRITICAL START
+        # this method will return the object that handle
+        # policy in pyramid app
+        # the policy object store keys from conf for generate token
+        policy = _get_authentication_policy(self.request)
+        # CRITICAL END
+
+        payload = self.buildPayload(params=reqParams, policy=policy)
+        token = getToken(
+            payload=payload,
+            secret=getattr(policy, 'hashedsecretToken'),
+            algorithm=getattr(policy, 'algorithm')
+        )
+
+        if reqParams.get('grant_type') == 'code':
+            print("todo with other secret")
+
+        if reqParams.get('grant_type') == 'password':
+            remember(self.request, token)
+            return HTTPFound(
+                location='/',
+                headers=self.request.response.headers
+                )
