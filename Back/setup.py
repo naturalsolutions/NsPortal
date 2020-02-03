@@ -16,14 +16,14 @@ requires = [
     'pyramid_tm',
     'sqlalchemy',
     'transaction',
-    'zope.sqlalchemy',
+    'zope.sqlalchemy==1.1',
     'waitress',
     'webtest',
     'pyodbc',
     'sqlalchemy',
     'pyramid_jwt',
     'pyramid_jwtauth',
-    'zope.interface'
+    'zope.interface==4.6'
     ]
 
 setup(name='ns_portal',
