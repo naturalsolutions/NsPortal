@@ -19,7 +19,7 @@ requires = [
     'zope.sqlalchemy==1.1',
     'waitress',
     'webtest',
-    'pyodbc',
+    'pyodbc==4.0.27',
     'sqlalchemy',
     'pyramid_jwt',
     'pyramid_jwtauth',
