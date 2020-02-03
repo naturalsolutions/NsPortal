@@ -17,6 +17,13 @@ from pyramid.security import (
 from ns_portal.utils import (
     myDecode
 )
+from ns_portal.database.main_db import (
+    TUsers,
+    TUsersSchema
+)
+from sqlalchemy.orm.exc import (
+    MultipleResultsFound
+)
 
 
 @implementer(IAuthenticationPolicy)
@@ -85,22 +92,36 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def effective_principals(self, request):
         principals = [Everyone]
-        verifedClaims = self.authenticated_userid(request)
-        if verifedClaims:
+        user = self.authenticated_userid(request)
+        if user:
             principals += [Authenticated]
-            # map new with old :(
-            GROUPS = {
-                'Super Utilisateur': 'group:superUser',
-                'Utilisateur': 'group:user',
-                'Administrateur': 'group:admin'
-            }
-
-            if 'roles' in verifedClaims:
-                cookieRole = verifedClaims['roles'].get(self.TIns_Label, None)
-                if cookieRole:
-                    principals += [GROUPS.get(cookieRole, None)]
 
         return principals
+
+    def checkUserInDb(self, request, claims):
+        idUser = claims.get('sub')
+        query = request.dbsession.query(
+            TUsers.TUse_PK_ID,
+            TUsers.TUse_LastName,
+            TUsers.TUse_FirstName,
+            TUsers.TUse_CreationDate,
+            TUsers.TUse_Login,
+            TUsers.TUse_Language,
+            TUsers.TUse_ModificationDate,
+            TUsers.TUse_HasAccess,
+            TUsers.TUse_Photo,
+            TUsers.TUse_PK_ID_OLD
+            )
+        query = query.filter(
+                    TUsers.TUse_PK_ID == idUser
+                )
+        try:
+            res = query.one_or_none()
+            return TUsersSchema().dump(res) if res else None
+        except MultipleResultsFound:
+            raise MultipleResultsFound()
+
+        return res
 
     def authenticated_userid(self, request):
         '''
@@ -111,25 +132,12 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
         for later or specific case
         '''
 
-        verifedClaims = None
         userCookieClaims = self.unauthenticated_userid(request)
         if userCookieClaims is not None:
-            effectiveClaimsOnRequestTime = self.getClaims(
-                userCookieClaims,
-                request
-            )
-            if effectiveClaimsOnRequestTime is None:
-                return verifedClaims
-            # DUMB TEST (we trust cookie payload )!!!! that's not really "verfiedClaims"
-            # if you really want to "verify"" claims role in cookie match TRUE roles in database when request is invoked
-            # you should make a request to database and implement your own check :) dunno if it's really possible with import scaffold for now and sqlachemy dbsession
-            # if (
-            #     userCookieClaims.get('roles').get(self.TIns_Label) ==
-            #     effectiveClaimsOnRequestTime.get('roles').get(self.TIns_Label)
-            # ):
-            verifedClaims = effectiveClaimsOnRequestTime
+            user = self.checkUserInDb(request, userCookieClaims)
+            return user
 
-        return verifedClaims
+        return None
 
     def unauthenticated_userid(self, request):
         userCookieClaims = None
@@ -142,10 +150,13 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
     def extractClaimsFromCookie(self, jwt):
         claims = None
 
-        claims = myDecode(jwt, self.secretToken, listAlgorithm=[self.algorithm])
+        claims = myDecode(
+            token=jwt,
+            secret=self.secretToken
+            )
         return claims
 
-    def remember(self, request, token):
+    def remember(self, response, token):
 
         '''
         call by login view
@@ -166,7 +177,7 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
         # httponly=True
         # security manipulate cookie by javascript in client
-        request.response.set_cookie(
+        response.set_cookie(
             name=self.cookie_name,
             value=token,
             max_age=maxAge,
