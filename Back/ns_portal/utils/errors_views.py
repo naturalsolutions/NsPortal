@@ -12,6 +12,19 @@ from ns_portal.core.resources.metarootresource import (
     CustomErrorParsingArgs,
     MyNotImplementedError
 )
+from marshmallow import (
+    ValidationError
+)
+
+
+@view_config(context=ValidationError)
+def validationError_marsh(exception, request):
+    return Response(
+        status=400,
+        content_type='application/json',
+        charset='utf-8',
+        json_body=exception.messages
+        )
 
 
 @view_config(context=CustomErrorParsingArgs)
