@@ -9,6 +9,10 @@ from marshmallow import (
     EXCLUDE,
     fields
 )
+from pyramid.security import (
+    Allow,
+    Everyone
+)
 
 
 class siteSchema(Schema):
@@ -22,6 +26,10 @@ class siteSchema(Schema):
 
 
 class SiteResource(MetaRootResource):
+
+    __acl__ = [
+        (Allow, Everyone, 'read')
+        ]
 
     def GET(self):
         qsParams = self.__parser__(
