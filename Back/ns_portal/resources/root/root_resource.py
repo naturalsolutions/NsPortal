@@ -7,10 +7,15 @@ from .security import (
 from .site import (
     SiteResource
 )
+from .me import (
+    MeResource
+)
 
 
 class MyRoot(MetaRootResource):
+
     __ROUTES__ = {
         'security':  SecurityResource,
-        'site': SiteResource
+        'site': SiteResource,
+        'me': MeResource
     }
