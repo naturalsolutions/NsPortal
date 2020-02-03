@@ -1,5 +1,8 @@
 import jwt
 import datetime
+from pyramid.security import (
+    _get_authentication_policy
+)
 
 # we follow the RFC7519
 # look at https://tools.ietf.org/html/rfc7519#section-4.1
@@ -12,28 +15,36 @@ _nbMinBeforeExpired = 5
 _deltaValidInSeconds = 60
 
 
-def getOauth2CodeWithSecret(idUser, secret, algorithm):
+def getOauth2CodeWithSecret(idUser, client_id, request):
+
+    policy = _get_authentication_policy(request)
+    secret = getattr(policy, 'secretToken')
+    algorithm = getattr(policy, 'algorithm')
+
     now = datetime.datetime.now()
     nowInTimeStampSeconds = int(now.timestamp())
 
     payload = {
-        'iss': 'NSPortal',
         'sub': idUser,
-        'exp': nowInTimeStampSeconds + _nbMinBeforeExpired * (_minute),
-        'iat': nowInTimeStampSeconds
+        'exp': nowInTimeStampSeconds + _nbMinBeforeExpired * (_minute)
     }
 
-    return myEncode(payload, secret, algorithm=algorithm)
+    return myEncode(payload, secret, algorithm='HS256')
 
 
 def myEncode(payload, secret, algorithm):
     return jwt.encode(payload, secret, algorithm=algorithm)
 
 
-def myDecode(code, secret, listAlgorithm):
+def myDecode(token, secret):
     payloadValided = False
     try:
-        payloadValided = jwt.decode(code, secret, algorithms=listAlgorithm)
+        payloadValided = jwt.decode(
+            token,
+            secret,
+            algorithms=['HS256', 'HS512'],
+            verify=False
+            )
     except jwt.ExpiredSignatureError:
         raise jwt.ExpiredSignatureError(
             f'You take too much time for getting your token.',
@@ -55,9 +66,26 @@ def myDecode(code, secret, listAlgorithm):
     return payloadValided
 
 
-def checkOauth2CodeAndGiveToken(code, secret, listAlgorithm):
-    return myDecode(code, secret, listAlgorithm)
+def checkOauth2CodeAndGiveToken(code, secret):
+    return myDecode(
+        token=code,
+        secret=secret
+        )
 
 
-def getToken(payload, secret, algorithm):
+def getToken(idUser, request):
+
+    policy = _get_authentication_policy(request)
+    secret = getattr(policy, 'secretToken')
+    algorithm = getattr(policy, 'algorithm')
+
+    now = datetime.datetime.now()
+    nowInTimeStampSeconds = int(now.timestamp())
+
+    payload = {
+        'sub': idUser,
+        'exp': nowInTimeStampSeconds + _nbMinBeforeExpired * (_minute)
+    }
+
+
     return myEncode(payload, secret, algorithm)
