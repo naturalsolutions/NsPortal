@@ -42,16 +42,23 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def __init__(
         self,
-        algorithm=None,
-        secretToken=None,
-        secretCode=None,
-        secretRefreshToken=None,
+        # algorithm=None,
+        # secretToken=None,
+        # secretCode=None,
+        # secretRefreshToken=None,
+        cookieTokenSecret=None,
+        cookieTokenAlgorithm=None,
+        accessTokenSecret=None,
+        accessTokenAlgorithm=None,
+        codeTokenSecret=None,
+        codeTokenAlgorithm=None,
+        refreshTokenSecret=None,
+        refreshTokenAlgorithm=None,
         cookie_name=None,
         TIns_Label=None,
         TSit_Name=None
     ):
 
-        self.algorithm = algorithm
         self.cookie_name = cookie_name
         #   Welcome to the real world neo :D
         #   from    *.ini  key = ecorelevé
@@ -61,29 +68,53 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
         self.TIns_Label = TIns_Label.encode('latin1').decode('utf-8')
         self.TSit_Name = TSit_Name
 
-        if secretToken is None:
-            raise ValueError('secretToken should not be empty')
+        if cookieTokenSecret is None:
+            raise ValueError('cookieTokenSecret should not be empty')
         else:
-            self.secretToken = bytes(
-                secretToken,
+            self.cookieTokenSecret = bytes(
+                cookieTokenSecret,
                 encoding='utf-8'
                 )
+        if cookieTokenAlgorithm is None:
+            raise ValueError('cookieTokenAlgorithm should not be empty')
+        else:
+            self.cookieTokenAlgorithm = cookieTokenAlgorithm
 
-        if secretCode is None:
-            raise ValueError('secretCode should not be empty')
+        if accessTokenSecret is None:
+            raise ValueError('accessTokenSecret should not be empty')
         else:
-            self.secretCode = bytes(
-                secretCode,
+            self.accessTokenSecret = bytes(
+                accessTokenSecret,
                 encoding='utf-8'
                 )
+        if accessTokenAlgorithm is None:
+            raise ValueError('accessTokenAlgorithm should not be empty')
+        else:
+            self.accessTokenAlgorithm = accessTokenAlgorithm
 
-        if secretRefreshToken is None:
-            raise ValueError('secretRefreshToken should not be empty')
+        if codeTokenSecret is None:
+            raise ValueError('codeTokenSecret should not be empty')
         else:
-            self.secretRefreshToken = bytes(
-                secretRefreshToken,
+            self.codeTokenSecret = bytes(
+                codeTokenSecret,
                 encoding='utf-8'
                 )
+        if codeTokenAlgorithm is None:
+            raise ValueError('codeTokenAlgorithm should not be empty')
+        else:
+            self.codeTokenAlgorithm = codeTokenAlgorithm
+
+        if refreshTokenSecret is None:
+            raise ValueError('refreshTokenSecret should not be empty')
+        else:
+            self.refreshTokenSecret = bytes(
+                refreshTokenSecret,
+                encoding='utf-8'
+                )
+        if refreshTokenAlgorithm is None:
+            raise ValueError('refreshTokenAlgorithm should not be empty')
+        else:
+            self.refreshTokenAlgorithm = refreshTokenAlgorithm
 
         self.callback = self.getClaims
 

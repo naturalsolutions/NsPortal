@@ -57,25 +57,41 @@ def meaningConfig(config):
         )
 
     return {
-            "algorithm": settings.get(
-                'JWTSECURITY.ALGORITHM',
-                _defaultAlgorithm
-                ),
-            "secretToken": settings.get(
-                'JWTSECURITY.MASTER_SECRETTOKEN',
+            "cookieTokenSecret": settings.get(
+                'JWTSECURITY.COOKIETOKENMASTER_SECRET',
                 None
                 ),
-            "secretCode": settings.get(
-                'JWTSECURITY.MASTER_SECRETCODE',
+            "cookieTokenAlgorithm": settings.get(
+                'JWTSECURITY.COOKIETOKENALGORITHM',
                 None
                 ),
-            "secretRefreshToken": settings.get(
-                'JWTSECURITY.MASTER_SECRETREFRESHTOKEN',
+            "accessTokenSecret": settings.get(
+                'JWTSECURITY.ACCESSTOKENMASTER_SECRET',
+                None
+                ),
+            "accessTokenAlgorithm": settings.get(
+                'JWTSECURITY.ACCESSTOKENALGORITHM',
+                None
+                ),
+            "codeTokenSecret": settings.get(
+                'JWTSECURITY.CODETOKENMASTER_SECRET',
+                None
+                ),
+            "codeTokenAlgorithm": settings.get(
+                'JWTSECURITY.CODETOKENALGORITHM',
+                None
+                ),
+            "refreshTokenSecret": settings.get(
+                'JWTSECURITY.REFRESHTOKENMASTER_SECRET',
+                None
+                ),
+            "refreshTokenAlgorithm": settings.get(
+                'JWTSECURITY.REFRESHTOKENALGORITHM',
                 None
                 ),
             "cookie_name": settings.get(
                 'JWTSECURITY.COOKIENAME',
-                _defaultCookieName
+                None
                 ),
             "TIns_Label": settings.get(
                 'RENECO.SECURITE.TINS_LABEL'
