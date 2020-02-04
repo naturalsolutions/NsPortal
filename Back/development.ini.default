@@ -106,18 +106,26 @@ sqlalchemy.pool_reset_on_return = commit
 #                                                                                                                            #
 ##############################################################################################################################
 #  INFOS SECURITY                                                                                                            #
-#  JWTSECURITY.MASTER_SECRETTOKEN = this key will be used generate cookie THAT MUST BE THE SAME AS IN THE PORTAL             #
-#  JWTSECURITY.MASTER_SECRETREFRESHTOKEN = this key wil be used for refresh token                                            #
-#  JWTSECURITY.MASTER_SECRETCODE = this key will be used for code                                                            #
+#  JWTSECURITY.COOKIETOKENMASTER_SECRET = this key will be used generate cookie for portal                                   #
+#  JWTSECURITY.REFRESHTOKENMASTER_SECRET = this key wil be used for refresh token                                            #
+#  JWTSECURITY.ACCESSTOKENMASTER_SECRET = this key wil be used for access token (this key MUST be same in others app)        #
+#  JWTSECURITY.CODETOKENMASTER_SECRET = this key will be used for code                                                       #
 #  JWTSECURITY.COOKIENAME    = this key will be used to identify the cookie we want to retrieve in the request and get claims#
 ##############################################################################################################################
 
-JWTSECURITY.MASTER_SECRETTOKEN          =   test
-JWTSECURITY.MASTER_SECRETREFRESHTOKEN   =   test2
-JWTSECURITY.MASTER_SECRETCODE           =   test3
 JWTSECURITY.COOKIENAME                  =   NSPortal-Core
-JWTSECURITY.ALGORITHM                   =   HS512
 
+JWTSECURITY.COOKIETOKENMASTER_SECRET    =   test
+JWTSECURITY.COOKIETOKENALGORITHM        =   HS512
+
+JWTSECURITY.CODETOKENMASTER_SECRET      =   test2
+JWTSECURITY.CODETOKENALGORITHM          =   HS256
+
+JWTSECURITY.ACCESSTOKENMASTER_SECRET    =   test3
+JWTSECURITY.ACCESSTOKENALGORITHM        =   HS512
+
+JWTSECURITY.REFRESHTOKENMASTER_SECRET   =   test4
+JWTSECURITY.REFRESHTOKENALGORITHM       =   HS512
 #                           ENDING SECURITY                                                                                  #
 #                                                                                                                            #
 ##############################################################################################################################
