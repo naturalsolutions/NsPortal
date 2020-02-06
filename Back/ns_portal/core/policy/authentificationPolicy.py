@@ -183,7 +183,7 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
         claims = myDecode(
             token=jwt,
-            secret=self.secretToken
+            secret=self.cookieTokenSecret
             )
         return claims
 
