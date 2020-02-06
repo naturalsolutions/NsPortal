@@ -91,28 +91,31 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
           });
         },
       });
-       this.$el.i18n();
+      this.$el.i18n();
 
       $("body").css('background-image', 'none');
     },
 
     isValidUserName: function() {
-      var user = this.collection.findWhere({fullname: this.ui.userName.val()});
-      if (!user) {
-        this.displayError(true, this.ui.userName, 'Invalid username');
-        return false;
-      } else {
-        return user;
+      return {
+        username : this.ui.userName.val()
       }
+      // var user = this.collection.findWhere({fullname: this.ui.userName.val()});
+      // if (!user) {
+      //   this.displayError(true, this.ui.userName, 'Invalid username');
+      //   return false;
+      // } else {
+      //   return user;
+      // }
     },
 
     login: function(elt) {
       var _this = this;
       elt.preventDefault();
       elt.stopPropagation();
-      var url = config.coreUrl + 'security/login';
+      var url = config.coreUrl + 'security/oauth2/v1/login';
       var user = this.isValidUserName();
-      
+
       if (!$('#password').val().length) {
         this.displayPwdError(true, this.ui.password, 'Invalid password');
         this.shake();
@@ -124,19 +127,25 @@ function(Marionette, Backbone, JsSHA, config, $ui) {
           type: 'POST',
           url: url,
           data: {
-            userId: user.get('PK_id'),
+            username: user.username,
             password: this.pwd($('#password').val()),
           },
         }).done(function() {
           $('.login-form').addClass('rotate3d');
-          window.app.user.set('name', $('#UNportal').val());
+          //window.app.user.set('name', $('#UNportal').val());
           setTimeout(function() {
-            Backbone.history.navigate('', {trigger: true});
+            // seems dirty but i don't known how to do it
+            // without spend a lot of time to refact the front app
+            // when we are logged we reload the location for execute again
+            // the function checkIfCookie() when app start
+            // it's usefull when an app redirect to portal
+            // and the user is not logged in or is cookie not more valid
+            window.location.reload()
           }, 500);
         }).fail(function() {
           this.displayPwdError(true, this.ui.password, 'Invalid password');
           this.shake();
-		  $('#password').val('');
+          $('#password').val('');
         });
       } else {
         this.shake();
