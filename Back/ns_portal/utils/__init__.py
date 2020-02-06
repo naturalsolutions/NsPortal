@@ -1,15 +1,17 @@
 from .token import (
-    getOauth2CodeWithSecret,
-    getToken,
-    checkOauth2CodeAndGiveToken,
-    myDecode
+    myDecode,
+    getCookieToken,
+    getCodeToken,
+    getAccessToken,
+    getRefreshToken
 )
 
 __all__ = [
-    "getOauth2CodeWithSecret",
-    "getToken",
-    "checkOauth2CodeAndGiveToken",
-    "myDecode"
+    "myDecode",
+    "getCookieToken",
+    "getCodeToken",
+    "getAccessToken",
+    "getRefreshToken"
 ]
 
 
