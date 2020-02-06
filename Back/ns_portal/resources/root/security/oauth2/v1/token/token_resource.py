@@ -20,9 +20,11 @@ from pyramid.security import (
     _get_authentication_policy
 )
 from ns_portal.utils import (
-    getToken,
+    getAccessToken,
+    getRefreshToken,
     myDecode
 )
+import datetime
 
 
 class tokenSchema(Schema):
@@ -30,6 +32,7 @@ class tokenSchema(Schema):
         required=True
     )
     code = fields.String()
+    refresh_token = fields.String()
 
     # will exclude any key in request
     # not defined in schema
@@ -59,7 +62,10 @@ class tokenSchema(Schema):
         conf = {
                 'code': [
                     'code'
-                    ]
+                    ],
+                'refresh_token': [
+                    'refresh_token'
+                ]
         }
         grantTypeInData = data.get('grant_type', None)
         if grantTypeInData is None:
@@ -69,8 +75,8 @@ class tokenSchema(Schema):
         else:
             raise ValidationError({
                 "grant_type": (
-                    f'should be authorization_code'
-                    f' client_credentials password'
+                    f'should be code'
+                    f' refresh_token'
                     )
                 })
 
@@ -78,32 +84,9 @@ class tokenSchema(Schema):
 class TokenResource(MetaEndPointResource):
 
     __acl__ = [
-        (Allow, Everyone, 'create')
+        (Allow, Everyone, 'create'),
+        (Allow, Everyone, 'CORS')
         ]
-
-    def buildPayload(self, params, policy):
-        viewToQuery = Main_Db_Base.metadata.tables['VAllUsersApplications']
-        query = select([
-            viewToQuery
-        ]).where((
-            viewToQuery.c['TSit_Name'] == getattr(policy, 'TSit_Name'))
-            &
-            (viewToQuery.c['TUse_PK_ID'] == params.get('userId'))
-            &
-            (viewToQuery.c['TRol_Label'] != 'Interdit'))
-        query = query.order_by(viewToQuery.c['TIns_Order'])
-        result = self.request.dbsession.execute(query).fetchall()
-        payload = {
-            "iss": 'NSPortal',
-            "sub": params.get('userId'),
-            "username": params.get('username'),
-            "userlanguage": params.get('userLanguage'),
-            "roles": {
-                row.TIns_Label: row.TRol_Label for row in result
-            }
-        }
-
-        return payload
 
     def POST(self):
         reqParams = self.__parser__(
@@ -111,29 +94,59 @@ class TokenResource(MetaEndPointResource):
             location='json'
         )
         policy = _get_authentication_policy(self.request)
-        secret = getattr(policy, 'secretToken')
-        print(f"secret token: {secret} code {reqParams.get('code')}")
-
-        payloadInCode = myDecode(
-            token=reqParams.get('code'),
-            secret=secret
-            )
-
-
-        print(" check code ")
-        token = getToken(
-            idUser=self.request.authenticated_userid.get('TUse_PK_ID'),
-            request=self.request
-        )
 
         if reqParams.get('grant_type') == 'code':
-            return {
-                'token': token
-            }
+            secret = getattr(policy, 'codeTokenSecret')
+            payloadInCode = myDecode(
+                token=reqParams.get('code'),
+                secret=secret
+                )
+            now = datetime.datetime.now()
+            dateExpCode = datetime.datetime.fromtimestamp(
+                payloadInCode.get('exp')
+                )
+            if now < dateExpCode:
+                accessToken = getAccessToken(
+                    idUser=payloadInCode.get('sub'),
+                    request=self.request
+                )
+                refreshToken = getRefreshToken(
+                    idUser=payloadInCode.get('sub'),
+                    request=self.request
+                )
 
-        # if reqParams.get('grant_type') == 'password':
-        #     remember(self.request, token)
-        #     return HTTPFound(
-        #         location='/',
-        #         headers=self.request.response.headers
-        #         )
+                self.request.response.json_body = {
+                    'access_token': accessToken.decode('utf-8'),
+                    'token_type': 'Bearer',
+                    "expires_in": 300,
+                    "refresh_token": refreshToken.decode('utf-8')
+                    }
+                return self.request.response
+            else:
+                return "code no more valid"
+        elif reqParams.get('grant_type') == 'refresh_token':
+            secret = getattr(policy, 'refreshTokenSecret')
+            payloadInRefreshToken = myDecode(
+                token=reqParams.get('refresh_token'),
+                secret=secret
+                )
+            now = datetime.datetime.now()
+            dateExpCode = datetime.datetime.fromtimestamp(
+                payloadInRefreshToken.get('exp')
+                )
+            if now < dateExpCode:
+                accessToken = getAccessToken(
+                    idUser=payloadInRefreshToken.get('sub'),
+                    request=self.request
+                )
+
+                self.request.response.json_body = {
+                    'access_token': accessToken.decode('utf-8'),
+                    'token_type': 'Bearer',
+                    "expires_in": 300
+                    }
+                return self.request.response
+            else:
+                return "refresh token no more valid"
+        else:
+            return 'Code date expiration'
