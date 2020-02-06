@@ -10,6 +10,12 @@ from .site import (
 from .me import (
     MeResource
 )
+from .users import (
+    UsersResource
+)
+from .instances import (
+    InstancesResource
+)
 
 
 class MyRoot(MetaRootResource):
@@ -17,5 +23,7 @@ class MyRoot(MetaRootResource):
     __ROUTES__ = {
         'security':  SecurityResource,
         'site': SiteResource,
-        'me': MeResource
+        'me': MeResource,
+        'user': UsersResource,
+        'instance': InstancesResource
     }
