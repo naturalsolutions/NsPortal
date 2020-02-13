@@ -19,6 +19,9 @@ from pyramid.security import (
     Everyone,
     _get_authentication_policy
 )
+from pyramid.httpexceptions import (
+    HTTPBadRequest
+)
 from ns_portal.utils import (
     getAccessToken,
     getRefreshToken,
@@ -123,7 +126,7 @@ class TokenResource(MetaEndPointResource):
                     }
                 return self.request.response
             else:
-                return "code no more valid"
+                return HTTPBadRequest("Code no more valid")
         elif reqParams.get('grant_type') == 'refresh_token':
             secret = getattr(policy, 'refreshTokenSecret')
             payloadInRefreshToken = myDecode(
@@ -149,4 +152,4 @@ class TokenResource(MetaEndPointResource):
             else:
                 return "refresh token no more valid"
         else:
-            return 'Code date expiration'
+            return HTTPBadRequest('Code no more valid')
