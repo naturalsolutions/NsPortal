@@ -3,6 +3,7 @@ from ns_portal.database.meta import (
 )
 from sqlalchemy import (
     Column,
+    ForeignKey,
     Integer,
     String,
     VARBINARY
@@ -45,22 +46,27 @@ class TSite(Main_Db_Base):
         )
     TSit_Director = Column(
         Integer,
+        ForeignKey('TUsers.TUse_PK_ID'),
         nullable=True
         )
     TSit_NetworkAdmin = Column(
         Integer,
+        ForeignKey('TUsers.TUse_PK_ID'),
         nullable=True
         )
     TSit_BreedingChief = Column(
         Integer,
+        ForeignKey('TUsers.TUse_PK_ID'),
         nullable=True
         )
     TSit_VetChief = Column(
         Integer,
+        ForeignKey('TUsers.TUse_PK_ID'),
         nullable=True
         )
     TSit_IncubChief = Column(
         Integer,
+        ForeignKey('TUsers.TUse_PK_ID'),
         nullable=True
         )
     TSit_Project = Column(

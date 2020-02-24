@@ -17,6 +17,13 @@ from pyramid.security import (
 from ns_portal.utils import (
     myDecode
 )
+from ns_portal.database.main_db import (
+    TUsers,
+    TUsersSchema
+)
+from sqlalchemy.orm.exc import (
+    MultipleResultsFound
+)
 
 
 @implementer(IAuthenticationPolicy)
@@ -35,16 +42,23 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def __init__(
         self,
-        algorithm=None,
-        secretToken=None,
-        secretCode=None,
-        secretRefreshToken=None,
+        # algorithm=None,
+        # secretToken=None,
+        # secretCode=None,
+        # secretRefreshToken=None,
+        cookieTokenSecret=None,
+        cookieTokenAlgorithm=None,
+        accessTokenSecret=None,
+        accessTokenAlgorithm=None,
+        codeTokenSecret=None,
+        codeTokenAlgorithm=None,
+        refreshTokenSecret=None,
+        refreshTokenAlgorithm=None,
         cookie_name=None,
         TIns_Label=None,
         TSit_Name=None
     ):
 
-        self.algorithm = algorithm
         self.cookie_name = cookie_name
         #   Welcome to the real world neo :D
         #   from    *.ini  key = ecorelevé
@@ -54,29 +68,53 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
         self.TIns_Label = TIns_Label.encode('latin1').decode('utf-8')
         self.TSit_Name = TSit_Name
 
-        if secretToken is None:
-            raise ValueError('secretToken should not be empty')
+        if cookieTokenSecret is None:
+            raise ValueError('cookieTokenSecret should not be empty')
         else:
-            self.secretToken = bytes(
-                secretToken,
+            self.cookieTokenSecret = bytes(
+                cookieTokenSecret,
                 encoding='utf-8'
                 )
+        if cookieTokenAlgorithm is None:
+            raise ValueError('cookieTokenAlgorithm should not be empty')
+        else:
+            self.cookieTokenAlgorithm = cookieTokenAlgorithm
 
-        if secretCode is None:
-            raise ValueError('secretCode should not be empty')
+        if accessTokenSecret is None:
+            raise ValueError('accessTokenSecret should not be empty')
         else:
-            self.secretCode = bytes(
-                secretCode,
+            self.accessTokenSecret = bytes(
+                accessTokenSecret,
                 encoding='utf-8'
                 )
+        if accessTokenAlgorithm is None:
+            raise ValueError('accessTokenAlgorithm should not be empty')
+        else:
+            self.accessTokenAlgorithm = accessTokenAlgorithm
 
-        if secretRefreshToken is None:
-            raise ValueError('secretRefreshToken should not be empty')
+        if codeTokenSecret is None:
+            raise ValueError('codeTokenSecret should not be empty')
         else:
-            self.secretRefreshToken = bytes(
-                secretRefreshToken,
+            self.codeTokenSecret = bytes(
+                codeTokenSecret,
                 encoding='utf-8'
                 )
+        if codeTokenAlgorithm is None:
+            raise ValueError('codeTokenAlgorithm should not be empty')
+        else:
+            self.codeTokenAlgorithm = codeTokenAlgorithm
+
+        if refreshTokenSecret is None:
+            raise ValueError('refreshTokenSecret should not be empty')
+        else:
+            self.refreshTokenSecret = bytes(
+                refreshTokenSecret,
+                encoding='utf-8'
+                )
+        if refreshTokenAlgorithm is None:
+            raise ValueError('refreshTokenAlgorithm should not be empty')
+        else:
+            self.refreshTokenAlgorithm = refreshTokenAlgorithm
 
         self.callback = self.getClaims
 
@@ -85,21 +123,36 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
     def effective_principals(self, request):
         principals = [Everyone]
-        verifedClaims = self.authenticated_userid(request)
-        if verifedClaims:
-            # map new with old :(
-            GROUPS = {
-                'Super Utilisateur': 'group:superUser',
-                'Utilisateur': 'group:user',
-                'Administrateur': 'group:admin'
-            }
-
-            if 'roles' in verifedClaims:
-                cookieRole = verifedClaims['roles'].get(self.TIns_Label, None)
-                if cookieRole:
-                    principals += [Authenticated, GROUPS.get(cookieRole, None)]
+        user = self.authenticated_userid(request)
+        if user:
+            principals += [Authenticated]
 
         return principals
+
+    def checkUserInDb(self, request, claims):
+        idUser = claims.get('sub')
+        query = request.dbsession.query(
+            TUsers.TUse_PK_ID,
+            TUsers.TUse_LastName,
+            TUsers.TUse_FirstName,
+            TUsers.TUse_CreationDate,
+            TUsers.TUse_Login,
+            TUsers.TUse_Language,
+            TUsers.TUse_ModificationDate,
+            TUsers.TUse_HasAccess,
+            TUsers.TUse_Photo,
+            TUsers.TUse_PK_ID_OLD
+            )
+        query = query.filter(
+                    TUsers.TUse_PK_ID == idUser
+                )
+        try:
+            res = query.one_or_none()
+            return TUsersSchema().dump(res) if res else None
+        except MultipleResultsFound:
+            raise MultipleResultsFound()
+
+        return res
 
     def authenticated_userid(self, request):
         '''
@@ -110,25 +163,12 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
         for later or specific case
         '''
 
-        verifedClaims = None
         userCookieClaims = self.unauthenticated_userid(request)
         if userCookieClaims is not None:
-            effectiveClaimsOnRequestTime = self.getClaims(
-                userCookieClaims,
-                request
-            )
-            if effectiveClaimsOnRequestTime is None:
-                return verifedClaims
-            # DUMB TEST (we trust cookie payload )!!!! that's not really "verfiedClaims"
-            # if you really want to "verify"" claims role in cookie match TRUE roles in database when request is invoked
-            # you should make a request to database and implement your own check :) dunno if it's really possible with import scaffold for now and sqlachemy dbsession
-            if (
-                userCookieClaims.get('roles').get(self.TIns_Label) ==
-                effectiveClaimsOnRequestTime.get('roles').get(self.TIns_Label)
-            ):
-                verifedClaims = effectiveClaimsOnRequestTime
+            user = self.checkUserInDb(request, userCookieClaims)
+            return user
 
-        return verifedClaims
+        return None
 
     def unauthenticated_userid(self, request):
         userCookieClaims = None
@@ -141,10 +181,13 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
     def extractClaimsFromCookie(self, jwt):
         claims = None
 
-        claims = myDecode(jwt, self.secretToken, listAlgorithm=[self.algorithm])
+        claims = myDecode(
+            token=jwt,
+            secret=self.cookieTokenSecret
+            )
         return claims
 
-    def remember(self, request, token):
+    def remember(self, response, token):
 
         '''
         call by login view
@@ -165,7 +208,7 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
 
         # httponly=True
         # security manipulate cookie by javascript in client
-        request.response.set_cookie(
+        response.set_cookie(
             name=self.cookie_name,
             value=token,
             max_age=maxAge,

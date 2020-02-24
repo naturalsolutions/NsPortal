@@ -9,6 +9,9 @@ from sqlalchemy import (
     String,
     func
 )
+from marshmallow_sqlalchemy import (
+    ModelSchema
+)
 
 
 class TUsers(Main_Db_Base):
@@ -60,3 +63,9 @@ class TUsers(Main_Db_Base):
         nullable=False,
         server_default=func.now()
     )
+
+
+class TUsersSchema(ModelSchema):
+
+    class Meta:
+        model = TUsers
