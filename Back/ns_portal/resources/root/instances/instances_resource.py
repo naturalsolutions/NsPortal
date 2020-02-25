@@ -35,6 +35,7 @@ class InstancesResource(MetaEndPointResource):
             TInstance.TIns_Database,
             TInstance.TIns_Order,
             TInstance.TIns_ReadOnly,
+            TApplications.TApp_ClientID,
             TApplications.TApp_Description,
             TRoles.TRol_Label,
             TUsers.TUse_PK_ID,
