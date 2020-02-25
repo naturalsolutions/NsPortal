@@ -61,6 +61,7 @@ class AuthorizeResource(MetaEndPointResource):
             TInstance.TIns_Database,
             TInstance.TIns_Order,
             TInstance.TIns_ReadOnly,
+            TApplications.TApp_ClientID,
             TApplications.TApp_Description,
             TRoles.TRol_Label,
             TUsers.TUse_PK_ID,
@@ -90,7 +91,7 @@ class AuthorizeResource(MetaEndPointResource):
                 (TSite.TSit_Name == tsiteName),
                 (TUsers.TUse_PK_ID == userId),
                 (TRoles.TRol_Label != 'Interdit'),
-                (TInstance.TIns_Label == client_id),
+                (TApplications.TApp_ClientID == client_id),
                 (TInstance.TIns_ApplicationPath == redirect_uri)
             )
         VAllUsersApplications = VAllUsersApplications.order_by(

@@ -27,7 +27,9 @@ web.config
 portalenv/
 .vscode/
 
+
 Back/env
 Back/masterenv
 Back/dist
 Back/build
+Back/portalvenv
