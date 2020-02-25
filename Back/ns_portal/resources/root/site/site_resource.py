@@ -55,7 +55,7 @@ class SiteResource(MetaRootResource):
 
         query = query.filter(
             TSite.TSit_Name == dictConfigIni.get(
-                'siteName',
+                'RENECO.SECURITE.TSIT_NAME',
                 'Web')
                 )
         res = query.one_or_none()
