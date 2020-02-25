@@ -1,17 +1,6 @@
 from ns_portal.core.resources import (
     MetaEndPointResource
 )
-from marshmallow import (
-    Schema,
-    fields,
-    EXCLUDE,
-    ValidationError
-)
-from pyramid.security import (
-    Allow,
-    Authenticated,
-    _get_authentication_policy
-)
 from ns_portal.database.main_db import (
     TInstance,
     TApplications,
@@ -20,35 +9,20 @@ from ns_portal.database.main_db import (
     TRoles,
     TSite
 )
-from sqlalchemy.orm.exc import (
-    MultipleResultsFound
-)
-from ns_portal.utils import (
-    getCodeToken
-)
-from pyramid.httpexceptions import (
-    HTTPFound
+from pyramid.security import (
+    Allow,
+    Authenticated,
+    _get_authentication_policy
 )
 
 
-class authorizeSchema(Schema):
-    client_id = fields.String(required=True)
-    redirect_uri = fields.String(required=True)
-
-    class Meta:
-        unknown = EXCLUDE
-
-
-class AuthorizeResource(MetaEndPointResource):
+class InstancesResource(MetaEndPointResource):
 
     __acl__ = [
-        (Allow, Authenticated, 'create')
-    ]
+        (Allow, Authenticated, 'read')
+        ]
 
-    def validateSchema(self, data):
-        client_id = data.get('client_id')
-        redirect_uri = data.get('redirect_uri')
-
+    def GET(self):
         policy = _get_authentication_policy(self.request)
         tsiteName = getattr(policy, 'TSit_Name')
         userId = self.request.authenticated_userid.get('TUse_PK_ID')
@@ -89,41 +63,12 @@ class AuthorizeResource(MetaEndPointResource):
         VAllUsersApplications = VAllUsersApplications.filter(
                 (TSite.TSit_Name == tsiteName),
                 (TUsers.TUse_PK_ID == userId),
-                (TRoles.TRol_Label != 'Interdit'),
-                (TInstance.TIns_Label == client_id),
-                (TInstance.TIns_ApplicationPath == redirect_uri)
+                (TRoles.TRol_Label != 'Interdit')
             )
         VAllUsersApplications = VAllUsersApplications.order_by(
             TInstance.TIns_Order
             )
-        try:
-            res = VAllUsersApplications.one_or_none()
-        except MultipleResultsFound:
-            raise MultipleResultsFound()
-        if res:
-            return True
-        else:
-            raise ValidationError({
-                "error": (
-                    f'your client_id and/or redirect_uri'
-                    f' are wrongs'
-                    )
-                })
 
-    def POST(self):
-        reqParams = self.__parser__(
-            args=authorizeSchema(),
-            location='json'
-        )
+        result = VAllUsersApplications.all()
 
-        self.validateSchema(data=reqParams)
-
-        code = getCodeToken(
-            idUser=self.request.authenticated_userid.get('TUse_PK_ID'),
-            request=self.request
-        )
-
-        self.request.response.json_body = {
-            "code": code.decode('utf-8')
-        }
-        return self.request.response
+        return [row._asdict() for row in result]

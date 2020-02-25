@@ -4,54 +4,48 @@ from ns_portal.core.resources import (
 from marshmallow import (
     Schema,
     fields,
-    # validates,
+    EXCLUDE,
     ValidationError,
-    # validates_schema,
     pre_load
 )
-from ns_portal.database.main_db import (
-    TApplications,
-    TUsers
+from ns_portal.database import (
+    Main_Db_Base
 )
 from sqlalchemy import (
-    and_
+    select
 )
-from sqlalchemy.orm.exc import (
-    MultipleResultsFound
+from pyramid.security import (
+    Allow,
+    Everyone,
+    _get_authentication_policy
 )
+from pyramid.httpexceptions import (
+    HTTPBadRequest
+)
+from ns_portal.utils import (
+    getAccessToken,
+    getRefreshToken,
+    myDecode
+)
+import datetime
 
 
 class tokenSchema(Schema):
     grant_type = fields.String(
         required=True
     )
-    client_id = fields.String()
-    client_secret = fields.String()
     code = fields.String()
-    code_verifier = fields.String()
-    password = fields.String()
-    redirect_uri = fields.String()
-    scope = fields.String()
-    username = fields.String()
+    refresh_token = fields.String()
+
+    # will exclude any key in request
+    # not defined in schema
+    class Meta:
+        unknown = EXCLUDE
 
     @pre_load
     def validate_token(self, data, **kwargs):
-        stepVsGrantType = {
-            'authorization_code': self.doAuthorization_Code,
-            'client_credentials': [
-                self.validate_client_id
-                ],
-            'password': [
-                self.validate_client_id,
-                self.validateUserCredentials
-                ]
-        }
-
         grantType, requiredList = self.checkGrantTypeAndGetOthersRequired(data)
         self.checkRequired(data, requiredList, grantType)
-        algo = stepVsGrantType.get(grantType)
-        for step in algo:
-            step(data)
 
         return data
 
@@ -60,7 +54,7 @@ class tokenSchema(Schema):
         for item in requiredList:
             if item not in data:
                 errors[item] = (
-                    f'is required in query string'
+                    f'is required in json'
                     f' when grant_type is {grantType}'
                 )
 
@@ -69,24 +63,12 @@ class tokenSchema(Schema):
 
     def checkGrantTypeAndGetOthersRequired(self, data):
         conf = {
-                'authorization_code': [
-                    'client_id',
-                    'scope',
-                    'redirect_uri',
-                    'code',
-                    'code_verifier'
+                'code': [
+                    'code'
                     ],
-                'client_credentials': [
-                    'client_id',
-                    'client_secret',
-                    # 'scope'
-                    ],
-                'password': [
-                    'client_id',
-                    # 'client_secret',
-                    'username',
-                    'password'
-                    ]
+                'refresh_token': [
+                    'refresh_token'
+                ]
         }
         grantTypeInData = data.get('grant_type', None)
         if grantTypeInData is None:
@@ -96,86 +78,78 @@ class tokenSchema(Schema):
         else:
             raise ValidationError({
                 "grant_type": (
-                    f'should be authorization_code'
-                    f' client_credentials password'
+                    f'should be code'
+                    f' refresh_token'
                     )
                 })
-
-    def doAuthorization_Code(self, data):
-
-        print("ok on validate_grantType")
-        print(f'et data : {data}')
-        return True
-
-    def validate_client_id(self, data):
-        client_id = data.get('client_id')
-        query = self.context['session'].query(TApplications)
-        query = query.filter(
-            TApplications.TApp_Name == client_id
-            )
-        try:
-            res = query.one_or_none()
-        except MultipleResultsFound:
-            raise ValidationError({
-                "client_id": (
-                    f'not unique in db'
-                    f' please report it to an admin'
-                    )
-                })
-        if res:
-            return True
-        else:
-            raise ValidationError({
-                "client_id": (
-                    f'not valid'
-                    )
-                })
-
-    def validateUserCredentials(self, data):
-        query = self.context['session'].query(TUsers.TUse_PK_ID)
-        query = query.filter(
-            and_(
-                TUsers.TUse_Login == data.get('username'),
-                TUsers.TUse_Password == data.get('password')
-                )
-            )
-        try:
-            res = query.one_or_none()
-        except MultipleResultsFound:
-            raise ValidationError({
-                "error": (
-                    f'your username and password are'
-                    f' not unique in db'
-                    f' please report it to an admin'
-                    )
-                })
-        if res:
-            return True
-        else:
-            raise ValidationError({
-                "error": (
-                    f'your username and/or password'
-                    f' are wrongs'
-                    )
-                })
-
-    def doPassword(self, data):
-        print("on do password")
-        return True
 
 
 class TokenResource(MetaEndPointResource):
 
+    __acl__ = [
+        (Allow, Everyone, 'create'),
+        (Allow, Everyone, 'CORS')
+        ]
+
     def POST(self):
-        requiredArgs = self.__parser__(
-            args=tokenSchema(
-                context={
-                    "session": self.request.dbsession
-                }
-            ),
-            location='form'
+        reqParams = self.__parser__(
+            args=tokenSchema(),
+            location='json'
         )
-        print(requiredArgs)
-        print("validation is ok")
-        print("generate token")
-        return "ok"
+        policy = _get_authentication_policy(self.request)
+
+        if reqParams.get('grant_type') == 'code':
+            secret = getattr(policy, 'codeTokenSecret')
+            payloadInCode = myDecode(
+                token=reqParams.get('code'),
+                secret=secret
+                )
+            now = datetime.datetime.now()
+            dateExpCode = datetime.datetime.fromtimestamp(
+                payloadInCode.get('exp')
+                )
+            if now < dateExpCode:
+                accessToken = getAccessToken(
+                    idUser=payloadInCode.get('sub'),
+                    request=self.request
+                )
+                refreshToken = getRefreshToken(
+                    idUser=payloadInCode.get('sub'),
+                    request=self.request
+                )
+
+                self.request.response.json_body = {
+                    'access_token': accessToken.decode('utf-8'),
+                    'token_type': 'Bearer',
+                    "expires_in": 300,
+                    "refresh_token": refreshToken.decode('utf-8')
+                    }
+                return self.request.response
+            else:
+                return HTTPBadRequest("Code no more valid")
+        elif reqParams.get('grant_type') == 'refresh_token':
+            secret = getattr(policy, 'refreshTokenSecret')
+            payloadInRefreshToken = myDecode(
+                token=reqParams.get('refresh_token'),
+                secret=secret
+                )
+            now = datetime.datetime.now()
+            dateExpCode = datetime.datetime.fromtimestamp(
+                payloadInRefreshToken.get('exp')
+                )
+            if now < dateExpCode:
+                accessToken = getAccessToken(
+                    idUser=payloadInRefreshToken.get('sub'),
+                    request=self.request
+                )
+
+                self.request.response.json_body = {
+                    'access_token': accessToken.decode('utf-8'),
+                    'token_type': 'Bearer',
+                    "expires_in": 300
+                    }
+                return self.request.response
+            else:
+                return "refresh token no more valid"
+        else:
+            return HTTPBadRequest('Code no more valid')

@@ -10,6 +10,8 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 requires = [
     'marshmallow==3.3.0',
+    'marshmallow-sqlalchemy==0.21.0',
+    'pyjwt==1.7.1',
     'pyodbc==4.0.27',
     'pyramid==1.10.4',
     'sqlalchemy==1.3.12',

@@ -39,7 +39,8 @@ class MyNotImplementedError(Exception):
 #     print("stop")
 #     raise CustomErrorParsingArgs(error.messages)
 
-
+# TODO need to have a whitelist outside code
+# *.ini ?
 @implementer(IRESTview)
 class MetaRootResource (dict):
     __name__ = ''
@@ -48,7 +49,7 @@ class MetaRootResource (dict):
     __specialKey__ = None
     __CORS__ = {
         'Access-Control-Allow-Origin': [
-            'http://api.com'
+            'http://localhost'
             ],
         'Access-Control-Allow-Methods': [
             'GET',
@@ -61,8 +62,8 @@ class MetaRootResource (dict):
             'PUT'
         ],
         'Access-Control-Allow-Headers': [
-            'Authorization',
-            'Content-Type'
+            'Origin',
+            'content-type'
         ],
         'Access-Control-Allow-Credentials': 'true',
         'Access-Control-Max-Age': '86400'
@@ -171,13 +172,14 @@ class MetaRootResource (dict):
         not the entire access control list
         '''
         headers = {}
+        flag = True
         requestHeaderKey = 'Origin'
         reqOrigin = self.request.headers.get(requestHeaderKey, None)
         responseHeaderKey = 'Access-Control-Allow-Origin'
         originsAllowed = self.__CORS__.get(responseHeaderKey)
 
         if reqOrigin is None:
-            headers = False
+            flag = False
         else:
             if (
                 reqOrigin in originsAllowed
@@ -185,10 +187,11 @@ class MetaRootResource (dict):
                 '*' in originsAllowed
             ):
                 headers[responseHeaderKey] = reqOrigin
-        return headers
+        return flag, headers
 
     def checkHeadersRequestMethod(self):
         headers = {}
+        flag = True
         requestHeaderKey = 'Access-Control-Request-Method'
         reqMethod = self.request.headers.get(requestHeaderKey, None)
         responseHeaderKey = 'Access-Control-Allow-Methods'
@@ -196,14 +199,15 @@ class MetaRootResource (dict):
         methodsStr = ','.join(methodsAllowed)
 
         if reqMethod is None:
-            headers = False
+            flag = False
         else:
             if reqMethod in methodsAllowed:
                 headers[responseHeaderKey] = methodsStr
-        return headers
+        return flag, headers
 
     def checkHeadersRequestHeaders(self):
         headers = {}
+        flag = True
         requestHeaderKey = 'Access-Control-Request-Headers'
         reqHeadersStr = self.request.headers.get(requestHeaderKey, None)
         if reqHeadersStr is not None:
@@ -223,19 +227,21 @@ class MetaRootResource (dict):
             if headers == {}:
                 headers[responseHeadersKey] = headersStr
 
-        return headers
+        return flag, headers
 
     def checkHeadersRequestCredentials(self):
         headers = {}
+        flag = True
         requestHeaderKey = 'Access-Control-Allow-Credentials'
         headers[requestHeaderKey] = self.__CORS__.get(requestHeaderKey)
-        return headers
+        return flag, headers
 
     def addHeadersMaxAge(self):
         headers = {}
+        flag = True
         requestHeaderKey = 'Access-Control-Max-Age'
         headers[requestHeaderKey] = self.__CORS__.get('Access-Control-Max-Age')
-        return headers
+        return flag, headers
 
     def addHeadersForCORS(self, headers=None):
         self.request.response.headers.update(headers)
@@ -250,8 +256,8 @@ class MetaRootResource (dict):
         ]
         stepHeaders = {}
         for method in orderedStepForCORS:
-            stepHeaders = method()
-            if stepHeaders is False:
+            flag, stepHeaders = method()
+            if flag is False:
                 return self.request.response
             else:
                 self.addHeadersForCORS(headers=stepHeaders)

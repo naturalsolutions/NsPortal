@@ -100,6 +100,56 @@ sqlalchemy.url = mssql+pyodbc://username:password@host\instance/initialDB
 sqlalchemy.implicit_returning = False
 sqlalchemy.pool_reset_on_return = commit
 
+##############################################################################################################################
+#                                                                                                                            #
+#                           STARTING SECURITY                                                                                #
+#                                                                                                                            #
+##############################################################################################################################
+#  INFOS SECURITY                                                                                                            #
+#  JWTSECURITY.COOKIETOKENMASTER_SECRET = this key will be used generate cookie for portal                                   #
+#  JWTSECURITY.REFRESHTOKENMASTER_SECRET = this key wil be used for refresh token                                            #
+#  JWTSECURITY.ACCESSTOKENMASTER_SECRET = this key wil be used for access token (this key MUST be same in others app)        #
+#  JWTSECURITY.CODETOKENMASTER_SECRET = this key will be used for code                                                       #
+#  JWTSECURITY.COOKIENAME    = this key will be used to identify the cookie we want to retrieve in the request and get claims#
+##############################################################################################################################
+
+JWTSECURITY.COOKIENAME                  =   NSPortal-Core
+
+JWTSECURITY.COOKIETOKENMASTER_SECRET    =   test
+JWTSECURITY.COOKIETOKENALGORITHM        =   HS512
+
+JWTSECURITY.CODETOKENMASTER_SECRET      =   test2
+JWTSECURITY.CODETOKENALGORITHM          =   HS256
+
+JWTSECURITY.ACCESSTOKENMASTER_SECRET    =   test3
+JWTSECURITY.ACCESSTOKENALGORITHM        =   HS512
+
+JWTSECURITY.REFRESHTOKENMASTER_SECRET   =   test4
+JWTSECURITY.REFRESHTOKENALGORITHM       =   HS512
+#                           ENDING SECURITY                                                                                  #
+#                                                                                                                            #
+##############################################################################################################################
+
+##############################################################################################################################
+#                                                                                                                            #
+#                           STARTING RENECO CONTEXT                                                                          #
+#                                                                                                                            #
+##############################################################################################################################
+#  INFOS RENECO                                                                                                              #
+#  RENECO.SECURITE.TINS_LABEL = this is specific for RENECO                                                                  #
+#                               YOU HAVE TO KNOW WHICH APPLICATION IN SECURITE                                               #
+#                               when authentificated by the portal, the payload will have an "dictionaries"                  #
+#                                 "roles" : {                                                                                #
+#                                            TIns_Label : Role                                                               #
+#                                           }                                                                                #
+##############################################################################################################################
+
+RENECO.SECURITE.TINS_LABEL =
+RENECO.SECURITE.TSIT_NAME = NS-Marseille
+
+#                           ENDING RENECO CONTEXT                                                                            #
+#                                                                                                                            #
+##############################################################################################################################
 
 
 # By default, the toolbar only appears for clients from IP addresses

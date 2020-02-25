@@ -19,33 +19,119 @@ Controller, config) {
 
   app = new Marionette.Application();
 
-  $.ajaxSetup({ cache: false });
+  $.ajaxSetup({
+  });
+
+  function authAndRedirect(params) {
+    $.ajax({
+      context: this,
+      type: 'POST',
+      url: config.coreUrl +'security/oauth2/v1/authorize',
+      data: JSON.stringify(params),
+      dataType: 'json',
+      contentType: 'application/json',
+      success: function(data) {
+        alert("vous allez être redirigé vers "+params.redirect_uri+" Merci de patienter\n ou cliquez sur ce lien")
+        urlToGo = params.redirect_uri
+        search = '?code=' + data.code
+        window.location = urlToGo + search
+      },
+      error: function(data) {
+
+      }
+    })
+  }
+
+  function queryStringExistAndValid() {
+      var toRet = {
+        "client_id" : null,
+        "redirect_uri": null,
+        "img": 1
+      }
+      var qs = window.location.search.substring(1)
+      if ( qs == '') {
+        toRet = {
+          "img": 1
+        }
+      }
+      else {
+        var pairs = qs.split('&')
+        for (var i = 0; i < pairs.length; i++) {
+          var tmp = pairs[i].split('=');
+          var key = tmp[0];
+          var value = tmp[1]
+
+          for (var keyTofind in toRet) {
+            if (keyTofind == decodeURIComponent(key)) {
+              toRet[keyTofind] = decodeURIComponent(value)
+            }
+          }
+        }
+      }
+      return toRet
+
+  }
+
+  function checkIfCookie(model, params, app) {
+    $.ajax({
+      context: this,
+      type: 'GET',
+      url: config.coreUrl +'instance',
+      dataType: 'json',
+      contentType: 'application/json',
+      success : function(data) {
+        //cookie is valid
+        var qsParams = queryStringExistAndValid()
+        if (qsParams.client_id != null && qsParams.redirect_uri != null) {
+          //shortcut flow app will be redirected
+          authAndRedirect(qsParams)
+        }
+      },
+      error : function(data) {
+        //cookie not valid
+      },
+      complete: function(data) {
+        //will not be executed if we have cookie and qs for redirect
+        model.fetch(params);
+      }
+    })
+  }
+
 
   app.on('start', function() {
-    var _this = this;
-    var params={};
-    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str,key,value) {
-        params[key] = value;
-      }
-    );
-    var val;
-    if(params.img){
-      val = params.img;
+
+    // oauth2.cookieIsValid()
+    // var params = oauth2.queryStringExistAndValid()
+    // oauth2.authAndRedirect(params=params)
+
+    var qsParams = queryStringExistAndValid()
+    var qsParamsNoImg = ""
+    if (qsParams.img == 0) {
+      qsParamsNoImg = '?img=0'
     }
-    if (params.image){
-      val = params.image;
-    }
-    var url = config.coreUrl + 'site';
-    if(val=="0" || val=="false" || val == false){
-      url = url + '?noimage=true';
-    }
+
     var Patern = Backbone.Model.extend({
-      urlRoot: url
+      urlRoot: config.coreUrl + 'site'+ qsParamsNoImg
     });
     var model = new Patern();
-    model.fetch({
+    var params = {
       success: function() {
         model.set('siteClassName', model.get('title').replace(/ /g,'-'));
+        model.set('errorAPI500', false);
+      },
+      error: function() {
+        var defaultConfig ={
+          title: "NS-Marseille",
+          country: "France",
+          locality: "Marseille",
+          legend: "Natural Solutions",
+          label: "NS",
+          siteClassName: "NS-Marseille",
+          errorAPI500 : true
+        }
+        model.set(defaultConfig);
+      },
+      complete: function() {
         app.siteInfo = model;
         app.rootView = new LytRootview();
         app.rootView.render();
@@ -56,12 +142,12 @@ Controller, config) {
         });
         app.siteInfos = model;
         app.user = new Backbone.Model();
-        app.user.url = config.coreUrl + 'currentUser';
+        app.user.url = config.coreUrl + 'me';
         Backbone.history.start();
-      },
-      error: function() {
-      },
-    });
+      }
+    }
+
+    checkIfCookie(model, params, app)
   });
 
   $(document).ajaxStart(function(e) {

@@ -19,6 +19,18 @@ class RESTview(object):
 
     @view_config(request_method='GET', renderer='json', permission='read')
     def GET(self):
+        # will add needed headers for CORS with credentials
+        # need to be refact for every request
+        # maybe a flag
+        # and alter response's headers a the end before response
+        # OR A TWEENS ? need to read the doc
+        # self.request.response.headers.update(
+        #     self.context.checkHeadersRequestOrigin()
+        #     )
+        # self.request.response.headers.update(
+        #     self.context.checkHeadersRequestCredentials()
+        #     )
+
         return self.context.GET()
 
     @view_config(request_method='HEAD', renderer='json', permission='read')
@@ -27,13 +39,17 @@ class RESTview(object):
 
     @view_config(request_method='POST', renderer='json', permission='create')
     def POST(self):
+        flag, headers = self.context.checkHeadersRequestOrigin()
+        self.request.response.headers.update(headers)
+        flag, headers = self.context.checkHeadersRequestCredentials()
+        self.request.response.headers.update(headers)
         return self.context.POST()
 
     @view_config(request_method='DELETE', renderer='json', permission='delete')
     def DELETE(self):
         return self.context.DELETE()
 
-    @view_config(request_method='OPTIONS', renderer='json', permission='read')
+    @view_config(request_method='OPTIONS', renderer='json', permission='CORS')
     def OPTIONS(self):
         return self.context.OPTIONS()
 

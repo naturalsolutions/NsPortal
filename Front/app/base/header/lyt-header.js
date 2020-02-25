@@ -26,8 +26,7 @@ function(Marionette, config) {
     logout: function() {
       $.ajax({
         context: this,
-        cache: false,
-        url: config.coreUrl + 'security/logout?nocache=' + Date.now(),
+        url: config.coreUrl + 'security/oauth2/v1/logout',
       }).done(function() {
         Backbone.history.navigate('login', {trigger: true});
       });
