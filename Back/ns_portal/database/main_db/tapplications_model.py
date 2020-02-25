@@ -19,6 +19,10 @@ class TApplications(Main_Db_Base):
         String(50),
         nullable=True
     )
+    TApp_ClientID = Column(
+        String(500),
+        nullable = False
+    )
     TApp_Description = Column(
         String(255),
         nullable=True
