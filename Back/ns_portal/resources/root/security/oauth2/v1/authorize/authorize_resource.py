@@ -123,6 +123,7 @@ class AuthorizeResource(MetaEndPointResource):
             request=self.request
         )
 
-        return {
+        self.request.response.json_body = {
             "code": code.decode('utf-8')
         }
+        return self.request.response
