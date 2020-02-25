@@ -39,7 +39,8 @@ class MyNotImplementedError(Exception):
 #     print("stop")
 #     raise CustomErrorParsingArgs(error.messages)
 
-
+# TODO need to have a whitelist outside code
+# *.ini ?
 @implementer(IRESTview)
 class MetaRootResource (dict):
     __name__ = ''
@@ -48,7 +49,7 @@ class MetaRootResource (dict):
     __specialKey__ = None
     __CORS__ = {
         'Access-Control-Allow-Origin': [
-            'http://api.com'
+            'http://localhost'
             ],
         'Access-Control-Allow-Methods': [
             'GET',
