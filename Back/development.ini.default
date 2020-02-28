@@ -12,28 +12,109 @@ pyramid.debug_authorization = false
 pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
-pyramid.includes =
-    pyramid_debugtoolbar
-    pyramid_tm
 
+#---------------------------------------------------------------------------#
+#                  DATABASE CONFIGURATION START                             #
+#                                                                           #
+    # DBUSED = String with separator (,) with META name of database
+    # example :
+    # DBUSED = Main_Db,Log_Db
 
-###Custom config
-jwtauth.master_secret = authentication key
-siteName = siteName here
+DBUSED                 = Main_Db,Log_Db
 
-###Use to set a parent domain for multi server instances
-###Leave commented if there is only one server
-#parent_domain=track.int
+# For each meta name defined in DBUSED we should have
+    # the following key defined too
+    # .ODBCDRIVER if you want to know what drivers you have
+    #             launch python
+    #             import pyodbc
+    #             launch pyodbc.drivers() in python console
+    # .DIALECT
+    # .UID
+    # .PWD
+    # .SERVER
+    # .PORT
+    # .DATABASE
 
-###DB config
-cn.dialect = mssql+pyodbc:///?odbc_connect=
+Main_Db.DIALECT = mssql+pyodbc
+Main_Db.UID = $UID$
+Main_Db.PWD = $PWD$
+Main_Db.SERVER = $SERVER$
+Main_Db.PORT = 1433
+Main_Db.DATABASE = SECURITE
+Main_Db.ODBCDRIVER = ODBC Driver 11 for SQL Server
 
-sqlalchemy.url = mssql+pyodbc://username:password@host\instance/initialDB
-#ex : sqlalchemy.url = DRIVER={SQL Server};Server=.;Database=DBName;UID=User;PWD=pwd;
+sqlalchemy.Main_Db.implicit_returning = False
+sqlalchemy.Main_Db.pool_reset_on_return = commit
+sqlalchemy.Main_Db.pool_size = 30
+sqlalchemy.Main_Db.pool_timeout = 5
+sqlalchemy.Main_Db.max_overflow = 10
+sqlalchemy.Main_Db.case_sensitive= False
 
-sqlalchemy.implicit_returning = False
-sqlalchemy.pool_reset_on_return = commit
+Log_Db.DIALECT = mssql+pyodbc
+Log_Db.UID = $UID$
+Log_Db.PWD = $PWD$
+Log_Db.SERVER = $SERVER$
+Log_Db.PORT = 1433
+Log_Db.DATABASE = NSLog
+Log_Db.ODBCDRIVER = ODBC Driver 11 for SQL Server
 
+sqlalchemy.Log_Db.implicit_returning = False
+sqlalchemy.Log_Db.pool_reset_on_return = commit
+sqlalchemy.Log_Db.pool_size = 30
+sqlalchemy.Log_Db.pool_timeout = 5
+sqlalchemy.Log_Db.max_overflow = 10
+sqlalchemy.Log_Db.case_sensitive= False
+
+##############################################################################################################################
+#                                                                                                                            #
+#                           STARTING SECURITY                                                                                #
+#                                                                                                                            #
+##############################################################################################################################
+#  INFOS SECURITY                                                                                                            #
+#  JWTSECURITY.COOKIETOKENMASTER_SECRET = this key will be used generate cookie for portal                                   #
+#  JWTSECURITY.REFRESHTOKENMASTER_SECRET = this key wil be used for refresh token                                            #
+#  JWTSECURITY.ACCESSTOKENMASTER_SECRET = this key wil be used for access token (this key MUST be same in others app)        #
+#  JWTSECURITY.CODETOKENMASTER_SECRET = this key will be used for code                                                       #
+#  JWTSECURITY.COOKIENAME    = this key will be used to identify the cookie we want to retrieve in the request and get claims#
+##############################################################################################################################
+
+JWTSECURITY.COOKIENAME                  =   NSPortal-Core
+
+JWTSECURITY.COOKIETOKENMASTER_SECRET    =   test
+JWTSECURITY.COOKIETOKENALGORITHM        =   HS512
+
+JWTSECURITY.CODETOKENMASTER_SECRET      =   test2
+JWTSECURITY.CODETOKENALGORITHM          =   HS256
+
+JWTSECURITY.ACCESSTOKENMASTER_SECRET    =   test3
+JWTSECURITY.ACCESSTOKENALGORITHM        =   HS512
+
+JWTSECURITY.REFRESHTOKENMASTER_SECRET   =   test4
+JWTSECURITY.REFRESHTOKENALGORITHM       =   HS512
+#                           ENDING SECURITY                                                                                  #
+#                                                                                                                            #
+##############################################################################################################################
+
+##############################################################################################################################
+#                                                                                                                            #
+#                           STARTING RENECO CONTEXT                                                                          #
+#                                                                                                                            #
+##############################################################################################################################
+#  INFOS RENECO                                                                                                              #
+#  RENECO.SECURITE.TINS_LABEL = this is specific for RENECO                                                                  #
+#                               YOU HAVE TO KNOW WHICH APPLICATION IN SECURITE                                               #
+#                               when authentificated by the portal, the payload will have an "dictionaries"                  #
+#                                 "roles" : {                                                                                #
+#                                            TIns_Label : Role                                                               #
+#                                           }                                                                                #
+##############################################################################################################################
+
+RENECO.SECURITE.TINS_LABEL =
+RENECO.SECURITE.TSIT_NAME = NS-Marseille
+
+#                           ENDING RENECO CONTEXT                                                                            #
+#                                                                                                                            #
+##############################################################################################################################
 
 
 # By default, the toolbar only appears for clients from IP addresses
