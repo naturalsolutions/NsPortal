@@ -74,13 +74,11 @@ def getCookieToken(idUser, request):
         algoKey='cookieTokenAlgorithm'
         )
 
-    now = datetime.datetime.now()
-    nowInTimeStampSeconds = int(now.timestamp())
-
-    payload = {
-        'sub': idUser,
-        'exp': nowInTimeStampSeconds + _cookieTokenExpInSec
-    }
+    payload = buildPayload(
+        idUser=idUser,
+        request=request,
+        timeAddForExp=_cookieTokenExpInSec
+        )
 
     return myEncode(payload, secret, algorithm)
 
@@ -103,7 +101,7 @@ def getCodeToken(idUser, request):
     return myEncode(payload, secret, algorithm=algorithm)
 
 
-def buildPayload(idUser, request):
+def buildPayload(idUser, request, timeAddForExp):
     policy = _get_authentication_policy(request)
 
     tsiteName = getattr(policy, 'TSit_Name')
@@ -163,7 +161,7 @@ def buildPayload(idUser, request):
         "sub": result[0].TUse_PK_ID,
         "username": result[0].TUse_Login,
         "userlanguage": result[0].TUse_Language,
-        'exp': nowInTimeStampSeconds + _accessTokenExpInSec,
+        'exp': nowInTimeStampSeconds + timeAddForExp,
         "roles": {
             row.TIns_Label: row.TRol_Label for row in result
         }
@@ -179,7 +177,11 @@ def getAccessToken(idUser, request):
         algoKey='accessTokenAlgorithm'
         )
 
-    payload = buildPayload(idUser, request)
+    payload = buildPayload(
+        idUser=idUser,
+        request=request,
+        timeAddForExp=_accessTokenExpInSec
+        )
 
     return myEncode(payload, secret, algorithm=algorithm)
 
