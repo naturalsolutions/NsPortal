@@ -8,15 +8,11 @@ from sqlalchemy.orm import (
 )
 from ns_portal.database.meta import (
     Main_Db_Base,
-    Security_Db_Base,
     Log_Db_Base
 ) # noqa
-from pyramid.events import NewRequest
-from pyramid.events import subscriber
 
 __all__ = [
     "Main_Db_Base",
-    "Security_Db_Base",
     "Log_Db_Base"
 ]
 '''
@@ -66,8 +62,8 @@ def checkConfigDBUsed(myConfig):
     dbDefineInConfig = myConfig.get('DBUSED', None)
     if dbDefineInConfig is None or dbDefineInConfig == '':
         raise ValueError(
-            f'Expected string for DBUSED key got ({dbDefineInConfig}) '
-            f'no values please define one db in *.ini'
+            'Expected string for DBUSED key got ({dbDefineInConfig}) '.format(dbDefineInConfig=dbDefineInConfig),
+            'no values please define one db in *.ini'
             )
 
 
@@ -168,15 +164,15 @@ def mapAndBindEngineWithBaseWeUse(baseName, engineToBind):
     '''
 
     # print("et le global ? ? ? ?")
-    print(f"Binding Engine for {baseName}_Base")
+    print("Binding Engine for {baseName}_Base".format(baseName=baseName))
     eval(str(baseName)+'_Base').metadata.bind = engineToBind
     # will drop all model and recreate it
     # if you need data test youshould restore juste after
     # eval( str(baseName)+'_BASE' ).metadata.drop_all(engineToBind)
     # create models only if table don't exist yet!!
-    print(f"Create ALL for {baseName}_Base")
+    print("Create ALL for {baseName}_Base".format(baseName=baseName))
     eval(str(baseName)+'_Base').metadata.create_all(engineToBind)
-    print(f"Reflectdatabase {baseName}_Base")
+    print("Reflectdatabase {baseName}_Base".format(baseName=baseName))
     eval(str(baseName)+'_Base').metadata.reflect(
                                                 views=True,
                                                 extend_existing=False

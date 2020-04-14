@@ -60,9 +60,9 @@ class LoginResource(MetaEndPointResource):
         except MultipleResultsFound:
             raise ValidationError({
                 "error": (
-                    f'your username and password are'
-                    f' not unique in db'
-                    f' please report it to an admin'
+                    'your username and password are'
+                    ' not unique in db'
+                    ' please report it to an admin'
                     )
                 })
         if res:
@@ -71,8 +71,8 @@ class LoginResource(MetaEndPointResource):
         else:
             raise ValidationError({
                 "error": (
-                    f'your username and/or password'
-                    f' are wrongs'
+                    'your username and/or password'
+                    ' are wrongs'
                     )
                 })
 
@@ -119,7 +119,7 @@ class LoginResource(MetaEndPointResource):
         else:
             raise ValidationError({
                 "error": (
-                    f'your username and/or password'
-                    f' are wrongs'
+                    'your username and/or password'
+                    ' are wrongs'
                     )
                 })

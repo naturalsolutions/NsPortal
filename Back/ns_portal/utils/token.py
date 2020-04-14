@@ -40,21 +40,21 @@ def myDecode(token, secret):
             )
     except jwt.ExpiredSignatureError:
         raise jwt.ExpiredSignatureError(
-            f'You take too much time for getting your token.',
-            f'You need to login again'
+            'You take too much time for getting your token.',
+            'You need to login again'
             )
     except jwt.InvalidTokenError:
         raise jwt.InvalidTokenError(
-            f'Exception when decode()'
+            'Exception when decode()'
             )
     except jwt.DecodeError:
         raise jwt.DecodeError(
-            f'We canno\'t decode your token'
+            'We canno\'t decode your token'
             )
     except jwt.InvalidSignatureError:
         raise jwt.InvalidSignatureError(
-            f'Your token’s signature doesn’t match'
-            f' the one provided as part of the token'
+            'Your token’s signature doesn’t match'
+            ' the one provided as part of the token'
         )
     return payloadValided
 
@@ -158,7 +158,7 @@ def buildPayload(idUser, request, timeAddForExp):
 
     payload = {
         "iss": 'NSPortal',
-        "sub": result[0].TUse_PK_ID,
+        "sub": str(result[0].TUse_PK_ID),
         "username": result[0].TUse_Login,
         "userlanguage": result[0].TUse_Language,
         'exp': nowInTimeStampSeconds + timeAddForExp,

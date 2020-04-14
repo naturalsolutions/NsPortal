@@ -24,11 +24,6 @@ class Main_Db_Base(Base):
     metadata = MetaData()
 
 
-class Security_Db_Base(Base):
-    __abstract__ = True
-    metadata = MetaData()
-
-
 class Log_Db_Base(Base):
     __abstract__ = True
     metadata = MetaData()

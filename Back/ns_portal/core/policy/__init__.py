@@ -44,16 +44,16 @@ def meaningConfig(config):
         (example : erd PROD, erd DEV )
         '''
         raise Exception(
-            f'You mus\'t have this key RENECO.SECURITE.TINS_LABEL'
-            f'defined in your *.ini file'
+            'You mus\'t have this key RENECO.SECURITE.TINS_LABEL'
+            'defined in your *.ini file'
         )
 
     if settings.get('RENECO.SECURITE.TSIT_NAME') is None:
         '''
         '''
         raise Exception(
-            f'You mus\'t have this key RENECO.SECURITE.TSIT_NAME'
-            f'defined in your *.ini file'
+            'You mus\'t have this key RENECO.SECURITE.TSIT_NAME'
+            'defined in your *.ini file'
         )
 
     return {

@@ -123,8 +123,8 @@ class MetaRootResource (dict):
                 toRet = self.__routes__.get(self.__specialKey__, None)
             except ValueError:
                 raise KeyError((
-                    f'the key for item should be and int: '
-                    f'{self.__name__}'
+                    'the key for item should be and int: ',
+                    '{name}'.format(name=self.__name__)
                 ))
         else:
             nextNode = name.lower()
@@ -132,7 +132,7 @@ class MetaRootResource (dict):
                 toRet = self.__routes__.get(nextNode, None)
 
         if toRet is None:
-            raise KeyError(f'__getitem__ for Resource: {self.__name__}')
+            raise KeyError('__getitem__ for Resource: {name}'.format(name=self.__name__))
         else:
             return toRet(name=nextNode, parent=self, request=self.request)
 
@@ -151,7 +151,6 @@ class MetaRootResource (dict):
     def OPTIONS(self):
         self.checkAndApplyCORS()
         return self.request.response
-        # raise NotImplementedError(f'OPTIONS for Resource: {self.__name__}')
 
     def TRACE(self):
         raise MyNotImplementedError(reqObj=self.request)
@@ -222,7 +221,7 @@ class MetaRootResource (dict):
             for reqHeader in reqHeadersList:
                 if reqHeader not in headersAllowed:
                     headers = False
-                    print(f'{reqHeader} is not allowed')
+                    print('{reqHeader} is not allowed'.format(reqHeader=reqHeader))
                     break
             if headers == {}:
                 headers[responseHeadersKey] = headersStr
