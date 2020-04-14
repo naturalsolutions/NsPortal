@@ -8,15 +8,11 @@ from sqlalchemy.orm import (
 )
 from ns_portal.database.meta import (
     Main_Db_Base,
-    Security_Db_Base,
     Log_Db_Base
 ) # noqa
-from pyramid.events import NewRequest
-from pyramid.events import subscriber
 
 __all__ = [
     "Main_Db_Base",
-    "Security_Db_Base",
     "Log_Db_Base"
 ]
 '''
