@@ -158,7 +158,7 @@ def buildPayload(idUser, request, timeAddForExp):
 
     payload = {
         "iss": 'NSPortal',
-        "sub": result[0].TUse_PK_ID,
+        "sub": str(result[0].TUse_PK_ID),
         "username": result[0].TUse_Login,
         "userlanguage": result[0].TUse_Language,
         'exp': nowInTimeStampSeconds + timeAddForExp,
