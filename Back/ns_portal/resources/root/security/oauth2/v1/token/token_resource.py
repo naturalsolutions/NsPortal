@@ -54,8 +54,8 @@ class tokenSchema(Schema):
         for item in requiredList:
             if item not in data:
                 errors[item] = (
-                    f'is required in json'
-                    f' when grant_type is {grantType}'
+                    'is required in json ',
+                    'when grant_type is {grantType}'.format(grantType=grantType)
                 )
 
         if errors:
@@ -78,8 +78,8 @@ class tokenSchema(Schema):
         else:
             raise ValidationError({
                 "grant_type": (
-                    f'should be code'
-                    f' refresh_token'
+                    'should be code'
+                    ' refresh_token'
                     )
                 })
 

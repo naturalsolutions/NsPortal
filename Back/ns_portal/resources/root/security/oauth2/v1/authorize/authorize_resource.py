@@ -106,8 +106,8 @@ class AuthorizeResource(MetaEndPointResource):
         else:
             raise ValidationError({
                 "error": (
-                    f'your client_id and/or redirect_uri'
-                    f' are wrongs'
+                    'your client_id and/or redirect_uri'
+                    ' are wrongs'
                     )
                 })
 

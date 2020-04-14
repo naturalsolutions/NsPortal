@@ -40,21 +40,21 @@ def myDecode(token, secret):
             )
     except jwt.ExpiredSignatureError:
         raise jwt.ExpiredSignatureError(
-            f'You take too much time for getting your token.',
-            f'You need to login again'
+            'You take too much time for getting your token.',
+            'You need to login again'
             )
     except jwt.InvalidTokenError:
         raise jwt.InvalidTokenError(
-            f'Exception when decode()'
+            'Exception when decode()'
             )
     except jwt.DecodeError:
         raise jwt.DecodeError(
-            f'We canno\'t decode your token'
+            'We canno\'t decode your token'
             )
     except jwt.InvalidSignatureError:
         raise jwt.InvalidSignatureError(
-            f'Your token’s signature doesn’t match'
-            f' the one provided as part of the token'
+            'Your token’s signature doesn’t match'
+            ' the one provided as part of the token'
         )
     return payloadValided
 
