@@ -215,7 +215,7 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
             path='/',
             domain=None,
             secure=False,
-            httponly=True,
+            httponly=False,
             comment=None,
             expires=None,
             overwrite=False,
