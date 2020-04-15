@@ -5,13 +5,17 @@ from .token import (
     getAccessToken,
     getRefreshToken
 )
+from .utils import (
+    my_get_authentication_policy
+)
 
 __all__ = [
     "myDecode",
     "getCookieToken",
     "getCodeToken",
     "getAccessToken",
-    "getRefreshToken"
+    "getRefreshToken",
+    "my_get_authentication_policy"
 ]
 
 
