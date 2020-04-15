@@ -76,8 +76,6 @@ class LoginResource(MetaEndPointResource):
                     )
                 })
 
-
-
     def POST(self):
         reqParams = self.__parser__(
             args=loginSchema(),
@@ -86,26 +84,11 @@ class LoginResource(MetaEndPointResource):
 
         userFound = self.validateUserCredentials(data=reqParams)
         if userFound:
-            # CRITICAL START
-            # this method will return the object that handle
-            # policy in pyramid app
-            # the policy object store keys from conf for generate token
-            # policy = _get_authentication_policy(self.request)
-            # CRITICAL END
 
-            # payload = self.buildPayload(params=userFound, policy=policy)
             token = getCookieToken(
                 idUser=getattr(userFound, 'TUse_PK_ID'),
                 request=self.request
             )
-            # toRet = Response(
-            #     status=200,
-            #     json_body={
-            #         "token": token.decode('utf-8')
-            #         }
-            # )
-            # remember(toRet, token)
-            # return toRet
 
             resp = Response(
                 status=200
