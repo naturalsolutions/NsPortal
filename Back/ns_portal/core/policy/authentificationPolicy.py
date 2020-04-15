@@ -199,13 +199,13 @@ class MyAuthenticationPolicy(CallbackAuthenticationPolicy):
         Mins = 60 * Sec
         Hours = 60 * Mins
         Days = 24 * Hours
-        Weeks = 7 * Days
+        # Weeks = 7 * Days
 
         maxAge = 1 * Days
 
         # secure=False
-        # becareful if activated cookie will travel only on securized canal (HTTPS)
-
+        # becareful if activated cookie
+        # will travel only on securized canal (HTTPS)
         # httponly=True
         # security manipulate cookie by javascript in client
         response.set_cookie(

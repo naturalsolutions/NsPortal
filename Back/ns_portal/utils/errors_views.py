@@ -51,7 +51,7 @@ def myNotImplementedView(exception, request):
         'API called with request\n',
         'METHOD : {method}\n'.format(method=exception.method),
         'URL : {path_url}\n'.format(path_url=exception.path_url),
-        'QUERY STRING: {.query_string}\n'.format(query_string=exception.query_string),
+        'QUERY STRING: {qs}\n'.format(qs=exception.query_string),
         'this method is not yet implemented\n'
     )
 

@@ -51,7 +51,7 @@ class tokenSchema(Schema):
             if item not in data:
                 errors[item] = (
                     'is required in json ',
-                    'when grant_type is {grantType}'.format(grantType=grantType)
+                    'when grant_type is {grant}'.format(grant=grantType)
                 )
 
         if errors:

@@ -8,7 +8,6 @@ from pyramid.security import (
 )
 
 
-
 class LogoutResource(MetaEndPointResource):
 
     __acl__ = [

@@ -11,14 +11,10 @@ from ns_portal.database.main_db import (
     TUsers
 )
 from sqlalchemy import (
-    and_,
-    select
+    and_
 )
 from sqlalchemy.orm.exc import (
     MultipleResultsFound
-)
-from ns_portal.database import (
-    Main_Db_Base
 )
 from pyramid.security import (
     Allow,
