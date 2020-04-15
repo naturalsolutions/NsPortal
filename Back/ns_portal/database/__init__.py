@@ -30,7 +30,6 @@ MAIN_DB.DATABASE = database name
 # import or define all models here to ensure they are attached to the
 # Base.metadata prior to any initialization routines
 from .main_db import * # noqa
-from .security_db import * # noqa
 from .log_db import * # noqa
 
 # run configure_mappers after defining all of the models to ensure
