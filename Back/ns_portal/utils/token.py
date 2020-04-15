@@ -94,7 +94,7 @@ def getCodeToken(idUser, request):
     nowInTimeStampSeconds = int(now.timestamp())
 
     payload = {
-        'sub': idUser,
+        'sub': str(idUser),
         'exp': nowInTimeStampSeconds + _codeTokenExpInSec
     }
 
@@ -196,7 +196,7 @@ def getRefreshToken(idUser, request):
     nowInTimeStampSeconds = int(now.timestamp())
 
     payload = {
-        'sub': idUser,
+        'sub': str(idUser),
         'exp': nowInTimeStampSeconds + _refreshTokenExpInSec
     }
 
