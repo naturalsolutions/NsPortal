@@ -19,12 +19,12 @@ from marshmallow import (
 
 @view_config(context=ValidationError)
 def validationError_marsh(exception, request):
-    return Response(
-        status=400,
-        content_type='application/json',
-        charset='utf-8',
-        json_body=exception.messages
-        )
+
+    request.response.status_code = 400
+    request.response.json_body = exception.messages
+    request.response.content_type = 'application/json'
+
+    return request.response
 
 
 @view_config(context=CustomErrorParsingArgs)

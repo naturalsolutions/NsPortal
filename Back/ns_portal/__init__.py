@@ -12,8 +12,7 @@ def main(global_config, **settings):
 
         config.add_renderer('json', json_renderer)
         config.include('ns_portal.database')
-        config.include('ns_portal.core.policy')
-        config.include('ns_portal.core.resources')
+        config.include('ns_portal.core')
         config.include('ns_portal.routes')
         config.include('ns_portal.utils')
 
