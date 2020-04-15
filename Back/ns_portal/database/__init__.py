@@ -61,7 +61,8 @@ def checkConfigDBUsed(myConfig):
     dbDefineInConfig = myConfig.get('DBUSED', None)
     if dbDefineInConfig is None or dbDefineInConfig == '':
         raise ValueError(
-            'Expected string for DBUSED key got ({dbDefineInConfig}) '.format(dbDefineInConfig=dbDefineInConfig),
+            'Expected string for DBUSED ',
+            'key got ({db}) '.format(db=dbDefineInConfig),
             'no values please define one db in *.ini'
             )
 
@@ -204,7 +205,7 @@ def get_session(request):
             try:
                 session.commit()
             except Exception as e:
-                print_exc()
+                print(e)
                 session.rollback()
                 request.response.status_code = 500
             finally:
