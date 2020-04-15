@@ -1,6 +1,9 @@
 from ns_portal.core.resources import (
     MetaEndPointResource
 )
+from ns_portal.utils.utils import (
+    my_get_authentication_policy
+)
 from marshmallow import (
     Schema,
     fields,
@@ -8,16 +11,9 @@ from marshmallow import (
     ValidationError,
     pre_load
 )
-from ns_portal.database import (
-    Main_Db_Base
-)
-from sqlalchemy import (
-    select
-)
 from pyramid.security import (
     Allow,
-    Everyone,
-    _get_authentication_policy
+    Everyone
 )
 from pyramid.httpexceptions import (
     HTTPBadRequest
@@ -96,7 +92,7 @@ class TokenResource(MetaEndPointResource):
             args=tokenSchema(),
             location='json'
         )
-        policy = _get_authentication_policy(self.request)
+        policy = my_get_authentication_policy(self.request)
 
         if reqParams.get('grant_type') == 'code':
             secret = getattr(policy, 'codeTokenSecret')
