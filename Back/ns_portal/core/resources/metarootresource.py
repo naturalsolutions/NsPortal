@@ -1,6 +1,9 @@
 from ns_portal.core.resources.restviews import (
     IRESTview
 )
+from ns_portal.core import (
+    corsConfig
+)
 from zope.interface import implementer
 # from webargs.pyramidparser import parser
 from webargs.pyramidparser import PyramidParser
@@ -48,9 +51,7 @@ class MetaRootResource (dict):
     __ROUTES__ = {}
     __specialKey__ = None
     __CORS__ = {
-        'Access-Control-Allow-Origin': [
-            'http://localhost'
-            ],
+        'Access-Control-Allow-Origin': corsConfig.get('domainewhitelist'),
         'Access-Control-Allow-Methods': [
             'GET',
             'HEAD',
@@ -61,10 +62,7 @@ class MetaRootResource (dict):
             'PATCH',
             'PUT'
         ],
-        'Access-Control-Allow-Headers': [
-            'Origin',
-            'content-type'
-        ],
+        'Access-Control-Allow-Headers': corsConfig.get('headersallow'),
         'Access-Control-Allow-Credentials': 'true',
         'Access-Control-Max-Age': '86400'
     }
