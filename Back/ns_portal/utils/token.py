@@ -156,7 +156,7 @@ def buildPayload(idUser, request, timeAddForExp):
     nowInTimeStampSeconds = int(now.timestamp())
 
     payload = {
-        "iss": 'NSPortal',
+        "iss": str(result[0].TUse_PK_ID), # TODO replace by 'NSPortal', after all app compatible with auth proces
         "sub": str(result[0].TUse_PK_ID),
         "username": result[0].TUse_Login,
         "userlanguage": result[0].TUse_Language,
