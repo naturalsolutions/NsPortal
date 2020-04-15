@@ -1,8 +1,5 @@
 import jwt
 import datetime
-from pyramid.security import (
-    _get_authentication_policy
-)
 from ns_portal.database.main_db import (
     TInstance,
     TApplications,
@@ -10,6 +7,9 @@ from ns_portal.database.main_db import (
     TUsers,
     TRoles,
     TSite
+)
+from ns_portal.utils.utils import (
+    my_get_authentication_policy
 )
 
 # we follow the RFC7519
@@ -60,7 +60,7 @@ def myDecode(token, secret):
 
 
 def getSecretAndAlgorithFromPolicy(request, tokenKey, algoKey):
-    policy = _get_authentication_policy(request)
+    policy = my_get_authentication_policy(request)
     secret = getattr(policy, tokenKey)
     algorithm = getattr(policy, algoKey)
 
@@ -94,7 +94,7 @@ def getCodeToken(idUser, request):
     nowInTimeStampSeconds = int(now.timestamp())
 
     payload = {
-        'sub': idUser,
+        'sub': str(idUser),
         'exp': nowInTimeStampSeconds + _codeTokenExpInSec
     }
 
@@ -102,8 +102,7 @@ def getCodeToken(idUser, request):
 
 
 def buildPayload(idUser, request, timeAddForExp):
-    policy = _get_authentication_policy(request)
-
+    policy = my_get_authentication_policy(request)
     tsiteName = getattr(policy, 'TSit_Name')
 
     colsToRet = [
@@ -197,7 +196,7 @@ def getRefreshToken(idUser, request):
     nowInTimeStampSeconds = int(now.timestamp())
 
     payload = {
-        'sub': idUser,
+        'sub': str(idUser),
         'exp': nowInTimeStampSeconds + _refreshTokenExpInSec
     }
 

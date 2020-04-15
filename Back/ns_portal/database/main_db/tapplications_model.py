@@ -21,7 +21,7 @@ class TApplications(Main_Db_Base):
     )
     TApp_ClientID = Column(
         String(500),
-        nullable = False
+        nullable=False
     )
     TApp_Description = Column(
         String(255),

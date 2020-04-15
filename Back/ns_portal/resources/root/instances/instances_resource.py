@@ -9,10 +9,12 @@ from ns_portal.database.main_db import (
     TRoles,
     TSite
 )
+from ns_portal.utils.utils import (
+    my_get_authentication_policy
+)
 from pyramid.security import (
     Allow,
-    Authenticated,
-    _get_authentication_policy
+    Authenticated
 )
 
 
@@ -23,7 +25,7 @@ class InstancesResource(MetaEndPointResource):
         ]
 
     def GET(self):
-        policy = _get_authentication_policy(self.request)
+        policy = my_get_authentication_policy(self.request)
         tsiteName = getattr(policy, 'TSit_Name')
         userId = self.request.authenticated_userid.get('TUse_PK_ID')
 

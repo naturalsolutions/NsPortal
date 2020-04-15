@@ -132,7 +132,9 @@ class MetaRootResource (dict):
                 toRet = self.__routes__.get(nextNode, None)
 
         if toRet is None:
-            raise KeyError('__getitem__ for Resource: {name}'.format(name=self.__name__))
+            raise KeyError(
+                '__getitem__ for Resource: {name}'.format(name=self.__name__)
+            )
         else:
             return toRet(name=nextNode, parent=self, request=self.request)
 
@@ -221,7 +223,7 @@ class MetaRootResource (dict):
             for reqHeader in reqHeadersList:
                 if reqHeader not in headersAllowed:
                     headers = False
-                    print('{reqHeader} is not allowed'.format(reqHeader=reqHeader))
+                    print('{header} is not allowed'.format(header=reqHeader))
                     break
             if headers == {}:
                 headers[responseHeadersKey] = headersStr

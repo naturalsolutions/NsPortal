@@ -1,6 +1,9 @@
 from ns_portal.core.resources import (
     MetaEndPointResource
 )
+from ns_portal.utils.utils import (
+    my_get_authentication_policy
+)
 from marshmallow import (
     Schema,
     fields,
@@ -9,8 +12,7 @@ from marshmallow import (
 )
 from pyramid.security import (
     Allow,
-    Authenticated,
-    _get_authentication_policy
+    Authenticated
 )
 from ns_portal.database.main_db import (
     TInstance,
@@ -25,9 +27,6 @@ from sqlalchemy.orm.exc import (
 )
 from ns_portal.utils import (
     getCodeToken
-)
-from pyramid.httpexceptions import (
-    HTTPFound
 )
 
 
@@ -48,8 +47,7 @@ class AuthorizeResource(MetaEndPointResource):
     def validateSchema(self, data):
         client_id = data.get('client_id')
         redirect_uri = data.get('redirect_uri')
-
-        policy = _get_authentication_policy(self.request)
+        policy = my_get_authentication_policy(self.request)
         tsiteName = getattr(policy, 'TSit_Name')
         userId = self.request.authenticated_userid.get('TUse_PK_ID')
 
