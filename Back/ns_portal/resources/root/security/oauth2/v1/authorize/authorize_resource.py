@@ -28,9 +28,6 @@ from sqlalchemy.orm.exc import (
 from ns_portal.utils import (
     getCodeToken
 )
-from pyramid.httpexceptions import (
-    HTTPFound
-)
 
 
 class authorizeSchema(Schema):
