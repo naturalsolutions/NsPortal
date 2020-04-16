@@ -44,11 +44,11 @@ function(Marionette) {
             this.model.set({'icon' : 'reneco-QRTAG-logo'});
             break;
           default:
-            this.model.set({'icon' : 'reneco-ECO-releve'});
+            this.model.set({'icon' : 'reneco-ECORELEVE-logo_tuile'});
             break;
         }
       }else{
-        this.model.set({'icon' : 'reneco-ECO-releve'});
+        this.model.set({'icon' : 'reneco-ECORELEVE-logo_tuile'});
       }
       // set hostname
       var hostname  = window.location.hostname ;
