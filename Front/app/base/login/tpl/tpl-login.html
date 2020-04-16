@@ -1,4 +1,5 @@
 <div id="login-tpl" class="full-height login-page <%= siteClassName %>">
+	<% if ( errorAPI500 == false ) { %>
 	<div class="login-form">
 		<div id="logo" class="logo"></div>
 		<h1 title="title"><%= title %><sup><%= sup %></sup></h1>
@@ -13,21 +14,29 @@
 						class="form-control" placeholder="login"
 						autocomplete="off" autofocus/>
 				</div>
-
 				<div class="form-group" id="pwd-group">
 					<input type="password" style="display:none">
-
 					<input id="password" type="password" class="form-control" placeholder="mot de passe"/>
-
 				</div>
 			</div>
 			<button id="login-btn" type="submit" class="center-block form-control"><span data-i18n="home.login">Login</span></button>
 		</form>
-
 	</div>
+	<% } else { %>
+		<div class="login-form">
+			<div id="logo" class="logo"></div>
+			<h1 title="title"><%= title %><sup><%= sup %></sup></h1>
+			<h2><%= legend %></h2>
+			<h3><%= locality %>, <%= country %></h3>
+			<div class="errorapi">
+				The API didn't response please refresh or call an admin
+			</div>
+			<button id="login-btn" class="center-block form-control"><span data-i18n="home.refresh">Refresh</span></button>
+			<br>
+		</div>
+	<% }%>
 	<span class="credits">
 		by <a TARGET="_blank" href="http://www.natural-solutions.eu/">Natural Solutions</a>
 	</span>
-
 </div>
 

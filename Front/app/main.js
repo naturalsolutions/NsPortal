@@ -16,7 +16,7 @@ require.config({
     translater: 'translater',
 
     /*==========  Bower  ==========*/
-    jquery: '../bower_components/jquery/jquery.min',
+    jquery: '../bower_components/jquery/dist/jquery.min',
     jqueryui: '../bower_components/jqueryui/jquery-ui.min',
     underscore: '../bower_components/lodash/lodash',
     backbone: '../bower_components/backbone/backbone',
