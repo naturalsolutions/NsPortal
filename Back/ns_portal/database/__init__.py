@@ -139,7 +139,6 @@ def createEngines(myConfig, dbPossible):
         engines[item] = engine_from_config(
             configuration=myConfig,
             prefix='sqlalchemy.' + item + '.',
-            url=buildURL(myConfig=myConfig, db=item),
             legacy_schema_aliasing=False,
             implicit_returning=False,
             use_scope_identity=False

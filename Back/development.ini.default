@@ -35,14 +35,11 @@ DBUSED                 = Main_Db,Log_Db
     # .PORT
     # .DATABASE
 
-Main_Db.DIALECT = mssql+pyodbc
-Main_Db.UID = $UID$
-Main_Db.PWD = $PWD$
-Main_Db.SERVER = $SERVER$
-Main_Db.PORT = 1433
-Main_Db.DATABASE = SECURITE
-Main_Db.ODBCDRIVER = ODBC Driver 11 for SQL Server
 
+# connexion string examples
+#       mssql+pyodbc://sa:mypassword@localhost/SECURITE?driver=SQL+Server
+#       mssql+pymssql://toto:mypassword@desktop-11immn2\sqlinstance
+sqlalchemy.Main_Db.url = mssql+pyodbc://$UID$:$PWD$@$SERVER$/SECURITE?driver=ODBC+Driver+11+for+SQL+Server
 sqlalchemy.Main_Db.implicit_returning = False
 sqlalchemy.Main_Db.pool_reset_on_return = commit
 sqlalchemy.Main_Db.pool_size = 30
@@ -50,14 +47,8 @@ sqlalchemy.Main_Db.pool_timeout = 5
 sqlalchemy.Main_Db.max_overflow = 10
 sqlalchemy.Main_Db.case_sensitive= False
 
-Log_Db.DIALECT = mssql+pyodbc
-Log_Db.UID = $UID$
-Log_Db.PWD = $PWD$
-Log_Db.SERVER = $SERVER$
-Log_Db.PORT = 1433
-Log_Db.DATABASE = NSLog
-Log_Db.ODBCDRIVER = ODBC Driver 11 for SQL Server
 
+sqlalchemy.Log_Db.url = mssql+pyodbc://$UID$:$PWD$@$SERVER$/NSLog?driver=ODBC+Driver+11+for+SQL+Server
 sqlalchemy.Log_Db.implicit_returning = False
 sqlalchemy.Log_Db.pool_reset_on_return = commit
 sqlalchemy.Log_Db.pool_size = 30
