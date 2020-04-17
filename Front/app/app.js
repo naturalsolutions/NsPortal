@@ -31,10 +31,9 @@ Controller, config) {
       dataType: 'json',
       contentType: 'application/json',
       success: function(data) {
-        alert("vous allez être redirigé vers "+params.redirect_uri+" Merci de patienter\n ou cliquez sur ce lien")
-        urlToGo = params.redirect_uri
+        alert("vous allez être redirigé vers "+document.referrer+" Merci de patienter\n ou cliquez sur ce lien")
         search = '?code=' + data.code
-        window.location = urlToGo + search
+        window.location = document.referrer + search
       },
       error: function(data) {
 
