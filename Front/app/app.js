@@ -72,6 +72,19 @@ Controller, config) {
 
   }
 
+  function removeAllTokensWithPrefix(prefix) {
+    var keysToRemove = []
+    for (var i=0 ; i < localStorage.length; i++) {
+      let keyName = localStorage.key(i)
+      if (keyName.indexOf(prefix) > -1) {
+        keysToRemove.push(keyName)
+      }
+    }
+    for (var i=0; i < keysToRemove.length; i++) {
+      localStorage.removeItem(keysToRemove[i]);
+    }
+  }
+
   function checkIfCookie(model, params, app) {
     $.ajax({
       context: this,
@@ -88,6 +101,7 @@ Controller, config) {
         }
       },
       error : function(data) {
+        removeAllTokensWithPrefix('NSAPP_')
         //cookie not valid
       },
       complete: function(data) {
