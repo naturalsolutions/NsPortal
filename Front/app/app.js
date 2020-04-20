@@ -31,7 +31,6 @@ Controller, config) {
       dataType: 'json',
       contentType: 'application/json',
       success: function(data) {
-        alert("vous allez être redirigé vers "+document.referrer+" Merci de patienter\n ou cliquez sur ce lien")
         search = '?code=' + data.code
         window.location = document.referrer + search
       },
