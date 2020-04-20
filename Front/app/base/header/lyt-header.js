@@ -23,11 +23,26 @@ function(Marionette, config) {
       this.model = window.app.user;
     },
 
+    removeAllTokensWithPrefix(prefix) {
+      var keysToRemove = []
+      for (var i=0 ; i < localStorage.length; i++) {
+        let keyName = localStorage.key(i)
+        if (keyName.indexOf(prefix) > -1) {
+          keysToRemove.push(keyName)
+        }
+      }
+      for (var i=0; i < keysToRemove.length; i++) {
+        localStorage.removeItem(keysToRemove[i]);
+      }
+    },
+
     logout: function() {
+      var _this = this;
       $.ajax({
         context: this,
         url: config.coreUrl + 'security/oauth2/v1/logout',
       }).done(function() {
+        _this.removeAllTokensWithPrefix('NSAPP_')
         Backbone.history.navigate('login', {trigger: true});
       });
     },
