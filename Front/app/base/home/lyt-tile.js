@@ -38,7 +38,7 @@ function(Marionette) {
             this.model.set({'icon' : 'reneco-tuile2'});
             break;
           case 'CentralMonitoring':
-            this.model.set({'icon' : 'reneco-data-centralisation'});
+            this.model.set({'icon' : 'reneco-CENTRAL-tuile'});
             break;
           case 'qrtag':
             this.model.set({'icon' : 'reneco-QRTAG-logo'});
