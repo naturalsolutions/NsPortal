@@ -153,30 +153,31 @@ def createEngines(myConfig, dbPossible):
 
 
 def mapAndBindEngineWithBaseWeUse(baseName, engineToBind):
-    '''
-    dunno if it's the good way
-    but (maybe it's just for dev and not for production )
-    take a coffee and read carefully...
-    if we stop execution of script here
-    and we looks in globals()
-    the class Main_Db_Base is imported and defined
-    so we can bind metadata with engine directly
-    '''
+    print("Bonjour")
+    # '''
+    # dunno if it's the good way
+    # but (maybe it's just for dev and not for production )
+    # take a coffee and read carefully...
+    # if we stop execution of script here
+    # and we looks in globals()
+    # the class Main_Db_Base is imported and defined
+    # so we can bind metadata with engine directly
+    # '''
 
-    # print("et le global ? ? ? ?")
-    print("Binding Engine for {baseName}_Base".format(baseName=baseName))
-    eval(str(baseName)+'_Base').metadata.bind = engineToBind
-    # will drop all model and recreate it
-    # if you need data test youshould restore juste after
-    # eval( str(baseName)+'_BASE' ).metadata.drop_all(engineToBind)
-    # create models only if table don't exist yet!!
-    print("Create ALL for {baseName}_Base".format(baseName=baseName))
-    eval(str(baseName)+'_Base').metadata.create_all(engineToBind)
-    print("Reflectdatabase {baseName}_Base".format(baseName=baseName))
-    eval(str(baseName)+'_Base').metadata.reflect(
-                                                views=True,
-                                                extend_existing=False
-                                                )  # scan database
+    # # print("et le global ? ? ? ?")
+    # print("Binding Engine for {baseName}_Base".format(baseName=baseName))
+    # eval(str(baseName)+'_Base').metadata.bind = engineToBind
+    # # will drop all model and recreate it
+    # # if you need data test youshould restore juste after
+    # # eval( str(baseName)+'_BASE' ).metadata.drop_all(engineToBind)
+    # # create models only if table don't exist yet!!
+    # print("Create ALL for {baseName}_Base".format(baseName=baseName))
+    # eval(str(baseName)+'_Base').metadata.create_all(engineToBind)
+    # print("Reflectdatabase {baseName}_Base".format(baseName=baseName))
+    # eval(str(baseName)+'_Base').metadata.reflect(
+    #                                             views=True,
+    #                                             extend_existing=False
+    #                                             )  # scan database
 
 
 def get_session_factory(engines):
