@@ -16,7 +16,7 @@ requires = [
     'pyramid==1.10.4',
     'sqlalchemy==1.3.12',
     'transaction==3.0.0',
-    'waitress==1.4.2',
+    'waitress==2.1.1',
     'webargs==6.0.0b3'
     ]
 
